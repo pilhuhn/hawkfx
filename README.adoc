@@ -4,4 +4,11 @@ http://hawkular.org/[Hawkular] is a set of components for Monitoring.
 This explorer connects to a Hawkular server and allows to browse trough
 inventory and view entities, graph metrics.
 
+
+ifndef::env-github[]
 image::doc/screenshot.png[]
+endif::[]
+ifdef::env-github[]
+image::https://github.com/pilhuhn/hawkfx/blob/master/docs/screenshot.png[]
+endif::[]
+

@@ -1,0 +1,7 @@
+= Explorer for Hawkular
+
+http://hawkular.org/[Hawkular] is a set of components for Monitoring.
+This explorer connects to a Hawkular server and allows to browse trough
+inventory and view entities, graph metrics.
+
+image::doc/screenshot.png[]

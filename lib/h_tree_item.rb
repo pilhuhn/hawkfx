@@ -1,0 +1,13 @@
+require 'jrubyfx'
+
+
+class HTreeItem < Java::javafx::scene::control::TreeItem
+
+  attr_accessor :kind, :path, :resource, :metric
+  attr_accessor :is_leaf, :is_done
+
+  def initialize
+    @is_leaf = false
+  end
+
+end

@@ -73,6 +73,7 @@
               series.data.add xy_chart_data ts, item['value']
             end
 
+            the_chart.data.clear if $FXMLSingleChart.selected
             the_chart.data.add series
         end
       end

@@ -6,7 +6,6 @@ require_relative 'hawk_helper'
 require_relative 'h_tree_item'
 require_relative 'on_click_cell_factory'
 
-# module HawkFx
   class HawkFxController
     include JRubyFX::Controller
     fxml 'fxmain.fxml'
@@ -30,7 +29,6 @@ require_relative 'on_click_cell_factory'
         @FXMLtextArea.text = "Connection failed: #{e.to_s}"
         raise e
       end
-
     end
 
     def show_initial_tree(feeds)
@@ -52,8 +50,8 @@ require_relative 'on_click_cell_factory'
       # bind to the view from fxml
       @FXMLtreeView.setRoot(tree_root)
       $FXMLChart = @FXMLChart
+      $FXMLSingleChart = @FXMLSingleChart
 
       tree_root.setExpanded true
     end
   end
-# end

@@ -12,11 +12,12 @@ require_relative 'on_click_cell_factory'
     fxml 'fxmain.fxml'
 
     def login # callback from the login button
-      creds = {:username => 'hwr',
-               :password => 'Abcd1234+'}
-      url = 'http://localhost:8080/hawkular/inventory'
+      creds = {:username => @FXMLLoginField.text,
+               :password => @FXMLPasswordField.text}
+      base_url = @FXMLUrlField.text
+      url = "#{base_url}/hawkular/inventory"
       $inventory_client = ::Hawkular::Inventory::InventoryClient.new(url, creds)
-      url = 'http://localhost:8080/hawkular/metrics'
+      url = "#{base_url}/hawkular/metrics"
       $metric_client = ::Hawkular::Metrics::Client.new(url, creds)
 
       begin

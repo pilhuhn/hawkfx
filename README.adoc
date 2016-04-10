@@ -6,9 +6,24 @@ inventory and view entities, graph metrics.
 
 
 ifndef::env-github[]
-image::doc/screenshot.png[]
+image::docs/screenshot.png[]
 endif::[]
 ifdef::env-github[]
 image::https://github.com/pilhuhn/hawkfx/blob/master/docs/screenshot.png[]
 endif::[]
 
+== Running
+
+The explorer requires JRuby in version 9+
+
+If you are using `rvm` you can select it via
+
+`rvm use jruby-9.0.5.0`
+
+then use `bundler` to install the required gems
+
+`bundle install`
+
+then run
+
+`jruby hawkfx.rb`

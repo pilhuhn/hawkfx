@@ -17,6 +17,10 @@
 
         case the_tree_item.kind
           when :feed, :resource
+
+            break if the_tree_item.is_done
+
+            the_tree_item.is_done = true
             text = source.item
             resources = $inventory_client.list_resources_for_feed text
             if resources.empty?
@@ -36,7 +40,6 @@
               end
             else
               resources.each do |res|
-                # new_item = build(Java::javafx::scene::control::TreeItem)  #res  # name  #
                 new_item = build(::HTreeItem) #res  # name  #
                 new_item.path = res.path
                 new_item.kind = :resource
@@ -56,27 +59,31 @@
               end
             end
           when :metric
-            id = the_tree_item.metric.id
-            type = the_tree_item.metric.type
-            puts "Getting metric data for #{path}"
-            case type
-              when 'GAUGE'
-                data = $metric_client.gauges.get_data id
-              when 'COUNTER'
-                data = $metric_client.counters.get_data id
-            end
-            the_chart = $FXMLChart
-            series = xy_chart_series(name: id)
-            now = Time.now.to_i * 1000
-            data.each do |item|
-              ts = (item['timestamp']-now) / (1000*60) # Time in 'minutes ago'
-              series.data.add xy_chart_data ts, item['value']
-            end
-
-            the_chart.data.clear if $FXMLSingleChart.selected
-            the_chart.data.add series
+            show_chart(the_tree_item)
         end
       end
+    end
+
+    def show_chart(the_tree_item)
+      id = the_tree_item.metric.id
+      type = the_tree_item.metric.type
+      puts "Getting metric data for #{path}"
+      case type
+        when 'GAUGE'
+          data = $metric_client.gauges.get_data id
+        when 'COUNTER'
+          data = $metric_client.counters.get_data id
+      end
+      the_chart = $FXMLChart
+      series = xy_chart_series(name: id)
+      now = Time.now.to_i * 1000
+      data.each do |item|
+        ts = (item['timestamp']-now) / (1000*60) # Time in 'minutes ago'
+        series.data.add xy_chart_data ts, item['value']
+      end
+
+      the_chart.data.clear if $FXMLSingleChart.selected
+      the_chart.data.add series
     end
 
 

@@ -8,6 +8,7 @@ class HTreeItem < Java::javafx::scene::control::TreeItem
 
   def initialize
     @is_leaf = false
+    @is_done = false
   end
 
 end

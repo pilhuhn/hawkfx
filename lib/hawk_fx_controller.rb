@@ -10,26 +10,6 @@ require_relative 'on_click_cell_factory'
     include JRubyFX::Controller
     fxml 'fxmain.fxml'
 
-    def login # callback from the login button
-      creds = {:username => @FXMLLoginField.text,
-               :password => @FXMLPasswordField.text}
-      base_url = @FXMLUrlField.text
-      url = "#{base_url}/hawkular/inventory"
-      $inventory_client = ::Hawkular::Inventory::InventoryClient.new(url, creds)
-      url = "#{base_url}/hawkular/metrics"
-      $metric_client = ::Hawkular::Metrics::Client.new(url, creds)
-
-      begin
-        @tenant = $inventory_client.get_tenant
-        @FXMLtextArea.text = "Tenant: #{@tenant}"
-        feeds = $inventory_client.list_feeds
-
-        show_initial_tree(feeds)
-      rescue Exception => e
-        @FXMLtextArea.text = "Connection failed: #{e.to_s}"
-        raise e
-      end
-    end
 
     def show_initial_tree(feeds)
 

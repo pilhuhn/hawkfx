@@ -4,6 +4,7 @@ require 'hawkular_all'
 
 require_relative 'hawk_helper'
 require_relative 'h_tree_item'
+require_relative 'alert_controller'
 require_relative 'on_click_cell_factory'
 
   class HawkFxController
@@ -32,6 +33,16 @@ require_relative 'on_click_cell_factory'
       $FXMLChart = @FXMLChart
       $FXMLSingleChart = @FXMLSingleChart
 
-      tree_root.setExpanded true
+      tree_root.expanded=true
+    end
+
+    # Load the alerts window
+    def show_alerts
+      popup_stage = Stage.new
+      ::AlertController.load_into popup_stage
+      popup_stage.title="Alerts & Definitions"
+      popup_stage.init_modality=:none
+      popup_stage.init_owner(@FXMLtreeView.scene.window)
+      popup_stage.show
     end
   end

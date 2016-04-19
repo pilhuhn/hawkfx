@@ -4,7 +4,7 @@ require 'hawkular_all'
 require 'uri'
 
 require_relative 'hawk_helper'
-require_relative 'hawk_fx_controller'
+require_relative 'hawk_main_controller'
 
   class HawkLoginController
     include JRubyFX::Controller

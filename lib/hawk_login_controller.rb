@@ -18,6 +18,8 @@ require_relative 'hawk_fx_controller'
       $inventory_client = ::Hawkular::Inventory::InventoryClient.new(url, creds)
       url = "#{base_url}/hawkular/metrics"
       $metric_client = ::Hawkular::Metrics::Client.new(url, creds)
+      url = "#{base_url}/hawkular/alerts"
+      $alerts_client = ::Hawkular::Alerts::AlertsClient.new(url, creds)
 
       begin
         @tenant = $inventory_client.get_tenant
@@ -27,7 +29,7 @@ require_relative 'hawk_fx_controller'
         show_main_pane feeds
 
       rescue Exception => e
-        @FXMLtextArea.text = "Connection failed: #{e.to_s}"
+        @FXMLtextArea.text = "Error: #{e.to_s}"
         raise e
       end
     end
@@ -39,15 +41,13 @@ require_relative 'hawk_fx_controller'
       #FXMLLoginPane is the root, so get the stage from it
       stage = @FXMLLoginField.scene.window
 
-      stage.min_width = 1000
-      stage.min_height = 800
-
-
       # Create a Main controller, which will load fxml
       # into the passed stage
       main_controller = ::HawkFxController.load_into stage, {:feeds => feeds,
         :width => 1000, :height => 800, :root_dir => dir }
 
+      stage.min_width = 1000
+      stage.min_height = 800
       stage.size_to_scene
 
       main_controller.show_initial_tree feeds

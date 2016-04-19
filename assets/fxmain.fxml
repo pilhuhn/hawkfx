@@ -18,7 +18,7 @@
          <center>
             <LineChart fx:id="FXMLChart" BorderPane.alignment="CENTER">
               <xAxis>
-                <NumberAxis forceZeroInRange="false" side="BOTTOM" />
+                <CategoryAxis side="BOTTOM" tickLabelGap="20.0" tickLabelRotation="45.0" />
               </xAxis>
               <yAxis>
                 <NumberAxis forceZeroInRange="false" side="LEFT" />

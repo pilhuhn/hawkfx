@@ -19,12 +19,17 @@
           when :feed, :resource
 
             break if the_tree_item.is_done
-
             the_tree_item.is_done = true
+
             text = source.item
-            resources = $inventory_client.list_resources_for_feed text
-            if resources.empty?
-              the_tree_item.is_leaf = true
+            if the_tree_item.kind == :feed
+              resources = $inventory_client.list_resources_for_feed text
+            else
+              resources = $inventory_client.list_child_resources the_tree_item.resource
+            end
+
+            if the_tree_item.kind == :resource
+              the_tree_item.is_done = true
               metrics = $inventory_client.list_metrics_for_resource the_tree_item.resource
               metrics.each do |m|
                 new_metric = build(::HTreeItem)
@@ -35,10 +40,12 @@
                 new_metric.graphic = iv
                 puts "Adding metric #{new_metric.to_s}"
                 children.add new_metric # TODO add or replaceF
-                the_tree_item.setExpanded true
+                the_tree_item.expanded=true
 
               end
-            else
+            end
+
+            unless resources.empty?
               resources.each do |res|
                 new_item = build(::HTreeItem) #res  # name  #
                 new_item.path = res.path
@@ -55,8 +62,9 @@
 
                 puts "Adding resource #{new_item.to_s}"
                 children.add new_item
-                the_tree_item.setExpanded true
+                the_tree_item.expanded=true
               end
+              # TODO pull in metrics for this node
             end
           when :metric
             show_chart(the_tree_item)
@@ -70,16 +78,23 @@
       puts "Getting metric data for #{path}"
       case type
         when 'GAUGE'
-          data = $metric_client.gauges.get_data id
+          data = $metric_client.gauges.get_data id, buckets: 120
         when 'COUNTER'
-          data = $metric_client.counters.get_data id
+          data = $metric_client.counters.get_data id, buckets: 120
+        else
+          puts "Data Type #{type} is not known"
+          return
       end
+
       the_chart = $FXMLChart
       series = xy_chart_series(name: id)
-      now = Time.now.to_i * 1000
       data.each do |item|
-        ts = (item['timestamp']-now) / (1000*60) # Time in 'minutes ago'
-        series.data.add xy_chart_data ts, item['value']
+        unless item.nil?
+          ts = item['start'] / 1000 # buckets -> start || timestamp for raw
+          time = Time.at(ts).to_s
+          val = item['avg'] # buckets -> avg(?) || value for raw
+          series.data.add xy_chart_data time, val
+        end
       end
 
       the_chart.data.clear if $FXMLSingleChart.selected

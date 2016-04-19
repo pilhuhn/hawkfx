@@ -10,7 +10,7 @@
    <content>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <left>
-            <TreeView fx:id="FXMLtreeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <TreeView fx:id="FXMLtreeView" prefHeight="317.0" prefWidth="230.0" BorderPane.alignment="CENTER" />
          </left>
          <bottom>
             <TextArea fx:id="FXMLtextArea" prefHeight="53.0" prefWidth="767.0" BorderPane.alignment="CENTER" />

@@ -43,8 +43,8 @@ require_relative 'hawk_fx_controller'
 
       # Create a Main controller, which will load fxml
       # into the passed stage
-      main_controller = ::HawkFxController.load_into stage, {:feeds => feeds,
-        :width => 1000, :height => 800, :root_dir => dir }
+      main_controller = ::HawkMainController.load_into stage, {:feeds => feeds,
+                                                               :width => 1000, :height => 800, :root_dir => dir }
 
       stage.min_width = 1000
       stage.min_height = 800

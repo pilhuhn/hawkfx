@@ -7,7 +7,7 @@ require_relative 'h_tree_item'
 require_relative 'alert_controller'
 require_relative 'on_click_cell_factory'
 
-class HawkFxController
+class HawkMainController
   include JRubyFX::Controller
   fxml 'fxmain.fxml'
 

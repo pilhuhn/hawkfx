@@ -114,9 +114,12 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
   def updateItem(item, empty)
     super item, empty
 
-    return if empty
-
-    set_text get_string
-    set_graphic tree_item.graphic
+    if empty
+      set_text nil
+      set_graphic nil
+    else
+      set_text get_string
+      set_graphic tree_item.graphic
+    end
   end
 end

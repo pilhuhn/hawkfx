@@ -30,8 +30,10 @@ class AlertListCellFactory < Java::javafx::scene::control::ListCell
   def updateItem(item, empty)
     super item, empty
 
-    return if empty
-
-    set_text get_string
+    if empty
+      set_text nil
+    else
+      set_text get_string
+    end
   end
 end

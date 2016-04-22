@@ -18,6 +18,10 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       case the_tree_item.kind
         when :feed, :resource
 
+          # Show info in the bottom text field
+          text = the_tree_item.kind != :feed ? the_tree_item.resource.path : the_tree_item.value
+          tree_view.scene.lookup('#FXMLtextArea').text = text
+
           break if the_tree_item.is_done
           the_tree_item.is_done = true
 
@@ -67,6 +71,9 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
             # TODO pull in metrics for this node
           end
         when :metric
+          text = the_tree_item.metric.path
+          tree_view.scene.lookup('#FXMLtextArea').text = text
+
           show_chart(the_tree_item)
       end
     end

@@ -16,6 +16,7 @@ class AlertListCellFactory < Java::javafx::scene::control::ListCell
       list_view.scene.lookup('#FXMLAlertId').text = alert.id
       list_view.scene.lookup('#FXMLAlertResource').text = alert.tags['resourceId']
       list_view.scene.lookup('#FXMLText').text = alert.text
+      list_view.scene.lookup('#FXMLSeverity').text = alert.severity
 
     end
   end

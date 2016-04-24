@@ -8,37 +8,37 @@
 
 <TitledPane fx:id="FXMLMainPane" collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="447.0" prefWidth="989.0" text="Browse Inventory" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <content>
-      <BorderPane prefHeight="200.0" prefWidth="200.0">
-         <left>
-            <TreeView fx:id="FXMLtreeView" prefHeight="317.0" prefWidth="230.0" BorderPane.alignment="CENTER" />
-         </left>
-         <bottom>
-            <TextArea fx:id="FXMLtextArea" prefHeight="53.0" prefWidth="767.0" BorderPane.alignment="CENTER" />
-         </bottom>
-         <center>
-            <LineChart fx:id="FXMLChart" BorderPane.alignment="CENTER">
-              <xAxis>
-                <CategoryAxis side="BOTTOM" tickLabelGap="20.0" tickLabelRotation="45.0" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis forceZeroInRange="false" side="LEFT" />
-              </yAxis>
-            </LineChart>
-         </center>
-         <top>
-            <MenuBar>
-            <menus>
-            <Menu mnemonicParsing="false" text="File">
+      <VBox prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <HBox fx:id="FXMLTopBox">
+               <children>
+                  <MenuBar>
+                     <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#show_alerts" text="Alerts" />
+                              <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
+                           </items>
+                        </Menu>
+                     </menus>
+                  </MenuBar>
+               </children>
+            </HBox>
+            <SplitPane dividerPositions="0.3" prefHeight="614.0" prefWidth="578.0">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#show_alerts" text="Alerts" />
-                  <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
+                  <TreeView fx:id="FXMLtreeView" prefHeight="800.0" prefWidth="230.0" BorderPane.alignment="CENTER" />
+                  <LineChart fx:id="FXMLChart" BorderPane.alignment="CENTER">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" tickLabelGap="20.0" tickLabelRotation="45.0" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis forceZeroInRange="false" side="LEFT" />
+                     </yAxis>
+                  </LineChart>
                </items>
-            </Menu>
-            </menus>
-            </MenuBar>
-         </top>
-         <right>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            </SplitPane>
+            <TextArea fx:id="FXMLtextArea" prefHeight="53.0" prefWidth="767.0" BorderPane.alignment="CENTER" />
+            <HBox BorderPane.alignment="CENTER">
                <children>
                   <CheckBox fx:id="FXMLSingleChart" mnemonicParsing="false" text="Single Chart" wrapText="true">
                      <VBox.margin>
@@ -47,15 +47,24 @@
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
                   </CheckBox>
                   <Button fx:id="FXMLRefreshButton" mnemonicParsing="false" onAction="#refreshCharts" text="Refresh">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
                   </Button>
                </children>
-            </VBox>
-         </right>
-      </BorderPane>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
    </content>
 </TitledPane>

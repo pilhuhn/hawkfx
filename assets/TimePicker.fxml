@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root fx:id="FXMLTimePicker" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="314.0" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label text="Show last">
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </Label>
+      <ToggleButton mnemonicParsing="false" onAction="#selectTime" text="1h">
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" top="5.0" />
+         </HBox.margin>
+         <toggleGroup>
+            <ToggleGroup fx:id="pickerGroup" />
+         </toggleGroup>
+      </ToggleButton>
+      <ToggleButton mnemonicParsing="false" onAction="#selectTime" text="8h" toggleGroup="$pickerGroup">
+         <HBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </HBox.margin>
+      </ToggleButton>
+      <ToggleButton mnemonicParsing="false" onAction="#selectTime" selected="true" text="12h" toggleGroup="$pickerGroup">
+         <HBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </HBox.margin>
+      </ToggleButton>
+      <ToggleButton mnemonicParsing="false" onAction="#selectTime" text="1d" toggleGroup="$pickerGroup">
+         <HBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </HBox.margin>
+      </ToggleButton>
+      <ToggleButton mnemonicParsing="false" onAction="#selectTime" text="7d" toggleGroup="$pickerGroup">
+         <HBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </HBox.margin>
+      </ToggleButton>
+      <ToggleButton mnemonicParsing="false" onAction="#selectTime" text="1mo" toggleGroup="$pickerGroup">
+         <HBox.margin>
+            <Insets bottom="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </ToggleButton>
+   </children>
+   <padding>
+      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+   </padding>
+</fx:root>

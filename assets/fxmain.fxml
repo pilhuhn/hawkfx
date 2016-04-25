@@ -24,46 +24,13 @@
                   </MenuBar>
                </children>
             </HBox>
-            <SplitPane dividerPositions="0.3" prefHeight="614.0" prefWidth="578.0">
+            <SplitPane dividerPositions="0.3" prefHeight="650.0" prefWidth="578.0">
                <items>
-                  <TreeView fx:id="FXMLtreeView" prefHeight="800.0" prefWidth="230.0" BorderPane.alignment="CENTER" />
-                  <LineChart fx:id="FXMLChart" BorderPane.alignment="CENTER">
-                     <xAxis>
-                        <CategoryAxis side="BOTTOM" tickLabelGap="20.0" tickLabelRotation="45.0" />
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis forceZeroInRange="false" side="LEFT" />
-                     </yAxis>
-                  </LineChart>
+                  <TreeView fx:id="FXMLtreeView" prefHeight="800.0" prefWidth="230.0" />
+                  <AnchorPane fx:id="FXMLChartAnchor" />
                </items>
             </SplitPane>
-            <TextArea fx:id="FXMLtextArea" prefHeight="53.0" prefWidth="767.0" BorderPane.alignment="CENTER" />
-            <HBox BorderPane.alignment="CENTER">
-               <children>
-                  <CheckBox fx:id="FXMLSingleChart" mnemonicParsing="false" text="Single Chart" wrapText="true">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </VBox.margin>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets right="5.0" />
-                     </HBox.margin>
-                  </CheckBox>
-                  <Button fx:id="FXMLRefreshButton" mnemonicParsing="false" onAction="#refreshCharts" text="Refresh">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </VBox.margin>
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </HBox>
+            <TextArea fx:id="FXMLtextArea" prefHeight="53.0" prefWidth="767.0" />
          </children>
       </VBox>
    </content>

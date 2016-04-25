@@ -6,6 +6,8 @@ require_relative 'hawk_helper'
 require_relative 'h_tree_item'
 require_relative 'alert_controller'
 require_relative 'on_click_cell_factory'
+require_relative 'time_picker'
+require_relative 'chart_view_controller'
 
 class HawkMainController
   include JRubyFX::Controller
@@ -13,6 +15,13 @@ class HawkMainController
 
 
   def show_initial_tree(feeds)
+
+    hbox = @FXMLtreeView.scene.lookup('#FXMLTopBox')
+    hbox.children.add time_picker(self, :set_time_range)
+
+    chart_anchor = @FXMLtreeView.scene.lookup('#FXMLChartAnchor')
+    chart_anchor.children.add chart_view_controller # TODO rename back to chart_view?
+
 
     @FXMLtreeView.setCellFactory proc { ::OnClickCellFactory.new }
 
@@ -44,5 +53,13 @@ class HawkMainController
     popup_stage.init_modality=:none
     popup_stage.init_owner(@FXMLtreeView.scene.window)
     popup_stage.show
+  end
+
+  def set_time_range(time_in_ms)
+    puts "Bla #{time_in_ms}"
+
+    bla = find('#myChartView')
+    puts bla
+
   end
 end

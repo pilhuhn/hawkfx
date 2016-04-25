@@ -68,45 +68,20 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
               children.add new_item
               the_tree_item.expanded=true
             end
-            # TODO pull in metrics for this node
+            # TODO pull in operations for this node
           end
         when :metric
+          # Write path in lower text field
           text = the_tree_item.metric.path
           tree_view.scene.lookup('#FXMLtextArea').text = text
 
-          show_chart(the_tree_item)
+          # Add the metric to the charting component
+          chart_control = tree_view.scene.lookup('#myChartView')
+          chart_control.add_item the_tree_item.metric
       end
     end
   end
 
-  def show_chart(the_tree_item)
-    id = the_tree_item.metric.id
-    type = the_tree_item.metric.type
-    puts "Getting metric data for #{path}"
-    case type
-      when 'GAUGE'
-        data = $metric_client.gauges.get_data id, buckets: 120
-      when 'COUNTER'
-        data = $metric_client.counters.get_data id, buckets: 120
-      else
-        puts "Data Type #{type} is not known"
-        return
-    end
-
-    the_chart = $FXMLChart
-    series = xy_chart_series(name: id)
-    data.each do |item|
-      unless item.nil?
-        ts = item['start'] / 1000 # buckets -> start || timestamp for raw
-        time = Time.at(ts).to_s
-        val = item['avg'] # buckets -> avg(?) || value for raw
-        series.data.add xy_chart_data time, val
-      end
-    end
-
-    the_chart.data.clear if $FXMLSingleChart.selected
-    the_chart.data.add series
-  end
 
 
   def get_string

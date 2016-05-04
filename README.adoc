@@ -20,7 +20,9 @@ If you are using `rvm` you can select it via
 
 `rvm use jruby-9.0.5.0`
 
-then use `bundler` to install the required gems
+install and use `bundler` to install the required gems
+
+`gem install bundler`
 
 `bundle install`
 

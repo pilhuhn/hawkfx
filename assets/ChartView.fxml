@@ -6,18 +6,19 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root fx:id="FXMLChartView" id="myChartView" maxHeight="-Infinity" maxWidth="-Infinity"
-        minHeight="-Infinity"
-         minWidth="-Infinity" prefHeight="700.0" prefWidth="600.0"
-         type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root id="myChartView" fx:id="FXMLChartView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="600.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
 
       <HBox>
          <children>
-            <CheckBox fx:id="FXMLSingleChart" mnemonicParsing="false" text="Single Chart" wrapText="true">
+            <Button mnemonicParsing="false" onAction="#clear" text="Clear">
                <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin></CheckBox>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </Button>
             <Button fx:id="FXMLRefreshButton" alignment="BASELINE_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#refreshCharts" text="Refresh">
                <HBox.margin>
                   <Insets top="5.0" />
@@ -25,7 +26,7 @@
          </children>
       </HBox>
 
-      <LineChart fx:id="FXMLChart" prefHeight="700">
+      <LineChart fx:id="FXMLChart" prefHeight="700" visible="false">
          <xAxis>
             <CategoryAxis side="BOTTOM" tickLabelGap="20.0" tickLabelRotation="45.0" />
          </xAxis>

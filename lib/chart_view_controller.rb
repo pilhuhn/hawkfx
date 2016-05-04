@@ -22,19 +22,23 @@ class ChartViewController < Java::javafx::scene::layout::VBox
     refreshCharts
   end
 
-  def change_time(start_time_ms, end_time_ms)
-    # TODO
+  def change_time(start_time_ms)
+    @chosen_range = start_time_ms
     refreshCharts
   end
 
   # do the real drawing
   def refreshCharts
 
-    return if @chart_items.empty?
+    if @chart_items.empty?
+      @FXMLChart.visible = false
+      return
+    end
 
     ends = Time.now.to_i * 1000
     starts = ends-@chosen_range
     the_chart = @FXMLChart
+    the_chart.visible = true
 
     series_array = []
 

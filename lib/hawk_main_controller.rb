@@ -16,12 +16,14 @@ class HawkMainController
 
   def show_initial_tree(feeds)
 
-    hbox = @FXMLtreeView.scene.lookup('#FXMLTopBox')
-    hbox.children.add time_picker(self, :set_time_range)
-
+    # First load the chart custom control
     chart_anchor = @FXMLtreeView.scene.lookup('#FXMLChartAnchor')
     chart_anchor.children.add chart_view_controller # TODO rename back to chart_view?
 
+    # Then load the time picker custom control
+    # This needs to go after the chart as it will immediately call back
+    hbox = @FXMLtreeView.scene.lookup('#FXMLTopBox')
+    hbox.children.add time_picker(self, :set_time_range)
 
     @FXMLtreeView.setCellFactory proc { ::OnClickCellFactory.new }
 
@@ -39,8 +41,6 @@ class HawkMainController
     end
     # bind to the view from fxml
     @FXMLtreeView.setRoot(tree_root)
-    $FXMLChart = @FXMLChart
-    $FXMLSingleChart = @FXMLSingleChart
 
     tree_root.expanded=true
   end
@@ -49,17 +49,15 @@ class HawkMainController
   def show_alerts
     popup_stage = Stage.new
     ::AlertController.load_into popup_stage
-    popup_stage.title="Alerts & Definitions"
+    popup_stage.title='Alerts & Definitions'
     popup_stage.init_modality=:none
     popup_stage.init_owner(@FXMLtreeView.scene.window)
     popup_stage.show
   end
 
+  # Callback from time picker
   def set_time_range(time_in_ms)
-    puts "Bla #{time_in_ms}"
-
-    bla = find('#myChartView')
-    puts bla
-
+    cv = find('#myChartView')
+    cv.change_time time_in_ms
   end
 end

@@ -10,16 +10,14 @@ class TimePicker < Java::javafx::scene::layout::HBox
   fxml 'TimePicker.fxml'
 
   def initialize(caller, callback)
-
-    #load_fxml 'TimePicker.fxml'
     @caller = caller
     @callback = callback
 
     call_back 12*3600*1000 # 12h is default
   end
 
+  # Callback from JavaFX when one of the buttons is pressed
   def selectTime (event)
-
     button = event.source
     text = button.text
 
@@ -36,10 +34,11 @@ class TimePicker < Java::javafx::scene::layout::HBox
         offset = 144
       when '1mo'
         offset = 30*24
+      else
+        offset = 12 # this is the default
     end
     offset_in_ms = offset * 3600 * 1000
     call_back(offset_in_ms)
-
   end
 
   def call_back(offset_in_ms)

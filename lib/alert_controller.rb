@@ -19,12 +19,12 @@ class AlertController
 
   # Callback from Alert/Event toggle
   def switchAlertEvent
+    # TODO clean out selected item details
     display_items
   end
 
   # Callback from time picker
   def set_time_range(time_in_ms)
-    puts "Bla #{time_in_ms}"
     @start_offset = time_in_ms
     display_items
   end

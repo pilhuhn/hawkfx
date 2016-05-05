@@ -5,22 +5,21 @@ class AlertListCellFactory < Java::javafx::scene::control::ListCell
     super
 
     set_on_mouse_clicked do |event|
-
-      puts "Got #{event.to_s}"
       source = event.source
 
       list_view = source.listView
+      scene = list_view.scene
       the_item = list_view.selectionModel.selectedItem
-
       alert = the_item.alert
-      list_view.scene.lookup('#FXMLAlertId').text = alert.id
 
-      list_view.scene.lookup('#FXMLAlertResource').text = alert.tags['resourceId'] unless alert.tags.nil?
-
-      list_view.scene.lookup('#FXMLText').text = alert.text
-      list_view.scene.lookup('#FXMLSeverity').text = alert.severity
-      list_view.scene.lookup('#FXMLContext').text = alert.context.to_s
-
+      scene.lookup('#FXMLAlertId').text = alert.id
+      scene.lookup('#FXMLAlertResource').text = alert.tags['resourceId'] unless alert.tags.nil?
+      scene.lookup('#FXMLTags').text = alert.tags.to_s unless alert.tags.nil?
+      scene.lookup('#FXMLText').text = alert.text
+      scene.lookup('#FXMLSeverity').text = alert.severity
+      scene.lookup('#FXMLContext').text = alert.context.to_s
+      scene.lookup('#FXMLCategory').text = alert.category
+      scene.lookup('#FXMLTime').text = Time.at(alert.ctime/1000).to_s # Hawkular has ms
     end
   end
 

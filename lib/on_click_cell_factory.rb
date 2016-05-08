@@ -1,3 +1,4 @@
+require 'json'
 
 class OnClickCellFactory < Java::javafx::scene::control::TreeCell
   include JRubyFX::DSL
@@ -5,6 +6,30 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
   def initialize
     super
 
+    # Create a context menu to show the raw object
+    cm = Java::javafx::scene::control::ContextMenu.new
+    cmi = Java::javafx::scene::control::MenuItem.new 'Show Raw'
+    cmi.on_action do
+      item = tree_view.selectionModel.selectedItem
+      case item.kind
+        when :feed
+          text = item.value
+        when :resource
+          text = JSON.pretty_generate(item.resource.to_h)
+        when :metric
+          text = JSON.pretty_generate(item.metric.to_h)
+        else
+          text = "- unknown kind #{item.kind}, value = #{item.value}"
+      end
+
+      stage = tree_view.scene.window
+      ::HawkHelper.show_raw_popup stage, text
+    end
+    cm.items.add cmi
+    set_context_menu cm
+
+
+    # Left-click action
     set_on_mouse_clicked do |event|
       puts "Got #{event.to_s}"
       source = event.source

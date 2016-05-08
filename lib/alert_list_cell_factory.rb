@@ -1,9 +1,29 @@
+require 'jrubyfx'
+require_relative 'hawk_helper'
+
+
 class AlertListCellFactory < Java::javafx::scene::control::ListCell
   include JRubyFX::DSL
 
   def initialize
     super
 
+    # Create a context menu to show the raw object
+    cm = Java::javafx::scene::control::ContextMenu.new
+    cmi = Java::javafx::scene::control::MenuItem.new 'Show Raw'
+    cmi.on_action do
+
+      item = list_view.selectionModel.selectedItem
+      alert = item.alert
+
+      stage = list_view.scene.window
+      ::HawkHelper.show_raw_popup stage, alert.to_json.to_s
+    end
+
+    cm.items.add cmi
+    set_context_menu cm
+
+    # Left click action
     set_on_mouse_clicked do |event|
       source = event.source
 

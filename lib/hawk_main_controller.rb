@@ -14,7 +14,7 @@ class HawkMainController
   fxml 'fxmain.fxml'
 
 
-  def show_initial_tree(feeds)
+  def show_initial_tree
 
     # First load the chart custom control
     chart_anchor = @FXMLtreeView.scene.lookup('#FXMLChartAnchor')
@@ -27,7 +27,12 @@ class HawkMainController
 
     @FXMLtreeView.setCellFactory proc { ::OnClickCellFactory.new }
 
+    show_initial_tree_with_feeds
+  end
+
+  def show_initial_tree_with_feeds
     tree_root = tree_item('Feeds')
+    feeds = $inventory_client.list_feeds
     feeds.each do |feed|
       iv = ::HawkHelper.create_icon 'F'
 
@@ -41,7 +46,6 @@ class HawkMainController
     end
     # bind to the view from fxml
     @FXMLtreeView.setRoot(tree_root)
-
     tree_root.expanded=true
   end
 
@@ -53,6 +57,10 @@ class HawkMainController
     popup_stage.init_modality=:none
     popup_stage.init_owner(@FXMLtreeView.scene.window)
     popup_stage.show
+  end
+
+  def reload_feeds
+    show_initial_tree_with_feeds
   end
 
   # Callback from time picker

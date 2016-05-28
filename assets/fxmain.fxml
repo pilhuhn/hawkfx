@@ -17,6 +17,8 @@
                         <Menu mnemonicParsing="false" text="File">
                            <items>
                               <MenuItem mnemonicParsing="false" onAction="#show_alerts" text="Alerts" />
+                              <MenuItem mnemonicParsing="false" onAction="#reload_feeds"
+                                        text="Reload feeds"/>
                               <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
                            </items>
                         </Menu>

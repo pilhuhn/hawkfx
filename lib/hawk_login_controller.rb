@@ -24,9 +24,8 @@ require_relative 'hawk_main_controller'
       begin
         @tenant = $inventory_client.get_tenant
         @FXMLtextArea.text = "Tenant: #{@tenant}"
-        feeds = $inventory_client.list_feeds
 
-        show_main_pane feeds
+        show_main_pane
 
       rescue Exception => e
         @FXMLtextArea.text = "Error: #{e.to_s}"
@@ -35,7 +34,7 @@ require_relative 'hawk_main_controller'
     end
 
     # Now after login we can show the main app
-    def show_main_pane(feeds)
+    def show_main_pane
       dir = File.dirname(__FILE__).sub('/lib','/assets/')
 
       #FXMLLoginPane is the root, so get the stage from it
@@ -43,14 +42,15 @@ require_relative 'hawk_main_controller'
 
       # Create a Main controller, which will load fxml
       # into the passed stage
-      main_controller = ::HawkMainController.load_into stage, {:feeds => feeds,
-                                                               :width => 1000, :height => 800, :root_dir => dir }
+      main_controller = ::HawkMainController.load_into stage, {:width => 1000,
+                                                               :height => 850,
+                                                               :root_dir => dir }
 
       stage.min_width = 1000
       stage.min_height = 800
       stage.size_to_scene
 
-      main_controller.show_initial_tree feeds
+      main_controller.show_initial_tree
     end
 
   end

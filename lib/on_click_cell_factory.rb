@@ -54,12 +54,12 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
           if the_tree_item.kind == :feed
             resources = $inventory_client.list_resources_for_feed text
           else
-            resources = $inventory_client.list_child_resources the_tree_item.resource
+            resources = $inventory_client.list_child_resources the_tree_item.resource.path
           end
 
           if the_tree_item.kind == :resource
             the_tree_item.is_done = true
-            metrics = $inventory_client.list_metrics_for_resource the_tree_item.resource
+            metrics = $inventory_client.list_metrics_for_resource the_tree_item.resource.path
             metrics.each do |m|
               new_metric = build(::HTreeItem)
               new_metric.kind = :metric

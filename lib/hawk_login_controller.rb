@@ -1,6 +1,6 @@
 require 'jrubyfx'
 require 'jrubyfx-fxmlloader'
-require 'hawkular_all'
+require 'hawkular/hawkular_client'
 require 'uri'
 
 require_relative 'hawk_helper'
@@ -13,22 +13,27 @@ require_relative 'hawk_main_controller'
     def login # callback from the login button
       creds = {:username => @FXMLLoginField.text,
                :password => @FXMLPasswordField.text}
-      base_url = @FXMLUrlField.text
-      url = "#{base_url}/hawkular/inventory"
-      $inventory_client = ::Hawkular::Inventory::InventoryClient.new(url, creds)
-      url = "#{base_url}/hawkular/metrics"
-      $metric_client = ::Hawkular::Metrics::Client.new(url, creds)
-      url = "#{base_url}/hawkular/alerts"
-      $alerts_client = ::Hawkular::Alerts::AlertsClient.new(url, creds)
+
+      hash = {}
+      hash[:entrypoint] = URI(@FXMLUrlField.text)
+      hash[:credentials] = creds
+      hash[:options] = { :tenant => @FXMLTenantField.text}
+
+      $hawkular = ::Hawkular::Client.new(hash)
+
+      $inventory_client = $hawkular.inventory
+      $metric_client = $hawkular.metrics
+      $alerts_client = $hawkular.alerts
 
       begin
-        @tenant = $inventory_client.get_tenant
+        # @tenant = $inventory_client.get_tenant
         @FXMLtextArea.text = "Tenant: #{@tenant}"
 
         show_main_pane
 
       rescue Exception => e
         @FXMLtextArea.text = "Error: #{e.to_s}"
+        @tenant = 'hawkular'
         raise e
       end
     end
@@ -50,7 +55,10 @@ require_relative 'hawk_main_controller'
       stage.min_height = 800
       stage.size_to_scene
 
-      main_controller.show_initial_tree
+      mode = @FXMLModeButton.selected ? :hawkular : :metrics
+      tenant = @FXMLTenantField.text
+
+      main_controller.show_initial_tree mode, tenant
     end
 
   end

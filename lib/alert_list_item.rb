@@ -1,5 +1,5 @@
 require 'jrubyfx'
-require 'hawkular_all'
+require 'hawkular/hawkular_client'
 
 class AlertListItem < Java::javafx::scene::control::ListCell
 

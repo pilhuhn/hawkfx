@@ -1,4 +1,4 @@
-require 'hawkular_all'
+require 'hawkular/hawkular_client'
 
 require_relative 'alert_list_cell_factory'
 require_relative 'alert_list_item'

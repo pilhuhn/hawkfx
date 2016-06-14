@@ -28,4 +28,4 @@ install and use `bundler` to install the required gems
 
 then run
 
-`jruby hawkfx.rb`
+`bundle exec jruby hawkfx.rb`

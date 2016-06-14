@@ -7,7 +7,7 @@ source 'https://rubygems.org'
 gem 'jrubyfx', :require => true
 
 # gem 'hawkular-client', '~>1.0.0', :require => true, path: '/h/ruby-client-heiko'
-gem 'hawkular-client', :require => true, :git => 'https://github.com/pilhuhn/hawkular-client-ruby.git', :branch => 'fix-list_resources_for_feed'
+gem 'hawkular-client', :require => true, :git => 'https://github.com/hawkular/hawkular-client-ruby.git', :branch => 'master'
 gem 'addressable'
 
 gem 'rest-client'

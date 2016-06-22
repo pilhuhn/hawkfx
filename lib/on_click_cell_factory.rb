@@ -21,10 +21,26 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
         else
           text = "- unknown kind #{item.kind}, value = #{item.value}"
       end
+      stage = tree_view.scene.window
+      ::HawkHelper.show_raw_popup stage, text
+    end
+    cm.items.add cmi
+
+    cmi = Java::javafx::scene::control::MenuItem.new 'Show Properties'
+    cmi.on_action do
+      item = tree_view.selectionModel.selectedItem
+      case item.kind
+        when :resource
+          response = $inventory_client.get_config_data_for_resource item.resource.path
+          text = JSON.pretty_generate(response.to_h) unless response.nil?
+        else
+          text = "- unknown kind #{item.kind}, value = #{item.value}"
+      end
 
       stage = tree_view.scene.window
       ::HawkHelper.show_raw_popup stage, text
     end
+
     cm.items.add cmi
     set_context_menu cm
 

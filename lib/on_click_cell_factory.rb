@@ -65,7 +65,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
               new_metric.kind = :metric
               new_metric.value = m.name
               new_metric.metric = m
-              iv = ::HawkHelper.create_icon 'M'
+              iv = ::HawkHelper.create_icon m.type == 'AVAILABILITY' ? 'A' : 'M'
               new_metric.graphic = iv
               puts "Adding metric #{new_metric.to_s}"
               children.add new_metric # TODO add or replaceF

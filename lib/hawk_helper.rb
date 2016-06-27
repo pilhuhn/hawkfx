@@ -1,4 +1,5 @@
 require 'jrubyfx'
+require_relative 'availability_display_controller'
 require_relative 'raw_display_controller'
 
 class HawkHelper
@@ -20,6 +21,15 @@ class HawkHelper
     popup_stage = ::Java::JavafxStage::Stage.new
     raw_display = ::RawDisplayController.load_into popup_stage
     raw_display.show_text(text)
+    popup_stage.init_modality = :application
+    popup_stage.init_owner parent_stage
+    popup_stage.show
+  end
+
+  def self.show_avail_popup(parent_stage, id, time_range)
+    popup_stage = ::Java::JavafxStage::Stage.new
+    raw_display = ::AvailabilityDisplayController.load_into popup_stage
+    raw_display.show_availability(id, time_range)
     popup_stage.init_modality = :application
     popup_stage.init_owner parent_stage
     popup_stage.show

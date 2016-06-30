@@ -21,27 +21,14 @@ class AvailabilityDisplayController
       unless item.nil? || item['empty']
         ts = item['timestamp'] / 1000
         time = Time.at(ts).to_s.split(' ')[1]
-        tmp = item['value']
-        val = case tmp
-                when 'up'
-                  3
-                when 'unknown'
-                  2
-                when 'admin'
-                  1
-                when 'down'
-                  0
-                else
-                  puts 'Unknown availability ' + tmp
-                  5
-              end
-        series.data.add xy_chart_data time, val
+        value = item['value']
+        series.data.add xy_chart_data time, value
 
         # now compute time per value
         unless first
           t_diff = ts - previous
-          vals[tmp] ||= 0
-          vals[tmp] += t_diff
+          vals[value] ||= 0
+          vals[value] += t_diff
         end
         if first
           previous = ts
@@ -50,6 +37,8 @@ class AvailabilityDisplayController
 
       end
     end
+    categories = observable_array_list %w(down admin unknown up)
+    @line_chart.getYAxis.categories=categories
     @line_chart.data.setAll series
 
     vals.each{|k, v| puts "#{k} -> #{v}" }

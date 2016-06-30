@@ -17,8 +17,7 @@
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
                     <yAxis>
-                      <NumberAxis side="LEFT" tickLabelGap="5.0" tickUnit="0.0"
-                                  upperBound="5.0" />
+                      <CategoryAxis side="LEFT"  />
                     </yAxis>
                   </LineChart>
                </children>

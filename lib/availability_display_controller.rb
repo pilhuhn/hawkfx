@@ -6,6 +6,9 @@ class AvailabilityDisplayController
 
   def show_availability(id, time_range)
 
+    # Add a stylesheet for our data
+    @scene.stylesheets.add 'assets/avail_chart.css'
+
     ends = Time.now.to_i * 1000
     starts = ends - time_range
 
@@ -37,15 +40,24 @@ class AvailabilityDisplayController
 
       end
     end
+
+    # Show the line chart
     categories = observable_array_list %w(down admin unknown up)
     @line_chart.getYAxis.categories=categories
     @line_chart.data.setAll series
 
-    vals.each{|k, v| puts "#{k} -> #{v}" }
+    total = 0
+    vals.each do |k, v|
+      puts "#{k} -> #{v}"
+      total+=v
+    end
+    puts "total -> #{total}"
+    two_percent = total / 50
 
     pie_chart_d = []
     vals.each do |k, v|
-      pcd = Java::javafx.scene.chart.PieChart::Data.new k, v
+      val = v < two_percent ? two_percent : v
+      pcd = Java::javafx.scene.chart.PieChart::Data.new k, val
       pie_chart_d << pcd
     end
     o_list = observable_array_list pie_chart_d

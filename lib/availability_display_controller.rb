@@ -12,7 +12,7 @@ class AvailabilityDisplayController
     ends = Time.now.to_i * 1000
     starts = ends - time_range
 
-    data = $metric_client.avail.get_data id, ends: ends, starts: starts, order: 'ASC'
+    data = $metric_client.avail.get_data id, ends: ends, starts: starts, order: 'ASC', distinct: true
 
     series = xy_chart_series(name: id)
 
@@ -46,19 +46,32 @@ class AvailabilityDisplayController
     @line_chart.getYAxis.categories=categories
     @line_chart.data.setAll series
 
-    total = 0
-    vals.each do |k, v|
+
+    bucket_data = $metric_client.avail.get_data id, ends: ends, starts: starts, buckets: 1
+    the_vals = bucket_data[0]['durationMap']
+
+    the_vals.each do |k,v|
       puts "#{k} -> #{v}"
-      total+=v
     end
-    puts "total -> #{total}"
-    two_percent = total / 50
+
+    two_percent = time_range / 50
 
     pie_chart_d = []
-    vals.each do |k, v|
+    tmp_hash = {}
+    the_vals.each do |k, v|
       val = v < two_percent ? two_percent : v
-      pcd = Java::javafx.scene.chart.PieChart::Data.new k, val
-      pie_chart_d << pcd
+      key = k.sub(/.*text=/,'').sub(/}/,'')
+      tmp_hash.store key,val
+    end
+
+    categories.each do |k,v|
+      if tmp_hash.key? k
+        val = tmp_hash.fetch k
+      else
+        val = 0
+      end
+        pcd = Java::javafx.scene.chart.PieChart::Data.new k, val
+        pie_chart_d << pcd
     end
     o_list = observable_array_list pie_chart_d
     @pie_chart.data= o_list

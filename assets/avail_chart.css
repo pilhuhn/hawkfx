@@ -4,10 +4,10 @@
 */
 
 /* Colors of JavaFX pie chart slices. */
-.data0.chart-pie { -fx-pie-color: green; }
-.data1.chart-pie { -fx-pie-color: grey; }
-.data2.chart-pie { -fx-pie-color: blue; }
-.data3.chart-pie { -fx-pie-color: red; }
+.data0.chart-pie { -fx-pie-color: red; }
+.data1.chart-pie { -fx-pie-color: blue; }
+.data2.chart-pie { -fx-pie-color: grey; }
+.data3.chart-pie { -fx-pie-color: green; }
 
 .chart-series-line {
     -fx-stroke-width: 2px;

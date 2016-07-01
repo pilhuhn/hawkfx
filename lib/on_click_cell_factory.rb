@@ -119,7 +119,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
           # Add the metric to the charting component
           if the_tree_item.metric.type == 'AVAILABILITY'
             stage = tree_view.scene.window
-            ::HawkHelper.show_avail_popup stage, the_tree_item.metric.id, 8*86400*1000 # 8h TODO
+            ::HawkHelper.show_avail_popup stage, the_tree_item.metric.id
           else
             chart_control = tree_view.scene.lookup('#myChartView')
             chart_control.add_item the_tree_item.metric

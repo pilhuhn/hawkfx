@@ -26,10 +26,10 @@ class HawkHelper
     popup_stage.show
   end
 
-  def self.show_avail_popup(parent_stage, id, time_range)
+  def self.show_avail_popup(parent_stage, id)
     popup_stage = ::Java::JavafxStage::Stage.new
     raw_display = ::AvailabilityDisplayController.load_into popup_stage
-    raw_display.show_availability(id, time_range)
+    raw_display.show_availability(id)
     popup_stage.init_modality = :application
     popup_stage.init_owner parent_stage
     popup_stage.show

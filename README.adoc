@@ -4,13 +4,26 @@ http://hawkular.org/[Hawkular] is a set of components for Monitoring.
 This explorer connects to a Hawkular server and allows to browse trough
 inventory and view entities, graph metrics.
 
-
+.Main screen with availability pop-up
 ifndef::env-github[]
 image::docs/screenshot.png[]
 endif::[]
 ifdef::env-github[]
 image::https://github.com/pilhuhn/hawkfx/blob/master/docs/screenshot.png[]
 endif::[]
+
+Other functions include listing of all metrics on a system, listing of Events/Alerts, injection of Events,
+injection of metric values and a few more things.
+
+
+.Events list
+ifndef::env-github[]
+image::docs/event_list.png[]
+endif::[]
+ifdef::env-github[]
+image::https://github.com/pilhuhn/hawkfx/blob/master/docs/event_list.png[]
+endif::[]
+
 
 == Running
 

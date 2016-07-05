@@ -60,7 +60,17 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
               puts "Adding metric #{new_metric.to_s}"
               children.add new_metric # TODO add or replaceF
               the_tree_item.expanded=true
+            end
 
+            operations = $inventory_client.list_operation_definitions_for_resource the_tree_item.resource.path
+            operations.each do |op|
+              new_operation = build(::HTreeItem)
+              new_operation.kind = :operation
+              new_operation.value = op
+              iv = ::HawkHelper.create_icon 'O'
+              new_operation.graphic = iv
+              children.add new_operation
+              the_tree_item.expanded=true
             end
           end
 
@@ -98,6 +108,10 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
             chart_control = tree_view.scene.lookup('#myChartView')
             chart_control.add_item the_tree_item.metric
           end
+        when :operation
+          text = the_tree_item.value
+          tree_view.scene.lookup('#FXMLtextArea').text = text
+
       end
     end
   end

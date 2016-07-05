@@ -8,40 +8,14 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
 
     # Create a context menu to show the raw object
     cm = Java::javafx::scene::control::ContextMenu.new
-    cmi = Java::javafx::scene::control::MenuItem.new 'Show Raw'
-    cmi.on_action do
-      item = tree_view.selectionModel.selectedItem
-      case item.kind
-        when :feed
-          text = item.value
-        when :resource
-          text = JSON.pretty_generate(item.resource.to_h)
-        when :metric
-          text = JSON.pretty_generate(item.metric.to_h)
-        else
-          text = "- unknown kind #{item.kind}, value = #{item.value}"
-      end
-      stage = tree_view.scene.window
-      ::HawkHelper.show_raw_popup stage, text
-    end
+    cmi = show_raw_menu_item
     cm.items.add cmi
 
-    cmi = Java::javafx::scene::control::MenuItem.new 'Show Properties'
-    cmi.on_action do
-      item = tree_view.selectionModel.selectedItem
-      case item.kind
-        when :resource
-          response = $inventory_client.get_config_data_for_resource item.resource.path
-          text = JSON.pretty_generate(response.to_h) unless response.nil?
-        else
-          text = "- unknown kind #{item.kind}, value = #{item.value}"
-      end
-
-      stage = tree_view.scene.window
-      ::HawkHelper.show_raw_popup stage, text
-    end
-
+    # Context menu to show properties.
+    # TODO: do not show for non-resources
+    cmi = create_properties_menu_item
     cm.items.add cmi
+
     set_context_menu cm
 
 
@@ -128,6 +102,43 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
     end
   end
 
+  def show_raw_menu_item
+    cmi = Java::javafx::scene::control::MenuItem.new 'Show Raw'
+    cmi.on_action do
+      item = tree_view.selectionModel.selectedItem
+      case item.kind
+        when :feed
+          text = item.value
+        when :resource
+          text = JSON.pretty_generate(item.resource.to_h)
+        when :metric
+          text = JSON.pretty_generate(item.metric.to_h)
+        else
+          text = "- unknown kind #{item.kind}, value = #{item.value}"
+      end
+      stage = tree_view.scene.window
+      ::HawkHelper.show_raw_popup stage, text
+    end
+    cmi
+  end
+
+  def create_properties_menu_item
+    cmi = Java::javafx::scene::control::MenuItem.new 'Show Properties'
+    cmi.on_action do
+      item = tree_view.selectionModel.selectedItem
+      case item.kind
+        when :resource
+          response = $inventory_client.get_config_data_for_resource item.resource.path
+          text = JSON.pretty_generate(response.to_h) unless response.nil?
+        else
+          text = "- unknown kind #{item.kind}, value = #{item.value}"
+      end
+
+      stage = tree_view.scene.window
+      ::HawkHelper.show_raw_popup stage, text
+    end
+    cmi
+  end
 
 
   def get_string

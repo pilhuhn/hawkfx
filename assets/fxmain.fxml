@@ -17,13 +17,15 @@
                         <Menu mnemonicParsing="false" text="File">
                            <items>
                               <MenuItem mnemonicParsing="false" onAction="#show_alerts"
-                                        text="Alerts" fx:id="FXMLalertMenu" />
+                                        text="Events" fx:id="FXMLalertMenu" />
                               <MenuItem mnemonicParsing="false" onAction="#reload_feeds"
                                         text="Reload feeds" fx:id="FXMLreloadFeeds"/>
                               <MenuItem mnemonicParsing="false" onAction="#list_metrics"
                                         text="List Metrics"/>
                               <MenuItem mnemonicParsing="false" onAction="#show_insert_metrics"
                                         text="Insert Metrics"/>
+                              <MenuItem mnemonicParsing="false" onAction="#show_insert_events"
+                                        text="Insert Events"/>
                               <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
                            </items>
                         </Menu>

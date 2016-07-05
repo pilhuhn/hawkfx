@@ -5,6 +5,7 @@ require 'hawkular/hawkular_client'
 require_relative 'hawk_helper'
 require_relative 'h_tree_item'
 require_relative 'alert_controller'
+require_relative 'event_insert_controller'
 require_relative 'insert_metrics_controller'
 require_relative 'on_click_cell_factory'
 require_relative 'metrics_only_cell_factory'
@@ -109,7 +110,15 @@ class HawkMainController
     popup_stage.init_modality=:none
     popup_stage.init_owner(@FXMLtreeView.scene.window)
     popup_stage.show
+  end
 
+  def show_insert_events
+    popup_stage = Stage.new
+    ::EventInsertController.load_into popup_stage
+    popup_stage.title='Insert Events'
+    popup_stage.init_modality=:none
+    popup_stage.init_owner(@FXMLtreeView.scene.window)
+    popup_stage.show
   end
 
   def reload_feeds

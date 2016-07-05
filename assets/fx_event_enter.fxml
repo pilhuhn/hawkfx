@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+
+<VBox prefHeight="456.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+            <GridPane prefHeight="456.0" prefWidth="600.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.0" minWidth="10.0" prefWidth="126.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="414.0" minWidth="10.0" prefWidth="413.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="284.0" minWidth="10.0" prefWidth="72.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="63.0" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="80.0" minHeight="3.0" prefHeight="51.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="110.0" minHeight="10.0" prefHeight="110.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="97.0" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="85.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="ID">
+                     <GridPane.margin>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+                     </padding>
+                  </Label>
+                  <Label text="Resource" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+                     </padding>
+                  </Label>
+                  <Label text="Text" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="FXMLAlertId" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+                     </padding>
+                  </TextField>
+                  <TextField fx:id="FXMLAlertResource" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+                     </padding>
+                  </TextField>
+                  <TextArea fx:id="FXMLText" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+                     </padding>
+                  </TextArea>
+            <TextArea fx:id="FXMLContext" prefHeight="200.0" prefWidth="200.0" promptText="{&quot;message&quot;:&quot;This is a mock deploy event&quot;}" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="2.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </TextArea>
+            <Label text="Context" GridPane.rowIndex="5">
+               <padding>
+                  <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Category" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="FXMLCategory" promptText="Hawkular Deployment" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+               </padding>
+            </TextField>
+            <TextArea fx:id="FXMLTags" prefHeight="200.0" prefWidth="200.0" promptText="{&quot;tag&quot;:&quot;value&quot;}" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+               </padding>
+            </TextArea>
+            <Label text="Tags" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+               </padding>
+            </Label>
+            <Button disable="true" mnemonicParsing="false" onAction="#add_tag" text="+" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Button mnemonicParsing="false" onAction="#submit" text="Submit" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+               </children>
+            </GridPane>
+   </children>
+</VBox>

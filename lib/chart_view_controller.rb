@@ -45,7 +45,14 @@ class ChartViewController < Java::javafx::scene::layout::VBox
     @chart_items.each do |metric|
       series = xy_chart_series(name: metric.name)
       type = metric.type
-      id = metric.id
+
+      # if there is a metric-id property, use that as the ID, otherwise, use the instance ID itself
+      id = "#{metric.properties['metric-id']}"
+      if id.to_s == ''
+         puts "Assuming the metric ID is the same as the inventory ID"
+         id = metric.id
+      end
+      puts "Using ID #{id} for metric #{metric.name}"
 
       case type
         when 'GAUGE'

@@ -52,7 +52,7 @@ class ChartViewController < Java::javafx::scene::layout::VBox
          puts "Assuming the metric ID is the same as the inventory ID"
          id = metric.id
       end
-      puts "Using ID #{id} for metric #{metric.name}"
+      puts "Using ID [#{id}] for metric [#{metric.name}]"
 
       case type
         when 'GAUGE'

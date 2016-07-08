@@ -57,12 +57,16 @@ class ChartViewController < Java::javafx::scene::layout::VBox
       case type
         when 'GAUGE'
           data = $metric_client.gauges.get_data id, buckets: 120, ends: ends, starts: starts
+          hMetricDef = $metric_client.gauges.get id
         when 'COUNTER'
           data = $metric_client.counters.get_data id, buckets: 120, ends: ends, starts: starts
+          hMetricDef = $metric_client.counters.get id
         else
           puts "Data Type #{type} is not known"
           return
       end
+
+      puts "Metric [#{id}] tags: #{hMetricDef.tags}"
 
       data.each do |item|
         unless item.nil? || item['empty']

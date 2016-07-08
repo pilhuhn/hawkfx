@@ -75,7 +75,8 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
           end
 
           unless resources.empty?
-            resources.each do |res|
+            ascend_sort = ->(r1, r2) { r1.name <=> r2.name }
+            resources.sort(&ascend_sort).each do |res|
               new_item = build(::HTreeItem) #res  # name  #
               new_item.path = res.path
               new_item.kind = :resource

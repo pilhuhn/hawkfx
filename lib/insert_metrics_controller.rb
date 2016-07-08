@@ -12,13 +12,18 @@ class InsertMetricsController
     value = @value_field.text
     type_sym = tg.selectedToggle.id.to_sym
 
+    unless @tag_key_field.text.empty?
+      tag = {@tag_key_field.text => @tag_value_field.text}
+    end
+
     val = [
         { :id => name,
           :data => [
             {:value => value,
              :timestamp => Time.now().to_i*1000
             }
-          ]
+          ],
+          :tags => tag
         }
     ]
 

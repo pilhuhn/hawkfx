@@ -75,7 +75,8 @@ class HawkMainController
     tree_root = tree_item('Metrics')
     metrics = gauges.concat counters
 
-    metrics.each do |metric_def|
+    ascend_sort = ->(m1, m2) { m1.id <=> m2.id }
+    metrics.sort(&ascend_sort).each do |metric_def|
       iv = ::HawkHelper.create_icon 'M'
 
       new_metric = build(::HTreeItem)

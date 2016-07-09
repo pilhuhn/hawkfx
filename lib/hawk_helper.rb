@@ -44,7 +44,7 @@ class HawkHelper
       when 'COUNTERS'
         $metric_client.counters
       when 'AVAILABILITY'
-        $metric_client.availabilities
+        $metric_client.avail
       else
         raise "Unknown type #{inv_metric.type} for #{inv_metric.to_s}"
     end

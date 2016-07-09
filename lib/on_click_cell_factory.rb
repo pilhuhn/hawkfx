@@ -12,17 +12,14 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
     cm.items.add cmi
 
     # Context menu to show properties.
-    # TODO: do not show for non-resources
     cmi = create_properties_menu_item
     cm.items.add cmi
 
     # Context menu to add tags on metrics
-    # TODO: only show for metrics
     cmi = create_metric_tag_menu_item
     cm.items.add cmi
 
     # Context menu to show tags on metrics
-    # TODO: only show for metrics
     cmi = show_metric_tag_menu_item
     cm.items.add cmi
 
@@ -39,6 +36,34 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       children = the_tree_item.children
 
       puts "Selected #{the_tree_item.value} kind: #{the_tree_item.kind}"
+
+      #Select / de-select menu-items
+      button = event.button
+      if button.to_s == 'SECONDARY'
+        cm.items.each do |menu_item|
+          puts "CM id: #{menu_item.id.to_s}"
+          puts "CM text: #{menu_item.text.to_s}"
+          if menu_item.text.to_s.include? 'Tag'
+            if the_tree_item.kind == :resource ||
+               the_tree_item.kind == :feed ||
+               the_tree_item.kind == :operation
+              menu_item.disable=true
+            else
+              menu_item.disable=false
+            end
+          elsif menu_item.text.to_s.include? 'Prop'
+            if the_tree_item.kind == :resource
+              menu_item.disable=false
+            else
+              menu_item.disable=true
+            end
+          end
+        end
+        # right click was consumed so we are done.
+        break
+      end
+
+
 
       case the_tree_item.kind
         when :feed, :resource
@@ -195,6 +220,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
     cmi
   end
 
+  # Callback method from create_metric_tag_menu_item
   def add_tag_callback(kv_pair, metric_def, endpoint)
     return if kv_pair.nil?
 

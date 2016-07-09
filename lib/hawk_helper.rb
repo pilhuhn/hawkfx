@@ -17,7 +17,7 @@ class HawkHelper
     iv
   end
 
-  def self.show_raw_popup(parent_stage, text)
+  def self.show_raw_popup(parent_stage, text) # TODO allow to set title
     popup_stage = ::Java::JavafxStage::Stage.new
     raw_display = ::RawDisplayController.load_into popup_stage
     raw_display.show_text(text)
@@ -34,4 +34,19 @@ class HawkHelper
     popup_stage.init_owner parent_stage
     popup_stage.show
   end
+
+
+  def self.metric_endpoint(inv_metric)
+    case inv_metric.type
+      when 'GAUGE'
+        $metric_client.gauges
+      when 'COUNTERS'
+        $metric_client.counters
+      when 'AVAILABILITY'
+        $metric_client.availabilities
+      else
+        raise "Unknown type #{inv_metric.type} for #{inv_metric.to_s}"
+    end
+  end
+
 end

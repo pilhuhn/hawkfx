@@ -49,22 +49,14 @@ class ChartViewController < Java::javafx::scene::layout::VBox
       # if there is a metric-id property, use that as the ID, otherwise, use the instance ID itself
       id = "#{metric.properties['metric-id']}"
       if id.to_s == ''
-         puts "Assuming the metric ID is the same as the inventory ID"
+         puts 'Assuming the metric ID is the same as the inventory ID'
          id = metric.id
       end
       puts "Using ID [#{id}] for metric [#{metric.name}]"
 
-      case type
-        when 'GAUGE'
-          data = $metric_client.gauges.get_data id, buckets: 120, ends: ends, starts: starts
-          hMetricDef = $metric_client.gauges.get id
-        when 'COUNTER'
-          data = $metric_client.counters.get_data id, buckets: 120, ends: ends, starts: starts
-          hMetricDef = $metric_client.counters.get id
-        else
-          puts "Data Type #{type} is not known"
-          return
-      end
+      ep = ::HawkHelper.metric_endpoint metric
+      data = ep.get_data id, buckets: 120, ends: ends, starts: starts
+      hMetricDef = ep.get id
 
       puts "Metric [#{id}] tags: #{hMetricDef.tags}"
 

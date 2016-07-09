@@ -1,5 +1,6 @@
 require 'jrubyfx'
 require_relative 'availability_display_controller'
+require_relative 'key_value_editor'
 require_relative 'raw_display_controller'
 
 class HawkHelper
@@ -48,5 +49,18 @@ class HawkHelper
         raise "Unknown type #{inv_metric.type} for #{inv_metric.to_s}"
     end
   end
+
+
+  def self.show_kv_editor(parent_stage, caller, callback, *other_stuff)
+    popup_stage = ::Java::JavafxStage::Stage.new
+    kv_editor = ::KeyValueEditor.load_into popup_stage
+    kv_editor.setup caller, callback, *other_stuff
+    popup_stage.init_modality = :none
+    popup_stage.init_owner parent_stage
+    popup_stage.show
+
+    kv_editor
+  end
+
 
 end

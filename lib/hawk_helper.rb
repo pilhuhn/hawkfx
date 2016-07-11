@@ -41,7 +41,7 @@ class HawkHelper
     case inv_metric.type
       when 'GAUGE'
         $metric_client.gauges
-      when 'COUNTERS'
+      when 'COUNTER'
         $metric_client.counters
       when 'AVAILABILITY'
         $metric_client.avail

@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root fx:id="FXMLTimePicker" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="314.0" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="FXMLTimePicker" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="396.0" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label text="Show last">
          <HBox.margin>
@@ -16,37 +16,37 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </Label>
-      <ToggleButton mnemonicParsing="false" onAction="#selectTime" text="1h">
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#selectTime" prefHeight="27.0" prefWidth="50.0" text="1h" textOverrun="CLIP">
          <HBox.margin>
-            <Insets bottom="5.0" left="5.0" top="5.0" />
+            <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
          <toggleGroup>
             <ToggleGroup fx:id="pickerGroup" />
          </toggleGroup>
       </ToggleButton>
-      <ToggleButton mnemonicParsing="false" onAction="#selectTime" text="8h" toggleGroup="$pickerGroup">
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#selectTime" prefHeight="27.0" prefWidth="50.0" text="8h" textOverrun="CLIP" toggleGroup="$pickerGroup">
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
       </ToggleButton>
-      <ToggleButton mnemonicParsing="false" onAction="#selectTime" selected="true" text="12h" toggleGroup="$pickerGroup">
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#selectTime" prefHeight="27.0" prefWidth="50.0" selected="true" text="12h" textOverrun="CLIP" toggleGroup="$pickerGroup">
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
       </ToggleButton>
-      <ToggleButton mnemonicParsing="false" onAction="#selectTime" text="1d" toggleGroup="$pickerGroup">
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#selectTime" prefHeight="27.0" prefWidth="50.0" text="1d" textOverrun="CLIP" toggleGroup="$pickerGroup">
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
       </ToggleButton>
-      <ToggleButton mnemonicParsing="false" onAction="#selectTime" text="7d" toggleGroup="$pickerGroup">
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#selectTime" prefHeight="27.0" prefWidth="50.0" text="7d" textOverrun="CLIP" toggleGroup="$pickerGroup">
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
       </ToggleButton>
-      <ToggleButton mnemonicParsing="false" onAction="#selectTime" text="1mo" toggleGroup="$pickerGroup">
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#selectTime" prefHeight="27.0" prefWidth="50.0" text="1mo" textOverrun="CLIP" toggleGroup="$pickerGroup">
          <HBox.margin>
-            <Insets bottom="5.0" right="5.0" top="5.0" />
+            <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
       </ToggleButton>
    </children>

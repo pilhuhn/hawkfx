@@ -145,7 +145,8 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
               puts "Assuming the avail ID is the same as the inventory ID"
               id = the_tree_item.metric.id
             end
-            puts "Using ID [#{id}] for metric [#{the_tree_item.metric.name}]"
+            puts "Using ID [#{id}] for avail [#{the_tree_item.metric.name}]"
+            puts "Avail [#{id}] tags: #{::HawkHelper.metric_endpoint(the_tree_item.metric).get(id).tags}"
 
             ::HawkHelper.show_avail_popup stage, id
           else

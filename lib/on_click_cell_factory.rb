@@ -98,10 +98,11 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
             end
 
             operations = $inventory_client.list_operation_definitions_for_resource the_tree_item.resource.path
-            operations.each do |op|
+            operations.each do |name,op|
               new_operation = build(::HTreeItem)
               new_operation.kind = :operation
-              new_operation.value = op
+              new_operation.value = name
+              new_operation.operation = op
               iv = ::HawkHelper.create_icon 'O'
               new_operation.graphic = iv
               children.add new_operation
@@ -171,6 +172,8 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
           text = JSON.pretty_generate(item.resource.to_h)
         when :metric
           text = JSON.pretty_generate(item.metric.to_h)
+        when :operation
+          text = JSON.pretty_generate(item.operation.to_h)
         else
           text = "- unknown kind #{item.kind}, value = #{item.value}"
       end

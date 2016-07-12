@@ -27,7 +27,7 @@ endif::[]
 
 == Running
 
-The explorer requires JRuby in version 9+
+The explorer requires JRuby in version 9+ and Java8
 
 If you are using `rvm` you can select it via
 

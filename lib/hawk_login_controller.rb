@@ -19,13 +19,13 @@ require_relative 'hawk_main_controller'
       hash[:credentials] = creds
       hash[:options] = { :tenant => @FXMLTenantField.text}
 
-      $hawkular = ::Hawkular::Client.new(hash)
-
-      $inventory_client = $hawkular.inventory
-      $metric_client = $hawkular.metrics
-      $alerts_client = $hawkular.alerts
-
       begin
+        $hawkular = ::Hawkular::Client.new(hash)
+
+        $inventory_client = $hawkular.inventory
+        $metric_client = $hawkular.metrics
+        $alerts_client = $hawkular.alerts
+
         # @tenant = $inventory_client.get_tenant
         @FXMLtextArea.text = "Tenant: #{@tenant}"
 

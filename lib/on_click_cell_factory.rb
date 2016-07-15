@@ -69,7 +69,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
         when :feed, :resource
 
           # Show info in the bottom text field
-          text = the_tree_item.kind != :feed ? the_tree_item.resource.path : the_tree_item.value
+          text = the_tree_item.kind != :feed ? the_tree_item.raw_item.path : the_tree_item.value
           tree_view.scene.lookup('#FXMLtextArea').text = text
 
           break if the_tree_item.is_done
@@ -79,17 +79,17 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
           if the_tree_item.kind == :feed
             resources = $inventory_client.list_resources_for_feed text
           else
-            resources = $inventory_client.list_child_resources the_tree_item.resource.path
+            resources = $inventory_client.list_child_resources the_tree_item.raw_item.path
           end
 
           if the_tree_item.kind == :resource
             the_tree_item.is_done = true
-            metrics = $inventory_client.list_metrics_for_resource the_tree_item.resource.path
+            metrics = $inventory_client.list_metrics_for_resource the_tree_item.raw_item.path
             metrics.each do |m|
               new_metric = build(::HTreeItem)
               new_metric.kind = :metric
               new_metric.value = m.name
-              new_metric.metric = m
+              new_metric.raw_item = m
               iv = ::HawkHelper.create_icon m.type == 'AVAILABILITY' ? 'A' : 'M'
               new_metric.graphic = iv
               puts "Adding metric #{new_metric.to_s}"
@@ -97,12 +97,12 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
               the_tree_item.expanded=true
             end
 
-            operations = $inventory_client.list_operation_definitions_for_resource the_tree_item.resource.path
+            operations = $inventory_client.list_operation_definitions_for_resource the_tree_item.raw_item.path
             operations.each do |name,op|
               new_operation = build(::HTreeItem)
               new_operation.kind = :operation
               new_operation.value = name
-              new_operation.operation = op
+              new_operation.raw_item = op
               iv = ::HawkHelper.create_icon 'O'
               new_operation.graphic = iv
               children.add new_operation
@@ -116,7 +116,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
               new_item = build(::HTreeItem) #res  # name  #
               new_item.path = res.path
               new_item.kind = :resource
-              new_item.resource = res
+              new_item.raw_item = res
               # (res
               # .name) ## works on the source item
               name = res.name.dup
@@ -134,24 +134,24 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
           end
         when :metric
           # Write path in lower text field
-          text = the_tree_item.metric.path
+          text = the_tree_item.raw_item.path
           tree_view.scene.lookup('#FXMLtextArea').text = text
 
           # Add the metric to the charting component
-          if the_tree_item.metric.type == 'AVAILABILITY'
+          if the_tree_item.raw_item.type == 'AVAILABILITY'
             stage = tree_view.scene.window
 
-            id = "#{the_tree_item.metric.properties['metric-id']}"
+            id = "#{the_tree_item.raw_item.properties['metric-id']}"
             if id.to_s == ''
               puts "Assuming the avail ID is the same as the inventory ID"
-              id = the_tree_item.metric.id
+              id = the_tree_item.raw_item.id
             end
-            puts "Using ID [#{id}] for metric [#{the_tree_item.metric.name}]"
+            puts "Using ID [#{id}] for metric [#{the_tree_item.raw_item.name}]"
 
             ::HawkHelper.show_avail_popup stage, id
           else
             chart_control = tree_view.scene.lookup('#myChartView')
-            chart_control.add_item the_tree_item.metric
+            chart_control.add_item the_tree_item.raw_item
           end
         when :operation
           text = the_tree_item.value
@@ -168,12 +168,8 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       case item.kind
         when :feed
           text = item.value
-        when :resource
-          text = JSON.pretty_generate(item.resource.to_h)
-        when :metric
-          text = JSON.pretty_generate(item.metric.to_h)
-        when :operation
-          text = JSON.pretty_generate(item.operation.to_h)
+        when :resource, :metric, :operation
+          text = JSON.pretty_generate(item.raw_item.to_h)
         else
           text = "- unknown kind #{item.kind}, value = #{item.value}"
       end
@@ -189,7 +185,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       item = tree_view.selectionModel.selectedItem
       case item.kind
         when :resource
-          response = $inventory_client.get_config_data_for_resource item.resource.path
+          response = $inventory_client.get_config_data_for_resource item.raw_item.raw_item
           text = JSON.pretty_generate(response.to_h) unless response.nil?
         else
           text = "- unknown kind #{item.kind}, value = #{item.value}"
@@ -207,7 +203,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       item = tree_view.selectionModel.selectedItem
       if item.kind == :metric
 
-        inv_metric = item.metric # metric def in inventory.
+        inv_metric = item.raw_item # metric def in inventory.
 
         #get md from hawkular-metrics now
         ep = ::HawkHelper.metric_endpoint inv_metric
@@ -241,7 +237,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       item = tree_view.selectionModel.selectedItem
       if item.kind == :metric
 
-        inv_metric = item.metric # metric def in inventory.
+        inv_metric = item.raw_item # metric def in inventory.
 
         #get md from hawkular-metrics now
         ep = ::HawkHelper.metric_endpoint inv_metric

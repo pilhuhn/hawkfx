@@ -15,7 +15,7 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
       if item.respond_to? 'metric'
 
         item = tree_view.selectionModel.selectedItem
-        text = JSON.pretty_generate(item.metric.to_h)
+        text = JSON.pretty_generate(item.raw_item.to_h)
 
         stage = tree_view.scene.window
         ::HawkHelper.show_raw_popup stage, text
@@ -37,7 +37,7 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
       break unless the_tree_item.respond_to? 'metric'
 
       # Write path in lower text field
-      metric_def = the_tree_item.metric
+      metric_def = the_tree_item.raw_item
       text = metric_def.id
       tree_view.scene.lookup('#FXMLtextArea').text = text
 

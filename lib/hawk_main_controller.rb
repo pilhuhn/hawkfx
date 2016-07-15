@@ -94,7 +94,7 @@ class HawkMainController
       }
       m = ::Hawkular::Inventory::Metric.new m_hash
 
-      new_metric.metric = m
+      new_metric.raw_item = m
 
       tree_root.children.add new_metric
     end

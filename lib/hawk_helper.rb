@@ -2,6 +2,7 @@ require 'jrubyfx'
 require_relative 'availability_display_controller'
 require_relative 'key_value_editor'
 require_relative 'raw_display_controller'
+require_relative 'run_operation_controller'
 
 class HawkHelper
 
@@ -62,5 +63,14 @@ class HawkHelper
     kv_editor
   end
 
+  def self.run_ops_popup(parent_stage, operation, parent_path)
+    popup_stage = ::Java::JavafxStage::Stage.new
+    ops_contol = ::RunOperationController.load_into popup_stage
+    ops_contol.setup operation, parent_path
+    popup_stage.init_modality = :none
+    popup_stage.init_owner parent_stage
+    popup_stage.show
 
+    ops_contol
+  end
 end

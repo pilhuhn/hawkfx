@@ -15,7 +15,7 @@ require_relative 'hawk_main_controller'
                :password => @FXMLPasswordField.text}
 
       hash = {}
-      hash[:entrypoint] = URI(@FXMLUrlField.text)
+      hash[:entrypoint] = URI(@FXMLUrlField.text).to_s # TODO see https://github.com/hawkular/hawkular-client-ruby/issues/116
       hash[:credentials] = creds
       hash[:options] = { :tenant => @FXMLTenantField.text}
 

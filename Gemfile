@@ -1,6 +1,6 @@
 
 raise 'This needs JRuby to run' unless RUBY_PLATFORM == 'java'
-raise 'This needs JRuby version 9' unless JRUBY_VERSION.to_i >= 9
+raise 'This needs JRuby version 9.1' unless JRUBY_VERSION >= "9.1.2"
 
 source 'https://rubygems.org'
 

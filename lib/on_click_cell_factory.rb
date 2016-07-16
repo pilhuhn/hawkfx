@@ -23,6 +23,10 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
     cmi = show_metric_tag_menu_item
     cm.items.add cmi
 
+    # Context menu to run operations
+    cmi = run_operation_menu_item
+    cm.items.add cmi
+
     set_context_menu cm
 
 
@@ -53,6 +57,12 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
             end
           elsif menu_item.text.to_s.include? 'Prop'
             if the_tree_item.kind == :resource
+              menu_item.disable=false
+            else
+              menu_item.disable=true
+            end
+          elsif menu_item.text.to_s.include? 'Run'
+            if the_tree_item.kind == :operation
               menu_item.disable=false
             else
               menu_item.disable=true
@@ -175,6 +185,16 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       end
       stage = tree_view.scene.window
       ::HawkHelper.show_raw_popup stage, text
+    end
+    cmi
+  end
+
+  def run_operation_menu_item
+    cmi = Java::javafx::scene::control::MenuItem.new 'Run...'
+    cmi.on_action do
+      item = tree_view.selectionModel.selectedItem
+      stage = tree_view.scene.window
+      ::HawkHelper.run_ops_popup stage, item.raw_item, item.parent.raw_item.path
     end
     cmi
   end

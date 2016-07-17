@@ -11,9 +11,11 @@ class KeyValue
     self.value = value
   end
 
+  # rubocop: disable Style/RedundantReturn
   def to_kv
     return key, value
   end
+  # rubocop: enable Style/RedundantReturn
 end
 
 KeyValue.become_java!

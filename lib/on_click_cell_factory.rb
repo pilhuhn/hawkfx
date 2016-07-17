@@ -8,6 +8,152 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
     super
 
     # Create a context menu to show the raw object
+    cm = setup_context_menu
+
+    # Left+right-click action
+    set_on_mouse_clicked do |event|
+      puts "Got #{event}"
+      source = event.source
+
+      tree_view = source.treeView
+      the_tree_item = tree_view.selectionModel.selectedItem
+      children = the_tree_item.children
+
+      puts "Selected #{the_tree_item.value} kind: #{the_tree_item.kind}"
+
+      # Select / de-select menu-items
+      button = event.button
+      if button.to_s == 'SECONDARY'
+        enable_disable_conext_menu_items(cm, the_tree_item)
+        # right click was consumed so we are done.
+        break
+      end
+
+      case the_tree_item.kind
+      when :feed, :resource
+
+        # Show info in the bottom text field
+        text = the_tree_item.kind != :feed ? the_tree_item.raw_item.path : the_tree_item.value
+        set_result_text(tree_view, text)
+
+        break if the_tree_item.is_done
+        the_tree_item.is_done = true
+
+        if the_tree_item.kind == :feed
+          resources = Hawk.inventory.list_resources_for_feed source.item
+        else
+          resources = Hawk.inventory.list_child_resources the_tree_item.raw_item.path
+        end
+
+        if the_tree_item.kind == :resource
+          the_tree_item.is_done = true
+          add_metrics(children, the_tree_item)
+          add_operations(children, the_tree_item)
+        end
+
+        add_child_resources(children, resources, the_tree_item) unless resources.empty?
+      when :metric
+        # Write path in lower text field
+        text = the_tree_item.raw_item.path
+        set_result_text(tree_view, text)
+
+        # Add the metric to the charting component
+        if the_tree_item.raw_item.type == 'AVAILABILITY'
+          show_avail_popup(the_tree_item, tree_view)
+        else
+          chart_control = tree_view.scene.lookup('#myChartView')
+          chart_control.add_item the_tree_item.raw_item
+        end
+      when :operation
+        text = the_tree_item.value
+        set_result_text(tree_view, text)
+      end
+    end
+  end
+
+  def set_result_text(tree_view, text)
+    tree_view.scene.lookup('#FXMLtextArea').text = text
+  end
+
+  def add_child_resources(children, resources, the_tree_item)
+    ascend_sort = ->(r1, r2) { r1.name <=> r2.name }
+    resources.sort(&ascend_sort).each do |res|
+      new_item = build(::HTreeItem)
+      new_item.path = res.path
+      new_item.kind = :resource
+      new_item.raw_item = res
+      # (res
+      # .name) ## works on the source item
+      name = res.name.dup
+      name = name.start_with?(res.feed) ? name.sub(res.feed, '') : name
+      new_item.value = name
+
+      iv = ::HawkHelper.create_icon 'R'
+      new_item.graphic = iv
+
+      puts "Adding resource #{new_item}"
+      children.add new_item
+      the_tree_item.expanded = true
+    end
+  end
+
+  def show_avail_popup(the_tree_item, tree_view)
+    stage = tree_view.scene.window
+
+    id = "#{the_tree_item.raw_item.properties['metric-id']}"
+    if id.to_s == ''
+      puts 'Assuming the avail ID is the same as the inventory ID'
+      id = the_tree_item.raw_item.id
+    end
+    puts "Using ID [#{id}] for metric [#{the_tree_item.raw_item.name}]"
+
+    ::HawkHelper.show_avail_popup stage, id
+  end
+
+  def add_metrics(children, the_tree_item)
+    metrics = Hawk.inventory.list_metrics_for_resource the_tree_item.raw_item.path
+    metrics.each do |m|
+      new_metric = build(::HTreeItem)
+      new_metric.kind = :metric
+      new_metric.value = m.name
+      new_metric.raw_item = m
+      iv = ::HawkHelper.create_icon m.type == 'AVAILABILITY' ? 'A' : 'M'
+      new_metric.graphic = iv
+      puts "Adding metric #{new_metric}"
+      children.add new_metric
+      the_tree_item.expanded = true
+    end
+  end
+
+  def add_operations(children, the_tree_item)
+    operations = Hawk.inventory.list_operation_definitions_for_resource the_tree_item.raw_item.path
+    operations.each do |name, op|
+      new_operation = build(::HTreeItem)
+      new_operation.kind = :operation
+      new_operation.value = name
+      new_operation.raw_item = op
+      iv = ::HawkHelper.create_icon 'O'
+      new_operation.graphic = iv
+      children.add new_operation
+      the_tree_item.expanded = true
+    end
+  end
+
+  def enable_disable_conext_menu_items(cm, the_tree_item)
+    cm.items.each do |menu_item|
+      item_name = menu_item.text.to_s
+      kind = the_tree_item.kind
+      if item_name.include? 'Tag'
+        menu_item.disable = ([:resource, :feed, :operation].include?(kind))
+      elsif item_name.include? 'Prop'
+        menu_item.disable = !kind == :resource
+      elsif item_name.include? 'Run'
+        menu_item.disable = !kind == :operation
+      end
+    end
+  end
+
+  def setup_context_menu
     cm = Java::javafx::scene::control::ContextMenu.new
     cmi = show_raw_menu_item
     cm.items.add cmi
@@ -29,141 +175,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
     cm.items.add cmi
 
     set_context_menu cm
-
-    # Left-click action
-    set_on_mouse_clicked do |event|
-      puts "Got #{event}"
-      source = event.source
-
-      tree_view = source.treeView
-      the_tree_item = tree_view.selectionModel.selectedItem
-      children = the_tree_item.children
-
-      puts "Selected #{the_tree_item.value} kind: #{the_tree_item.kind}"
-
-      # Select / de-select menu-items
-      button = event.button
-      if button.to_s == 'SECONDARY'
-        cm.items.each do |menu_item|
-          if menu_item.text.to_s.include? 'Tag'
-            if the_tree_item.kind == :resource ||
-               the_tree_item.kind == :feed ||
-               the_tree_item.kind == :operation
-              menu_item.disable = true
-            else
-              menu_item.disable = false
-            end
-          elsif menu_item.text.to_s.include? 'Prop'
-            if the_tree_item.kind == :resource
-              menu_item.disable = false
-            else
-              menu_item.disable = true
-            end
-          elsif menu_item.text.to_s.include? 'Run'
-            if the_tree_item.kind == :operation
-              menu_item.disable = false
-            else
-              menu_item.disable = true
-            end
-          end
-        end
-        # right click was consumed so we are done.
-        break
-      end
-
-      case the_tree_item.kind
-        when :feed, :resource
-
-          # Show info in the bottom text field
-          text = the_tree_item.kind != :feed ? the_tree_item.raw_item.path : the_tree_item.value
-          tree_view.scene.lookup('#FXMLtextArea').text = text
-
-          break if the_tree_item.is_done
-          the_tree_item.is_done = true
-
-          text = source.item
-          if the_tree_item.kind == :feed
-            resources = Hawk.inventory.list_resources_for_feed text
-          else
-            resources = Hawk.inventory.list_child_resources the_tree_item.raw_item.path
-          end
-
-          if the_tree_item.kind == :resource
-            the_tree_item.is_done = true
-            metrics = Hawk.inventory.list_metrics_for_resource the_tree_item.raw_item.path
-            metrics.each do |m|
-              new_metric = build(::HTreeItem)
-              new_metric.kind = :metric
-              new_metric.value = m.name
-              new_metric.raw_item = m
-              iv = ::HawkHelper.create_icon m.type == 'AVAILABILITY' ? 'A' : 'M'
-              new_metric.graphic = iv
-              puts "Adding metric #{new_metric}"
-              children.add new_metric
-              the_tree_item.expanded = true
-            end
-
-            operations = Hawk.inventory.list_operation_definitions_for_resource the_tree_item.raw_item.path
-            operations.each do |name, op|
-              new_operation = build(::HTreeItem)
-              new_operation.kind = :operation
-              new_operation.value = name
-              new_operation.raw_item = op
-              iv = ::HawkHelper.create_icon 'O'
-              new_operation.graphic = iv
-              children.add new_operation
-              the_tree_item.expanded = true
-            end
-          end
-
-          unless resources.empty?
-            ascend_sort = ->(r1, r2) { r1.name <=> r2.name }
-            resources.sort(&ascend_sort).each do |res|
-              new_item = build(::HTreeItem)
-              new_item.path = res.path
-              new_item.kind = :resource
-              new_item.raw_item = res
-              # (res
-              # .name) ## works on the source item
-              name = res.name.dup
-              name = name.start_with?(res.feed) ? name.sub(res.feed, '') : name
-              new_item.value = name
-
-              iv = ::HawkHelper.create_icon 'R'
-              new_item.graphic = iv
-
-              puts "Adding resource #{new_item}"
-              children.add new_item
-              the_tree_item.expanded = true
-            end
-          end
-        when :metric
-          # Write path in lower text field
-          text = the_tree_item.raw_item.path
-          tree_view.scene.lookup('#FXMLtextArea').text = text
-
-          # Add the metric to the charting component
-          if the_tree_item.raw_item.type == 'AVAILABILITY'
-            stage = tree_view.scene.window
-
-            id = "#{the_tree_item.raw_item.properties['metric-id']}"
-            if id.to_s == ''
-              puts 'Assuming the avail ID is the same as the inventory ID'
-              id = the_tree_item.raw_item.id
-            end
-            puts "Using ID [#{id}] for metric [#{the_tree_item.raw_item.name}]"
-
-            ::HawkHelper.show_avail_popup stage, id
-          else
-            chart_control = tree_view.scene.lookup('#myChartView')
-            chart_control.add_item the_tree_item.raw_item
-          end
-        when :operation
-          text = the_tree_item.value
-          tree_view.scene.lookup('#FXMLtextArea').text = text
-
-      end
-    end
+    cm
   end
 
   def show_raw_menu_item
@@ -265,6 +277,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
     cmi
   end
 
+  # rubocop: disable Style/AccessorMethodName
   def get_string
     get_item ? get_item.to_s : ''
   end
@@ -272,8 +285,10 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
   def get_graphic
     get_item ? get_item.graphic : nil
   end
+  # rubocop: enable Style/AccessorMethodName
 
   # Does the actual cell rendering
+  # rubocop: disable Style/MethodName
   def updateItem(item, empty)
     super item, empty
 
@@ -285,4 +300,5 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       set_graphic tree_item.graphic
     end
   end
+  # rubocop: enable Style/MethodName
 end

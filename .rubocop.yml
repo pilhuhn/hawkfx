@@ -5,10 +5,10 @@
 # Overrides
 #
 CyclomaticComplexity:
-  Max: 9
+  Max: 12
   Severity: refactor
 PerceivedComplexity:
-  Max: 9
+  Max: 12
 Metrics/LineLength:
   Max: 120
 Metrics/ParameterLists:

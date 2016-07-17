@@ -42,11 +42,14 @@ class AlertListCellFactory < Java::javafx::scene::control::ListCell
   end
 
   # Create the content for the row in the list.
+  # rubocop: disable Style/AccessorMethodName
   def get_string
     get_item ? get_item.alert.id : ''
   end
+  # rubocop: enable Style/AccessorMethodName
 
   # Does the real display
+  # rubocop: disable Style/MethodName
   def updateItem(item, empty)
     super item, empty
 
@@ -56,4 +59,5 @@ class AlertListCellFactory < Java::javafx::scene::control::ListCell
       set_text get_string
     end
   end
+  # rubocop: enable Style/MethodName
 end

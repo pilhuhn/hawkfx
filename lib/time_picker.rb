@@ -42,9 +42,8 @@ class TimePicker < Java::javafx::scene::layout::HBox
   end
 
   def call_back(offset_in_ms)
-    if @caller.respond_to?(@callback)
-      op = @caller.public_method @callback
-      op.call offset_in_ms
-    end
+    return unless @caller.respond_to?(@callback)
+    op = @caller.public_method @callback
+    op.call offset_in_ms
   end
 end

@@ -44,6 +44,7 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
     end
   end
 
+  # rubocop: disable Style/AccessorMethodName
   def get_string
     get_item ? get_item.to_s : ''
   end
@@ -51,8 +52,10 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
   def get_graphic
     get_item ? get_item.graphic : nil
   end
+  # rubocop: enable Style/AccessorMethodName
 
   # Does the actual cell rendering
+  # rubocop: disable Style/MethodName
   def updateItem(item, empty)
     super item, empty
 
@@ -64,4 +67,5 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
       set_graphic tree_item.graphic
     end
   end
+  # rubocop: enable Style/MethodName
 end

@@ -21,19 +21,19 @@ class HawkLoginController
     hash[:options] = { :tenant => @FXMLTenantField.text }
 
     begin
-      $hawkular = ::Hawkular::Client.new(hash)
+      Hawk.client = ::Hawkular::Client.new(hash)
 
-      $inventory_client = $hawkular.client.inventory
-      $metric_client = $hawkular.metrics
-      $alerts_client = $hawkular.alerts
+      Hawk.inventory = Hawk.client.inventory
+      Hawk.metrics = Hawk.client.metrics
+      Hawk.alerts = Hawk.client.alerts
 
       # @tenant = $inventory_client.get_tenant
       @FXMLtextArea.text = "Tenant: #{@tenant}"
 
       show_main_pane
 
-    rescue Exception => e
-      @FXMLtextArea.text = "Error: #{e.to_s}"
+    rescue StandardError => e
+      @FXMLtextArea.text = "Error: #{e}"
       @tenant = 'hawkular'
       raise e
     end

@@ -1,3 +1,4 @@
+require_relative 'Hawk'
 
 class RunOperationController
   include JRubyFX::Controller
@@ -90,7 +91,7 @@ class RunOperationController
       :parameters => ps
     }
 
-    $hawkular.operations.invoke_generic_operation the_operation do |on|
+    Hawk.operations.invoke_generic_operation the_operation do |on|
       on.success do |data|
         msg = "Success on websocket-operation #{data}"
         puts msg

@@ -58,12 +58,12 @@ class ChartViewController < Java::javafx::scene::layout::VBox
       puts "Metric [#{id}] tags: #{h_metric_def.tags}"
 
       data.each do |item|
-        unless item.nil? || item['empty']
-          ts = item['start'] / 1000 # buckets -> start || timestamp for raw
-          time = Time.at(ts).to_s
-          val = item['avg'] # buckets -> avg(?) || value for raw
-          series.data.add xy_chart_data time, val
-        end
+        next if item.nil? || item['empty']
+
+        ts = item['start'] / 1000 # buckets -> start || timestamp for raw
+        time = Time.at(ts).to_s
+        val = item['avg'] # buckets -> avg(?) || value for raw
+        series.data.add xy_chart_data time, val
       end
 
       # the_chart.data.remove series # TODO don't re-add existing - rather replace

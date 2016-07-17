@@ -1,5 +1,6 @@
 require 'jrubyfx'
 require_relative 'availability_display_controller'
+require_relative 'hawk'
 require_relative 'key_value_editor'
 require_relative 'raw_display_controller'
 require_relative 'run_operation_controller'
@@ -39,11 +40,11 @@ class HawkHelper
   def self.metric_endpoint(inv_metric)
     case inv_metric.type
     when 'GAUGE'
-      $metric_client.gauges
+      Hawk.metrics.gauges
     when 'COUNTER'
-      $metric_client.counters
+      Hawk.metrics.counters
     when 'AVAILABILITY'
-      $metric_client.avail
+      Hawk.metrics.avail
     else
       fail "Unknown type #{inv_metric.type} for #{inv_metric}"
     end

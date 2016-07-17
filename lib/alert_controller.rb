@@ -2,6 +2,7 @@ require 'hawkular/hawkular_client'
 
 require_relative 'alert_list_cell_factory'
 require_relative 'alert_list_item'
+require_relative 'hawk'
 require_relative 'time_picker'
 
 class AlertController
@@ -10,7 +11,7 @@ class AlertController
 
   def initialize
     box = find '#alertEventTopBox'
-    box.children.add time_picker(self, :set_time_range)
+    box.children.add time_picker(self, :update_time_range)
 
     @FXMLalertList.cell_factory = proc { ::AlertListCellFactory.new }
 
@@ -24,7 +25,7 @@ class AlertController
   end
 
   # Callback from time picker
-  def set_time_range(time_in_ms)
+  def update_time_range(time_in_ms)
     @start_offset = time_in_ms
     display_items
   end
@@ -36,9 +37,9 @@ class AlertController
     alerts_selected = @FXMLAlertEventSelector.selected
 
     if alerts_selected
-      alerts = $alerts_client.list_alerts 'startTime' => start
+      alerts = Hawk.alerts.list_alerts 'startTime' => start
     else
-      alerts = $alerts_client.list_events 'startTime' => start
+      alerts = Hawk.alerts.list_events 'startTime' => start
     end
 
     the_list = observable_array_list []

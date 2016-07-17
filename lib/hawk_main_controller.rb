@@ -2,6 +2,7 @@ require 'jrubyfx'
 require 'jrubyfx-fxmlloader'
 require 'hawkular/hawkular_client'
 
+require_relative 'hawk'
 require_relative 'hawk_helper'
 require_relative 'h_tree_item'
 require_relative 'alert_controller'
@@ -24,7 +25,7 @@ class HawkMainController
     # Then load the time picker custom control
     # This needs to go after the chart as it will immediately call back
     hbox = @FXMLtreeView.scene.lookup('#FXMLTopBox')
-    hbox.children.add time_picker(self, :set_time_range)
+    hbox.children.add time_picker(self, :update_time_range)
 
     if mode == :hawkular
       @FXMLtreeView.setCellFactory proc { ::OnClickCellFactory.new }
@@ -39,7 +40,7 @@ class HawkMainController
 
   def show_initial_tree_with_feeds
     tree_root = tree_item('Feeds')
-    feeds = $inventory_client.list_feeds
+    feeds = Hawk.inventorylist_feeds
     feeds.each do |feed|
       iv = ::HawkHelper.create_icon 'F'
 
@@ -68,8 +69,8 @@ class HawkMainController
 
   # List metrics for a metrics only target
   def list_metrics
-    gauges = $metric_client.gauges.query
-    counters = $metric_client.counters.query
+    gauges = Hawk.metrics.gauges.query
+    counters = Hawk.metricscounters.query
 
     tree_root = tree_item('Metrics')
     metrics = gauges.concat counters
@@ -125,7 +126,7 @@ class HawkMainController
   end
 
   # Callback from time picker
-  def set_time_range(time_in_ms)
+  def update_time_range(time_in_ms)
     cv = find('#myChartView')
     cv.change_time time_in_ms
   end

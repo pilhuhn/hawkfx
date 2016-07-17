@@ -7,7 +7,7 @@ class AvailabilityDisplayController
 
   def initialize
     box = @timePickerBox
-    box.children.add time_picker(self, :set_time_range)
+    box.children.add time_picker(self, :update_time_range)
 
     # Add a stylesheet for our data
     @scene.stylesheets.add 'assets/avail_chart.css'
@@ -24,7 +24,7 @@ class AvailabilityDisplayController
     ends = Time.now.to_i * 1000
     starts = ends - @start_offset
 
-    data = $metric_client.avail.get_data @id, ends: ends, starts: starts, order: 'ASC', distinct: true
+    data = Hawk.metrics.avail.get_data @id, ends: ends, starts: starts, order: 'ASC', distinct: true
 
     series = xy_chart_series(name: @id)
 
@@ -42,7 +42,7 @@ class AvailabilityDisplayController
     @line_chart.getYAxis.categories = categories
     @line_chart.data.setAll series
 
-    bucket_data = $metric_client.avail.get_data @id, ends: ends, starts: starts, buckets: 1
+    bucket_data = Hawk.metrics.avail.get_data @id, ends: ends, starts: starts, buckets: 1
     the_vals = bucket_data[0]['durationMap']
 
     the_vals.each do |k, v|
@@ -56,7 +56,7 @@ class AvailabilityDisplayController
     the_vals.each do |k, v|
       val = v < two_percent ? two_percent : v
       key = k.sub(/.*text=/, '').sub(/}/, '')
-      tmp_hash.store key,val
+      tmp_hash.store key, val
     end
 
     categories.each do |k, _|
@@ -73,7 +73,7 @@ class AvailabilityDisplayController
   end
 
   # Callback from time picker
-  def set_time_range(time_in_ms)
+  def update_time_range(time_in_ms)
     @start_offset = time_in_ms
     display_items unless @id.nil?
   end

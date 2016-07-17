@@ -1,4 +1,5 @@
 require 'jrubyfx'
+require_relative 'hawk'
 require_relative 'hawk_helper'
 require_relative 'key_value'
 
@@ -16,7 +17,6 @@ class EventInsertController
     category_binding = @FXMLCategory.text_property.is_empty
     @submit_button.disable_property.bind category_binding
     @cat_required_label.disable_property.bind category_binding.not
-
   end
 
   def add_tag_button
@@ -61,7 +61,7 @@ class EventInsertController
     extras.store :tags, tags unless tags.nil?
     extras.store :context, context unless context.nil?
 
-    $alerts_client.create_event(id, category, text, extras)
+    Hawk.alerts.create_event(id, category, text, extras)
 
     @stage.close
   end

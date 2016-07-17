@@ -1,4 +1,5 @@
 require 'json'
+require_relative 'Hawk'
 
 class OnClickCellFactory < Java::javafx::scene::control::TreeCell
   include JRubyFX::DSL
@@ -82,14 +83,14 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
 
           text = source.item
           if the_tree_item.kind == :feed
-            resources = $inventory_client.list_resources_for_feed text
+            resources = Hawk.inventory.list_resources_for_feed text
           else
-            resources = $inventory_client.list_child_resources the_tree_item.raw_item.path
+            resources = Hawk.inventory.list_child_resources the_tree_item.raw_item.path
           end
 
           if the_tree_item.kind == :resource
             the_tree_item.is_done = true
-            metrics = $inventory_client.list_metrics_for_resource the_tree_item.raw_item.path
+            metrics = Hawk.inventory.list_metrics_for_resource the_tree_item.raw_item.path
             metrics.each do |m|
               new_metric = build(::HTreeItem)
               new_metric.kind = :metric
@@ -102,7 +103,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
               the_tree_item.expanded = true
             end
 
-            operations = $inventory_client.list_operation_definitions_for_resource the_tree_item.raw_item.path
+            operations = Hawk.inventory.list_operation_definitions_for_resource the_tree_item.raw_item.path
             operations.each do |name, op|
               new_operation = build(::HTreeItem)
               new_operation.kind = :operation
@@ -198,7 +199,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
     cmi.on_action do
       item = tree_view.selectionModel.selectedItem
       if item.kind == :resource
-        response = $inventory_client.get_config_data_for_resource item.raw_item.raw_item
+        response = Hawk.inventory.get_config_data_for_resource item.raw_item.raw_item
         text = JSON.pretty_generate(response.to_h) unless response.nil?
       else
         text = "- unknown kind #{item.kind}, value = #{item.value}"

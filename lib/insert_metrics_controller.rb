@@ -1,4 +1,5 @@
 require 'hawkular/hawkular_client'
+require_relative 'hawk'
 
 class InsertMetricsController
   include JRubyFX::Controller
@@ -23,6 +24,6 @@ class InsertMetricsController
       }
     ]
 
-    $metric_client.push_data type_sym => val
+    Hawk.metrics.push_data type_sym => val
   end
 end

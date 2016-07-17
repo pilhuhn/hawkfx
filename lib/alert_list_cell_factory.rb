@@ -1,7 +1,6 @@
 require 'jrubyfx'
 require_relative 'hawk_helper'
 
-
 class AlertListCellFactory < Java::javafx::scene::control::ListCell
   include JRubyFX::DSL
 
@@ -12,7 +11,6 @@ class AlertListCellFactory < Java::javafx::scene::control::ListCell
     cm = Java::javafx::scene::control::ContextMenu.new
     cmi = Java::javafx::scene::control::MenuItem.new 'Show Raw'
     cmi.on_action do
-
       item = list_view.selectionModel.selectedItem
       alert = item.alert
 
@@ -39,7 +37,7 @@ class AlertListCellFactory < Java::javafx::scene::control::ListCell
       scene.lookup('#FXMLSeverity').text = alert.severity
       scene.lookup('#FXMLContext').text = alert.context.to_s
       scene.lookup('#FXMLCategory').text = alert.category
-      scene.lookup('#FXMLTime').text = Time.at(alert.ctime/1000).to_s # Hawkular has ms
+      scene.lookup('#FXMLTime').text = Time.at(alert.ctime / 1000).to_s # Hawkular has ms
     end
   end
 
@@ -47,7 +45,6 @@ class AlertListCellFactory < Java::javafx::scene::control::ListCell
   def get_string
     get_item ? get_item.alert.id : ''
   end
-
 
   # Does the real display
   def updateItem(item, empty)

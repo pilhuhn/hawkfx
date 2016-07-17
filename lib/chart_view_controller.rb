@@ -6,7 +6,6 @@ class ChartViewController < Java::javafx::scene::layout::VBox
 
   fxml 'ChartView.fxml'
 
-
   def initialize
     @chart_items = Set.new
     @chosen_range = 12 * 3600 * 1000
@@ -14,29 +13,28 @@ class ChartViewController < Java::javafx::scene::layout::VBox
 
   def add_item(item)
     @chart_items << item
-    refreshCharts
+    refresh_charts
   end
 
   def clear
     @chart_items = Set.new
-    refreshCharts
+    refresh_charts
   end
 
   def change_time(start_time_ms)
     @chosen_range = start_time_ms
-    refreshCharts
+    refresh_charts
   end
 
   # do the real drawing
-  def refreshCharts
-
+  def refresh_charts
     if @chart_items.empty?
       @FXMLChart.visible = false
       return
     end
 
     ends = Time.now.to_i * 1000
-    starts = ends-@chosen_range
+    starts = ends - @chosen_range
     the_chart = @FXMLChart
     the_chart.visible = true
 
@@ -44,21 +42,20 @@ class ChartViewController < Java::javafx::scene::layout::VBox
 
     @chart_items.each do |metric|
       series = xy_chart_series(name: metric.name)
-      type = metric.type
 
       # if there is a metric-id property, use that as the ID, otherwise, use the instance ID itself
       id = "#{metric.properties['metric-id']}"
       if id.to_s == ''
-         puts 'Assuming the metric ID is the same as the inventory ID'
-         id = metric.id
+        puts 'Assuming the metric ID is the same as the inventory ID'
+        id = metric.id
       end
       puts "Using ID [#{id}] for metric [#{metric.name}]"
 
       ep = ::HawkHelper.metric_endpoint metric
       data = ep.get_data id, buckets: 120, ends: ends, starts: starts
-      hMetricDef = ep.get id
+      h_metric_def = ep.get id
 
-      puts "Metric [#{id}] tags: #{hMetricDef.tags}"
+      puts "Metric [#{id}] tags: #{h_metric_def.tags}"
 
       data.each do |item|
         unless item.nil? || item['empty']
@@ -72,10 +69,8 @@ class ChartViewController < Java::javafx::scene::layout::VBox
       # the_chart.data.remove series # TODO don't re-add existing - rather replace
       # the_chart.data.add series # TODO don't re-add existing - rather replace
       series_array << series
-
     end
 
     the_chart.data.setAll series_array
   end
-
 end

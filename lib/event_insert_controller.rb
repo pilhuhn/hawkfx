@@ -27,29 +27,26 @@ class EventInsertController
     ::HawkHelper.show_kv_editor @scene.window, self, :add_context_callback
   end
 
-  def add_tag_callback val
+  def add_tag_callback(val)
     kv = KeyValue.new(val[:key], val[:value])
     @tag_data.add kv
   end
 
-  def add_context_callback val
+  def add_context_callback(val)
     kv = KeyValue.new(val[:key], val[:value])
     @context_data.add kv
   end
 
-
-=begin
-Example event to insert
-    {"id":"ems-hawkular-event-4",
-     "ctime":"1467733170000",    -- supplied by the hawkular gem
-     "tags":{"miq.event_type":"hawkular_event.critical"},
-     "category":"Hawkular Deployment",
-     "text":"Error",
-     "context":{
-         "message":"This is a mock deployment event"
-     }
-    }
-=end
+  # Example event to insert
+  #     {"id":"ems-hawkular-event-4",
+  #      "ctime":"1467733170000",    -- supplied by the hawkular gem
+  #      "tags":{"miq.event_type":"hawkular_event.critical"},
+  #      "category":"Hawkular Deployment",
+  #      "text":"Error",
+  #      "context":{
+  #          "message":"This is a mock deployment event"
+  #      }
+  #     }
 
   def submit
     id = @FXMLAlertId.text
@@ -69,7 +66,7 @@ Example event to insert
     @stage.close
   end
 
-  def table_data_to_hash param
+  def table_data_to_hash(param)
     unless param.empty?
       ret = {}
       param.each do |kv|

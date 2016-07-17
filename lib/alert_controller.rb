@@ -18,8 +18,8 @@ class AlertController
   end
 
   # Callback from Alert/Event toggle
-  def switchAlertEvent
-    # TODO clean out selected item details
+  def switch_alert_event
+    # TODO: clean out selected item details
     display_items
   end
 
@@ -46,10 +46,7 @@ class AlertController
       item = AlertListItem.new
       item.alert = alert
       the_list.add item
-
     end
-    @FXMLalertList.items=the_list
+    @FXMLalertList.items = the_list
   end
-
-
 end

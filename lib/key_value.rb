@@ -12,7 +12,7 @@ class KeyValue
   end
 
   def to_kv
-    return self.key,self.value
+    return key, value
   end
 end
 

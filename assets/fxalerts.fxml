@@ -17,7 +17,7 @@
                            <children>
                         <HBox id="alertEventTopBox" prefHeight="33.0" prefWidth="600.0">
                            <children>
-                              <RadioButton fx:id="FXMLAlertEventSelector" mnemonicParsing="false" onAction="#switchAlertEvent" text="Alerts">
+                              <RadioButton fx:id="FXMLAlertEventSelector" mnemonicParsing="false" onAction="#switch_alert_event" text="Alerts">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="alertEvent" />
                                  </toggleGroup>

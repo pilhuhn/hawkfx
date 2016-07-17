@@ -11,7 +11,6 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
     cm = Java::javafx::scene::control::ContextMenu.new
     cmi = Java::javafx::scene::control::MenuItem.new 'Show Raw'
     cmi.on_action do
-
       if item.respond_to? 'metric'
 
         item = tree_view.selectionModel.selectedItem
@@ -24,10 +23,8 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
     cm.items.add cmi
     set_context_menu cm
 
-
     # Left-click action
     set_on_mouse_clicked do |event|
-      puts "Got #{event.to_s}"
       source = event.source
 
       tree_view = source.treeView

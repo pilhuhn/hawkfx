@@ -16,7 +16,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </Label>
-      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#selectTime" prefHeight="27.0" prefWidth="50.0" text="1h" textOverrun="CLIP">
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#select_time" prefHeight="27.0" prefWidth="50.0" text="1h" textOverrun="CLIP">
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
@@ -24,27 +24,27 @@
             <ToggleGroup fx:id="pickerGroup" />
          </toggleGroup>
       </ToggleButton>
-      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#selectTime" prefHeight="27.0" prefWidth="50.0" text="8h" textOverrun="CLIP" toggleGroup="$pickerGroup">
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#select_time" prefHeight="27.0" prefWidth="50.0" text="8h" textOverrun="CLIP" toggleGroup="$pickerGroup">
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
       </ToggleButton>
-      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#selectTime" prefHeight="27.0" prefWidth="50.0" selected="true" text="12h" textOverrun="CLIP" toggleGroup="$pickerGroup">
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#select_time" prefHeight="27.0" prefWidth="50.0" selected="true" text="12h" textOverrun="CLIP" toggleGroup="$pickerGroup">
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
       </ToggleButton>
-      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#selectTime" prefHeight="27.0" prefWidth="50.0" text="1d" textOverrun="CLIP" toggleGroup="$pickerGroup">
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#select_time" prefHeight="27.0" prefWidth="50.0" text="1d" textOverrun="CLIP" toggleGroup="$pickerGroup">
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
       </ToggleButton>
-      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#selectTime" prefHeight="27.0" prefWidth="50.0" text="7d" textOverrun="CLIP" toggleGroup="$pickerGroup">
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#select_time" prefHeight="27.0" prefWidth="50.0" text="7d" textOverrun="CLIP" toggleGroup="$pickerGroup">
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
       </ToggleButton>
-      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#selectTime" prefHeight="27.0" prefWidth="50.0" text="1mo" textOverrun="CLIP" toggleGroup="$pickerGroup">
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#select_time" prefHeight="27.0" prefWidth="50.0" text="1mo" textOverrun="CLIP" toggleGroup="$pickerGroup">
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>

@@ -30,7 +30,7 @@
                         <Insets bottom="5.0" left="5.0" top="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Label minWidth="50.0" HBox.hgrow="ALWAYS" />
+                  <Label minWidth="150.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="submit_button" alignment="CENTER_RIGHT" disable="false" defaultButton="true" mnemonicParsing="false" onAction="#submit" text="Run">
                      <HBox.margin>
                         <Insets bottom="5.0" right="5.0" top="5.0" />

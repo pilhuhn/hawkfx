@@ -16,11 +16,10 @@ class HawkMainController
   include JRubyFX::Controller
   fxml 'fxmain.fxml'
 
-
-  def show_initial_tree(mode= :hawkular, tenant )
+  def show_initial_tree(mode = :hawkular)
     # First load the chart custom control
     chart_anchor = @FXMLtreeView.scene.lookup('#FXMLChartAnchor')
-    chart_anchor.children.add chart_view_controller # TODO rename back to chart_view?
+    chart_anchor.children.add chart_view_controller # TODO: rename back to chart_view?
 
     # Then load the time picker custom control
     # This needs to go after the chart as it will immediately call back
@@ -32,8 +31,8 @@ class HawkMainController
       show_initial_tree_with_feeds
     else # :metrics
       @FXMLtreeView.setCellFactory proc { ::MetricsOnlyCellFactory.new }
-      # @FXMLalertMenu.setEnabled false #TODO
-      # @FXMLreloadFeeds.setEnabled false #TODO
+      # @FXMLalertMenu.setEnabled false # TODO: Binding ? TO what?
+      # @FXMLreloadFeeds.setEnabled false # TODO: Binding ? To what?
       list_metrics
     end
   end
@@ -54,15 +53,15 @@ class HawkMainController
     end
     # bind to the view from fxml
     @FXMLtreeView.setRoot(tree_root)
-    tree_root.expanded=true
+    tree_root.expanded = true
   end
 
   # Load the alerts window
   def show_alerts
     popup_stage = Stage.new
     ::AlertController.load_into popup_stage
-    popup_stage.title='Alerts & Definitions'
-    popup_stage.init_modality=:none
+    popup_stage.title = 'Alerts & Definitions'
+    popup_stage.init_modality = :none
     popup_stage.init_owner(@FXMLtreeView.scene.window)
     popup_stage.show
   end
@@ -87,10 +86,10 @@ class HawkMainController
       # Create a Metric type of Inventory
       # from the metric dev obtained from H-Metrics
       m_hash = {
-          'name' => metric_def.id,
-          'id' => metric_def.id,
-          'type' => { 'type' => metric_def.json['type'].upcase},
-          # :unit => metric_def.unit
+        'name' => metric_def.id,
+        'id' => metric_def.id,
+        'type' => { 'type' => metric_def.json['type'].upcase },
+        # :unit => metric_def.unit
       }
       m = ::Hawkular::Inventory::Metric.new m_hash
 
@@ -100,15 +99,14 @@ class HawkMainController
     end
     # bind to the view from fxml
     @FXMLtreeView.setRoot(tree_root)
-    tree_root.expanded=true
-
+    tree_root.expanded = true
   end
 
   def show_insert_metrics
     popup_stage = Stage.new
     ::InsertMetricsController.load_into popup_stage
-    popup_stage.title='Insert Metrics'
-    popup_stage.init_modality=:none
+    popup_stage.title = 'Insert Metrics'
+    popup_stage.init_modality = :none
     popup_stage.init_owner(@FXMLtreeView.scene.window)
     popup_stage.show
   end
@@ -116,8 +114,8 @@ class HawkMainController
   def show_insert_events
     popup_stage = Stage.new
     ::EventInsertController.load_into popup_stage
-    popup_stage.title='Insert Events'
-    popup_stage.init_modality=:none
+    popup_stage.title = 'Insert Events'
+    popup_stage.init_modality = :none
     popup_stage.init_owner(@FXMLtreeView.scene.window)
     popup_stage.show
   end

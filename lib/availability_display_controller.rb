@@ -29,24 +29,23 @@ class AvailabilityDisplayController
     series = xy_chart_series(name: @id)
 
     data.each do |item|
-      unless item.nil? || item['empty']
-        ts = item['timestamp'] / 1000
-        time = Time.at(ts).to_s.split(' ')[1]
-        value = item['value']
-        series.data.add xy_chart_data time, value
-      end
+      next if item.nil? || item['empty']
+
+      ts = item['timestamp'] / 1000
+      time = Time.at(ts).to_s.split(' ')[1]
+      value = item['value']
+      series.data.add xy_chart_data time, value
     end
 
     # Show the line chart
     categories = observable_array_list %w(down admin unknown up)
-    @line_chart.getYAxis.categories=categories
+    @line_chart.getYAxis.categories = categories
     @line_chart.data.setAll series
-
 
     bucket_data = $metric_client.avail.get_data @id, ends: ends, starts: starts, buckets: 1
     the_vals = bucket_data[0]['durationMap']
 
-    the_vals.each do |k,v|
+    the_vals.each do |k, v|
       puts "#{k} -> #{v}"
     end
 
@@ -56,22 +55,21 @@ class AvailabilityDisplayController
     tmp_hash = {}
     the_vals.each do |k, v|
       val = v < two_percent ? two_percent : v
-      key = k.sub(/.*text=/,'').sub(/}/,'')
+      key = k.sub(/.*text=/, '').sub(/}/, '')
       tmp_hash.store key,val
     end
 
-    categories.each do |k,v|
+    categories.each do |k, _|
       if tmp_hash.key? k
         val = tmp_hash.fetch k
       else
         val = 0
       end
-        pcd = Java::javafx.scene.chart.PieChart::Data.new k, val
-        pie_chart_d << pcd
+      pcd = Java::javafx.scene.chart.PieChart::Data.new k, val
+      pie_chart_d << pcd
     end
     o_list = observable_array_list pie_chart_d
-    @pie_chart.data= o_list
-
+    @pie_chart.data = o_list
   end
 
   # Callback from time picker

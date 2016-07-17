@@ -1,7 +1,21 @@
 module Hawk
   class << self
     attr_accessor :client
-    # TODO: can we deduct the following here from :client?
-    attr_accessor :metrics, :inventory, :alerts, :operations
+
+    def metrics
+      @client.metrics
+    end
+
+    def inventory
+      @client.inventory
+    end
+
+    def alerts
+      @client.alerts
+    end
+
+    def operations
+      @client.operations
+    end
   end
 end

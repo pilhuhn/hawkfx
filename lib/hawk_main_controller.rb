@@ -40,7 +40,7 @@ class HawkMainController
 
   def show_initial_tree_with_feeds
     tree_root = tree_item('Feeds')
-    feeds = Hawk.inventorylist_feeds
+    feeds = Hawk.inventory.list_feeds
     feeds.each do |feed|
       iv = ::HawkHelper.create_icon 'F'
 

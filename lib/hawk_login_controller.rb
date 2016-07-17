@@ -23,10 +23,6 @@ class HawkLoginController
     begin
       Hawk.client = ::Hawkular::Client.new(hash)
 
-      Hawk.inventory = Hawk.client.inventory
-      Hawk.metrics = Hawk.client.metrics
-      Hawk.alerts = Hawk.client.alerts
-
       # @tenant = $inventory_client.get_tenant
       @FXMLtextArea.text = "Tenant: #{@tenant}"
 

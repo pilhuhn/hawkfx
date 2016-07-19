@@ -70,7 +70,7 @@ class HawkMainController
   # List metrics for a metrics only target
   def list_metrics
     gauges = Hawk.metrics.gauges.query
-    counters = Hawk.metricscounters.query
+    counters = Hawk.metrics.counters.query
 
     tree_root = tree_item('Metrics')
     metrics = gauges.concat counters

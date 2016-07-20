@@ -1,4 +1,5 @@
-require_relative 'Hawk'
+require 'json'
+require_relative 'hawk'
 
 class RunOperationController
   include JRubyFX::Controller
@@ -54,7 +55,7 @@ class RunOperationController
       field.text = default_val unless default_val.nil?
     when 'bool'
       field = check_box
-      field.value = (default_val == 'false') unless default_val.nil?
+      field.selected = (default_val == 'false') unless default_val.nil?
     else
       fail 'Unknown type'
     end
@@ -95,7 +96,7 @@ class RunOperationController
       on.success do |data|
         msg = "Success on websocket-operation #{data}"
         puts msg
-        @output_field.text = msg
+        @output_field.text = JSON.pretty_generate(data.to_h)
       end
       on.failure do |error|
         msg = 'error callback was called, reason: ' + error.to_s

@@ -1,5 +1,5 @@
 require 'json'
-require_relative 'Hawk'
+require_relative 'hawk'
 
 class OnClickCellFactory < Java::javafx::scene::control::TreeCell
   include JRubyFX::DSL
@@ -211,7 +211,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
     cmi.on_action do
       item = tree_view.selectionModel.selectedItem
       if item.kind == :resource
-        response = Hawk.inventory.get_config_data_for_resource item.raw_item.raw_item
+        response = Hawk.inventory.get_config_data_for_resource item.raw_item.path
         text = JSON.pretty_generate(response.to_h) unless response.nil?
       else
         text = "- unknown kind #{item.kind}, value = #{item.value}"

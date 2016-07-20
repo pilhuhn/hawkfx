@@ -121,6 +121,10 @@ class HawkMainController
     popup_stage.show
   end
 
+  def quit
+    Platform.exit
+  end
+
   def reload_feeds
     show_initial_tree_with_feeds
   end

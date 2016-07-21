@@ -15,12 +15,20 @@ class AlertController
 
     @FXMLalertList.cell_factory = proc { ::AlertListCellFactory.new }
 
+    @insert_tab.children.add event_insert_controller
+
+
+
     display_items
   end
 
   # Callback from Alert/Event toggle
   def switch_alert_event
     # TODO: clean out selected item details
+    display_items
+  end
+
+  def selected_tab_has_changed
     display_items
   end
 
@@ -33,6 +41,8 @@ class AlertController
   private
 
   def display_items
+    return if @start_offset.nil?
+
     start = Time.now.to_i * 1000 - @start_offset
     alerts_selected = @FXMLAlertEventSelector.selected
 

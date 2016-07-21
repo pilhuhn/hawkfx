@@ -3,28 +3,29 @@ require_relative 'hawk'
 require_relative 'hawk_helper'
 require_relative 'key_value'
 
-class EventInsertController
+class EventInsertController < Java::javafx::scene::layout::VBox
   include JRubyFX::Controller
+
   fxml 'fx_event_enter.fxml'
 
   def initialize
     now = Time.now.to_i
-    @FXMLAlertId.text = "event-#{now}"
+    @ei_FXMLAlertId.text = "event-#{now}"
 
-    @tag_data = @FXMLTags.items
-    @context_data = @FXMLContext.items
+    @tag_data = @ei_FXMLTags_table.items
+    @context_data = @ei_FXMLContext_table.items
 
-    category_binding = @FXMLCategory.text_property.is_empty
-    @submit_button.disable_property.bind category_binding
-    @cat_required_label.disable_property.bind category_binding.not
+    category_binding = @ei_FXMLCategory.text_property.is_empty
+    @ei_submit_button.disable_property.bind category_binding
+    @ei_cat_required_label.disable_property.bind category_binding.not
   end
 
   def add_tag_button
-    ::HawkHelper.show_kv_editor @scene.window, self, :add_tag_callback
+    ::HawkHelper.show_kv_editor @scene.stage, self, :add_tag_callback
   end
 
   def add_context_button
-    ::HawkHelper.show_kv_editor @scene.window, self, :add_context_callback
+    ::HawkHelper.show_kv_editor @scene.stage, self, :add_context_callback
   end
 
   def add_tag_callback(val)
@@ -49,21 +50,19 @@ class EventInsertController
   #     }
 
   def submit
-    id = @FXMLAlertId.text
+    id = @ei_FXMLAlertId.text
 
     tags = table_data_to_hash @tag_data
     context = table_data_to_hash @context_data
 
-    text = @FXMLText.text
-    category = @FXMLCategory.text
+    text = @ei_FXMLText.text
+    category = @ei_FXMLCategory.text
 
     extras = {}
     extras.store :tags, tags unless tags.nil?
     extras.store :context, context unless context.nil?
 
     Hawk.alerts.create_event(id, category, text, extras)
-
-    @stage.close
   end
 
   def table_data_to_hash(param)

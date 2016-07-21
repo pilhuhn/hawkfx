@@ -112,15 +112,6 @@ class HawkMainController
     popup_stage.show
   end
 
-  def show_insert_events
-    popup_stage = Stage.new
-    ::EventInsertController.load_into popup_stage
-    popup_stage.title = 'Insert Events'
-    popup_stage.init_modality = :none
-    popup_stage.init_owner(@FXMLtreeView.scene.window)
-    popup_stage.show
-  end
-
   def quit
     Platform.exit
   end

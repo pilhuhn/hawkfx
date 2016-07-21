@@ -11,7 +11,7 @@
       <AnchorPane fx:id="FXMLAlertBoxAnchor" prefHeight="28.0" prefWidth="600.0" />
       <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="428.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Alerts/Events">
+          <Tab onSelectionChanged="#selected_tab_has_changed" text="Alerts/Events">
             <content>
                         <VBox>
                            <children>
@@ -28,7 +28,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" onAction="#switchAlertEvent" text="Events" selected="true" toggleGroup="$alertEvent">
+                              <RadioButton mnemonicParsing="false" onAction="#switch_alert_event" selected="true" text="Events" toggleGroup="$alertEvent">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
@@ -209,6 +209,15 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>
           </Tab>
+           <Tab closable="false" text="Insert">
+               <content>
+                  <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0">
+                    <content>
+                      <AnchorPane fx:id="insert_tab" minHeight="10.0" minWidth="10.0" />
+                    </content>
+                  </ScrollPane>
+               </content>
+           </Tab>
         </tabs>
       </TabPane>
    </children>

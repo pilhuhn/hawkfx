@@ -62,7 +62,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
           show_avail_popup(the_tree_item, tree_view)
         else
           chart_control = tree_view.scene.lookup('#myChartView')
-          chart_control.add_item the_tree_item.raw_item
+          chart_control.add_remove_item the_tree_item.raw_item
         end
       when :operation
         text = the_tree_item.value

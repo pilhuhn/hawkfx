@@ -11,8 +11,14 @@ class ChartViewController < Java::javafx::scene::layout::VBox
     @chosen_range = 12 * 3600 * 1000
   end
 
-  def add_item(item)
-    @chart_items << item
+  # Add item when it is not yet there, remove otherwise
+  # refresh the chart afterwards.
+  def add_remove_item(item)
+    if @chart_items.include? item
+      @chart_items.delete(item)
+    else
+      @chart_items << item
+    end
     refresh_charts
   end
 

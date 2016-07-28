@@ -40,7 +40,7 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
 
       # Add to items to be charted
       chart_control = tree_view.scene.lookup('#myChartView')
-      chart_control.add_item metric_def
+      chart_control.add_remove_item metric_def
     end
   end
 

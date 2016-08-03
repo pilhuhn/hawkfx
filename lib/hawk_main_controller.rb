@@ -27,14 +27,16 @@ class HawkMainController
     hbox = @FXMLtreeView.scene.lookup('#FXMLTopBox')
     hbox.children.add time_picker(self, :update_time_range)
 
-    if mode == :hawkular
-      @FXMLtreeView.setCellFactory proc { ::OnClickCellFactory.new }
-      show_initial_tree_with_feeds
-    else # :metrics
-      @FXMLtreeView.setCellFactory proc { ::MetricsOnlyCellFactory.new }
-      # @FXMLalertMenu.setEnabled false # TODO: Binding ? TO what?
-      # @FXMLreloadFeeds.setEnabled false # TODO: Binding ? To what?
-      list_metrics
+    run_later do
+      if mode == :hawkular
+        @FXMLtreeView.setCellFactory proc { ::OnClickCellFactory.new }
+        show_initial_tree_with_feeds
+      else # :metrics
+        @FXMLtreeView.setCellFactory proc { ::MetricsOnlyCellFactory.new }
+        # @FXMLalertMenu.setEnabled false # TODO: Binding ? TO what?
+        # @FXMLreloadFeeds.setEnabled false # TODO: Binding ? To what?
+        list_metrics
+      end
     end
   end
 

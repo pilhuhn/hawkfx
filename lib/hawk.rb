@@ -1,9 +1,13 @@
 module Hawk
   class << self
-    attr_accessor :client
+    attr_accessor :client, :mode
+
+    def metrics=(metrics_client)
+      @metrics = metrics_client
+    end
 
     def metrics
-      @client.metrics
+      @mode == :hawkular ? @client.metrics : @metrics
     end
 
     def inventory

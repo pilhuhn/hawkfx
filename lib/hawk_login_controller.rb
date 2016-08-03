@@ -1,6 +1,7 @@
 require 'jrubyfx'
 require 'jrubyfx-fxmlloader'
 require 'hawkular/hawkular_client'
+require 'hawkular/metrics/metrics_client.rb'
 require 'uri'
 require_relative 'hawk'
 
@@ -21,7 +22,16 @@ class HawkLoginController
     hash[:options] = { :tenant => @FXMLTenantField.text }
 
     begin
-      Hawk.client = ::Hawkular::Client.new(hash)
+      if @FXMLModeButton.selected
+        Hawk.client = ::Hawkular::Client.new(hash)
+        Hawk.mode = :hawkular
+      else # Metrics only mode
+        Hawk.mode = :metrics
+        mc = ::Hawkular::Metrics::Client.new("#{hash[:entrypoint]}/hawkular/metrics",
+                            hash[:credentials],
+                            hash[:options])
+        Hawk.metrics = mc
+      end
 
       # @tenant = $inventory_client.get_tenant
       @FXMLtextArea.text = "Tenant: #{@tenant}"
@@ -52,8 +62,6 @@ class HawkLoginController
     stage.min_height = 800
     stage.size_to_scene
 
-    mode = @FXMLModeButton.selected ? :hawkular : :metrics
-
-    main_controller.show_initial_tree mode
+    main_controller.show_initial_tree Hawk.mode
   end
 end

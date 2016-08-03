@@ -11,14 +11,11 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
     cm = Java::javafx::scene::control::ContextMenu.new
     cmi = Java::javafx::scene::control::MenuItem.new 'Show Raw'
     cmi.on_action do
-      if item.respond_to? 'metric'
+      item = tree_view.selectionModel.selectedItem
+      text = JSON.pretty_generate(item.raw_item.to_h)
 
-        item = tree_view.selectionModel.selectedItem
-        text = JSON.pretty_generate(item.raw_item.to_h)
-
-        stage = tree_view.scene.window
-        ::HawkHelper.show_raw_popup stage, text
-      end
+      stage = tree_view.scene.window
+      ::HawkHelper.show_raw_popup stage, text
     end
     cm.items.add cmi
     set_context_menu cm
@@ -30,8 +27,8 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
       tree_view = source.treeView
       the_tree_item = tree_view.selectionModel.selectedItem
 
-      puts "Selected #{the_tree_item.value}"
-      break unless the_tree_item.respond_to? 'metric'
+      puts "Selected #{the_tree_item.value} -> #{the_tree_item.kind}"
+      break unless the_tree_item.kind == :metric
 
       # Write path in lower text field
       metric_def = the_tree_item.raw_item

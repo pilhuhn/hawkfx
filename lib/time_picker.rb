@@ -22,22 +22,24 @@ class TimePicker < Java::javafx::scene::layout::HBox
     text = button.text
 
     case text
-    when '1h'
+    when '30min'
       offset = 1
+    when '1h'
+      offset = 2
     when '8h'
-      offset = 8
+      offset = 16
     when '12h'
-      offset = 12
-    when '1d'
       offset = 24
+    when '1d'
+      offset = 48
     when '7d'
-      offset = 144
+      offset = 288
     when '1mo'
-      offset = 30 * 24
+      offset = 60 * 24
     else
-      offset = 12 # this is the default
+      offset = 24 # this is the default
     end
-    offset_in_ms = offset * 3600 * 1000
+    offset_in_ms = offset * 1800 * 1000
     call_back(offset_in_ms)
   end
 

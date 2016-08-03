@@ -33,8 +33,8 @@ class HawkMainController
         show_initial_tree_with_feeds
       else # :metrics
         @FXMLtreeView.setCellFactory proc { ::MetricsOnlyCellFactory.new }
-        # @FXMLalertMenu.setEnabled false # TODO: Binding ? TO what?
-        # @FXMLreloadFeeds.setEnabled false # TODO: Binding ? To what?
+        @FXMLalertMenu.setDisable true
+        @FXMLreloadFeeds.setDisable true
         list_metrics
       end
     end

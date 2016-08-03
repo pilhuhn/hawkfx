@@ -41,7 +41,10 @@ class HawkMainController
   end
 
   def show_initial_tree_with_feeds
-    tree_root = tree_item('Feeds')
+    tree_root = build(::HTreeItem)
+    tree_root.kind = :none
+    tree_root.value = 'Feeds'
+
     feeds = Hawk.inventory.list_feeds
     feeds.each do |feed|
       iv = ::HawkHelper.create_icon 'F'
@@ -74,7 +77,9 @@ class HawkMainController
     gauges = Hawk.metrics.gauges.query
     counters = Hawk.metrics.counters.query
 
-    tree_root = tree_item('Metrics')
+    tree_root = build(::HTreeItem)
+    tree_root.kind = :none
+    tree_root.value = 'Metrics'
     metrics = gauges.concat counters
 
     ascend_sort = ->(m1, m2) { m1.id <=> m2.id }

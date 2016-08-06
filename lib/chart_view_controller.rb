@@ -9,6 +9,7 @@ class ChartViewController < Java::javafx::scene::layout::VBox
   def initialize
     @chart_items = Set.new
     @chosen_range = 12 * 3600 * 1000
+    @FXMLChart.axis_sorting_policy = LineChart::SortingPolicy::X_AXIS
   end
 
   # Add item when it is not yet there, remove otherwise

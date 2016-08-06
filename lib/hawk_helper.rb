@@ -50,6 +50,22 @@ class HawkHelper
     end
   end
 
+  def self.metric_icon(metric_type)
+    case metric_type
+    when 'AVAILABILITY'
+      'A'
+    when 'GAUGE'
+      'M_G'
+    when 'COUNTER'
+      'M_C'
+    when 'STRING'
+      'M_S'
+    else
+      puts 'Unknown metric type ' + m.type
+      'M'
+    end
+  end
+
   def self.show_kv_editor(parent_stage, caller, callback, *other_stuff)
     popup_stage = ::Java::JavafxStage::Stage.new
     kv_editor = ::KeyValueEditor.load_into popup_stage

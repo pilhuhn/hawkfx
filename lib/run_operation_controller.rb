@@ -7,6 +7,7 @@ class RunOperationController
 
   def initialize
     @fields = {}
+    @progress_wheel.visible = false
   end
 
   def setup(operation, resource_path)
@@ -69,6 +70,10 @@ class RunOperationController
   def submit
     ps = {}
 
+    # Reload and Restart currently don't report back when they are done
+    @progress_wheel.visible=true unless @operation_name == 'Reload' || @operation_name == 'Restart'
+
+
     @fields.each do |name, field|
       param = @params[name]
       val = case param['type']
@@ -97,11 +102,13 @@ class RunOperationController
         msg = "Success on websocket-operation #{data}"
         puts msg
         @output_field.text = JSON.pretty_generate(data.to_h)
+        @progress_wheel.visible = false
       end
       on.failure do |error|
         msg = 'error callback was called, reason: ' + error.to_s
         puts msg
         @output_field.text = msg
+        @progress_wheel.visible = false
       end
     end
   end

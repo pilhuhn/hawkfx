@@ -74,8 +74,12 @@ class HawkMainController
 
   # List metrics for a metrics only target
   def list_metrics
+    define_type_on_metric_def_if_needed
+
     gauges = Hawk.metrics.gauges.query
+    gauges.each { |g| g.type = 'GAUGE' }
     counters = Hawk.metrics.counters.query
+    counters.each { |c| c.type = 'COUNTER' }
 
     tree_root = build(::HTreeItem)
     tree_root.kind = :none
@@ -84,7 +88,8 @@ class HawkMainController
 
     ascend_sort = ->(m1, m2) { m1.id <=> m2.id }
     metrics.sort(&ascend_sort).each do |metric_def|
-      iv = ::HawkHelper.create_icon 'M'
+      icon = ::HawkHelper.metric_icon metric_def.type
+      iv = ::HawkHelper.create_icon icon
 
       new_metric = build(::HTreeItem)
       new_metric.kind = :metric
@@ -132,4 +137,23 @@ class HawkMainController
     cv = find('#myChartView')
     cv.change_time time_in_ms
   end
+
+  private
+
+  # We need to open the MetricDefinition to add
+  # a type (Gauge, Counter, ... for further processing)
+  def define_type_on_metric_def_if_needed
+    unless Hawkular::Metrics::MetricDefinition.respond_to? :type
+      Hawkular::Metrics::MetricDefinition.class_eval do
+        def type
+          return @type
+        end
+
+        def type= (t)
+          @type = t
+        end
+      end
+    end
+  end
+
 end

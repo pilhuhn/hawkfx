@@ -56,7 +56,7 @@ class RunOperationController
       field.text = default_val unless default_val.nil?
     when 'bool'
       field = check_box
-      field.selected = (default_val == 'false') unless default_val.nil?
+      field.selected = (default_val == 'true') unless default_val.nil?
     else
       fail 'Unknown type'
     end

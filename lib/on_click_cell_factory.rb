@@ -147,7 +147,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       if item_name.include? 'Tag'
         menu_item.disable = ([:resource, :feed, :operation].include?(kind))
       elsif item_name.include? 'Prop'
-        menu_item.disable = !kind == :resource
+        menu_item.disable = kind != :resource
       elsif item_name.include? 'Run'
         menu_item.disable = !kind == :operation
       end

@@ -150,6 +150,8 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
         menu_item.disable = kind != :resource
       elsif item_name.include? 'Run'
         menu_item.disable = !kind == :operation
+      elsif item_name.include? 'Delete'
+        menu_item.disable = kind != :feed
       end
     end
   end
@@ -173,6 +175,10 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
 
     # Context menu to run operations
     cmi = run_operation_menu_item
+    cm.items.add cmi
+
+    # Context menu to delete
+    cmi = show_delete_menu_item
     cm.items.add cmi
 
     set_context_menu cm
@@ -203,6 +209,22 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       item = tree_view.selectionModel.selectedItem
       stage = tree_view.scene.window
       ::HawkHelper.run_ops_popup stage, item.raw_item, item.parent.raw_item.path
+    end
+    cmi
+  end
+
+  def show_delete_menu_item
+    cmi = Java::javafx::scene::control::MenuItem.new 'Delete'
+    cmi.on_action do
+      item = tree_view.selectionModel.selectedItem
+      # a confirmation dialog would be nice
+      case item.kind
+      when :feed
+        Hawk.inventory.delete_feed(item.value)
+        item.getParent().getChildren().remove(item)
+      else
+        raise 'Not implemented.'
+      end
     end
     cmi
   end

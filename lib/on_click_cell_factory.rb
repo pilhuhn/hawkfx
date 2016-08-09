@@ -149,7 +149,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       elsif item_name.include? 'Prop'
         menu_item.disable = kind != :resource
       elsif item_name.include? 'Run'
-        menu_item.disable = !kind == :operation
+        menu_item.disable = kind != :operation
       elsif item_name.include? 'Delete'
         menu_item.disable = kind != :feed
       end

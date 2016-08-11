@@ -1,12 +1,9 @@
 require 'jrubyfx'
 require 'jrubyfx-fxmlloader'
-require 'hawkular/hawkular_client'
-require 'hawkular/metrics/metrics_client.rb'
 require 'uri'
 require_relative 'hawk'
 
 require_relative 'hawk_helper'
-require_relative 'hawk_main_controller'
 
 class HawkLoginController
   include JRubyFX::Controller
@@ -15,6 +12,16 @@ class HawkLoginController
   def login # callback from the login button
     creds = { :username => @FXMLLoginField.text,
               :password => @FXMLPasswordField.text }
+
+    enable_logging
+
+    # We need to require those after potentially enable logging
+    # as otherwise the requiring will aready set the logging
+    # of the restclient.
+    require 'hawkular/hawkular_client'
+    require 'hawkular/metrics/metrics_client.rb'
+    require_relative 'hawk_main_controller'
+
 
     hash = {}
     hash[:entrypoint] = URI(@FXMLUrlField.text).to_s # TODO: see https://github.com/hawkular/hawkular-client-ruby/issues/116
@@ -42,6 +49,14 @@ class HawkLoginController
       @FXMLtextArea.text = "Error: #{e}"
       @tenant = 'hawkular'
       raise e
+    end
+  end
+
+  def enable_logging
+    verbose = @logging_enabled.selected
+    if verbose
+      ENV['RESTCLIENT_LOG'] = 'stdout'
+      ENV['HAWKULARCLIENT_LOG_RESPONSE'] = '1'
     end
   end
 

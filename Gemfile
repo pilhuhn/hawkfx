@@ -11,7 +11,7 @@ gem 'jrubyfx', :require => true
 #     :require => true,
 #     :git => 'https://github.com/pilhuhn/hawkular-client-ruby.git',
 #     :branch => 'complete-ops-definitions'
-gem 'hawkular-client', '~> 2.4.0', :require => true
+gem 'hawkular-client', '~> 2.6.0', :require => true
 gem 'addressable'
 
 gem 'rest-client'

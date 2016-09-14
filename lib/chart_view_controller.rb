@@ -51,7 +51,7 @@ class ChartViewController < Java::javafx::scene::layout::VBox
       series = xy_chart_series(name: metric.name)
 
       # if there is a metric-id property, use that as the ID, otherwise, use the instance ID itself
-      id = "#{metric.properties['metric-id']}"
+      id = "#{metric.properties['hawkular-metric-id']}"
       if id.to_s == ''
         puts 'Assuming the metric ID is the same as the inventory ID'
         id = metric.id

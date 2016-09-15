@@ -100,7 +100,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
   def show_avail_popup(the_tree_item, tree_view)
     stage = tree_view.scene.window
 
-    id = "#{the_tree_item.raw_item.properties['metric-id']}"
+    id = "#{the_tree_item.raw_item.properties['hawkular-metric-id']}"
     if id.to_s == ''
       puts 'Assuming the avail ID is the same as the inventory ID'
       id = the_tree_item.raw_item.id

@@ -60,6 +60,8 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
         # Add the metric to the charting component
         if the_tree_item.raw_item.type == 'AVAILABILITY'
           show_avail_popup(the_tree_item, tree_view)
+        elsif the_tree_item.raw_item.type == 'STRING'
+          show_string_popup(the_tree_item, tree_view )
         else
           chart_control = tree_view.scene.lookup('#myChartView')
           chart_control.add_remove_item the_tree_item.raw_item
@@ -108,6 +110,19 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
     puts "Using ID [#{id}] for metric [#{the_tree_item.raw_item.name}]"
 
     ::HawkHelper.show_avail_popup stage, id
+  end
+
+  def show_string_popup(the_tree_item, tree_view)
+    stage = tree_view.scene.window
+
+    id = "#{the_tree_item.raw_item.properties['hawkular-metric-id']}"
+    if id.to_s == ''
+      puts 'Assuming the string ID is the same as the inventory ID'
+      id = the_tree_item.raw_item.id
+    end
+    puts "Using ID [#{id}] for metric [#{the_tree_item.raw_item.name}]"
+
+    ::HawkHelper.show_string_popup stage, id
   end
 
   def add_metrics(children, the_tree_item)

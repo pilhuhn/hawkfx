@@ -80,11 +80,14 @@ class HawkMainController
     gauges.each { |g| g.type = 'GAUGE' }
     counters = Hawk.metrics.counters.query
     counters.each { |c| c.type = 'COUNTER' }
+    strings = Hawk.metrics.strings.query
+    strings.each { |c| c.type = 'STRING' }
 
     tree_root = build(::HTreeItem)
     tree_root.kind = :none
     tree_root.value = 'Metrics'
     metrics = gauges.concat counters
+    metrics = metrics.concat strings
 
     ascend_sort = ->(m1, m2) { m1.id <=> m2.id }
     metrics.sort(&ascend_sort).each do |metric_def|

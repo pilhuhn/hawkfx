@@ -54,7 +54,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
         add_child_resources(children, resources, the_tree_item) unless resources.empty?
       when :metric
         # Write path in lower text field
-        text = the_tree_item.raw_item.path
+        text = the_tree_item.raw_item.path + '\nID: -- ' + the_tree_item.raw_item.id # TODO add newline?
         set_result_text(tree_view, text)
 
         # Add the metric to the charting component
@@ -65,16 +65,31 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
         else
           chart_control = tree_view.scene.lookup('#myChartView')
           chart_control.add_remove_item the_tree_item.raw_item
+
+          # s_m_hash = {
+          #     'id' => '(+ metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , "max")
+          #          metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~NonHeap Used", "max"))',
+          #     'name' => 'Computed metric',
+          #     'type' => {
+          #         'type' => 'SYNTHETIC'
+          #     }
+          #
+          # }
+          # s_m = ::Hawkular::Inventory::Metric.new s_m_hash
+          # chart_control.add_remove_item s_m
+
         end
       when :operation
         text = the_tree_item.value
         set_result_text(tree_view, text)
       end
     end
-  end
+1  end
 
   def set_result_text(tree_view, text)
-    tree_view.scene.lookup('#FXMLtextArea').text = text
+    lower_text_area = tree_view.scene.lookup('#FXMLtextArea')
+    lower_text_area.pref_row_count = 2 # TODO move to FXML?
+    lower_text_area.text = text
   end
 
   def add_child_resources(children, resources, the_tree_item)

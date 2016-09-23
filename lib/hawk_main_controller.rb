@@ -127,6 +127,10 @@ class HawkMainController
     popup_stage.show
   end
 
+  def insert_synthetic
+    HawkHelper.run_synth_metric_popup @FXMLtreeView.scene.window
+  end
+
   def quit
     Platform.exit
   end

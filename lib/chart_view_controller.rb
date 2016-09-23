@@ -1,5 +1,6 @@
 require 'jrubyfx'
 require 'set'
+require_relative 'metric_expression_parser'
 
 class ChartViewController < Java::javafx::scene::layout::VBox
   include JRubyFX::Controller
@@ -50,19 +51,27 @@ class ChartViewController < Java::javafx::scene::layout::VBox
     @chart_items.each do |metric|
       series = xy_chart_series(name: metric.name)
 
-      # if there is a metric-id property, use that as the ID, otherwise, use the instance ID itself
-      id = "#{metric.properties['hawkular-metric-id']}"
-      if id.to_s == ''
-        puts 'Assuming the metric ID is the same as the inventory ID'
-        id = metric.id
+      if metric.type == 'SYNTHETIC'
+        # metric is a hawkular inventory Metric object
+
+        data = compute metric
+
+      else
+
+          # if there is a metric-id property, use that as the ID, otherwise, use the instance ID itself
+        id = "#{metric.properties['hawkular-metric-id']}"
+        if id.to_s == ''
+          puts 'Assuming the metric ID is the same as the inventory ID'
+          id = metric.id
+        end
+        puts "Using ID [#{id}] for metric [#{metric.name}]"
+
+        ep = ::HawkHelper.metric_endpoint metric
+        data = ep.get_data id, buckets: 120, ends: ends, starts: starts
+        h_metric_def = ep.get id
+
+        puts "Metric [#{id}] tags: #{h_metric_def.tags}"
       end
-      puts "Using ID [#{id}] for metric [#{metric.name}]"
-
-      ep = ::HawkHelper.metric_endpoint metric
-      data = ep.get_data id, buckets: 120, ends: ends, starts: starts
-      h_metric_def = ep.get id
-
-      puts "Metric [#{id}] tags: #{h_metric_def.tags}"
 
       data.each do |item|
         next if item.nil? || item['empty']
@@ -80,4 +89,23 @@ class ChartViewController < Java::javafx::scene::layout::VBox
 
     the_chart.data.setAll series_array
   end
+
+
+  def compute(inventory_metric)
+
+    MetricExpressionParser.parse(inventory_metric.id)
+
+  end
+
 end
+
+# Helper called from the parser
+module MetricNode
+  def get_metric_data(mid, aggr)
+    data = Hawk.metrics.gauges.get_data mid, buckets: 120
+
+    # Map the requested aggregate onto avg, as this is what is used later to graph
+    data.each {|dp| dp['avg'] = dp[aggr]}
+  end
+end
+

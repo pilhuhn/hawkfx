@@ -24,6 +24,8 @@
                                         text="List Metrics"/>
                               <MenuItem mnemonicParsing="false" onAction="#show_insert_metrics"
                                         text="Insert Metrics"/>
+                              <MenuItem mnemonicParsing="false" onAction="#insert_synthetic"
+                                        text="Insert synthetic Metric Def"/>
                               <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
                            </items>
                         </Menu>
@@ -37,7 +39,7 @@
                   <AnchorPane fx:id="FXMLChartAnchor" />
                </items>
             </SplitPane>
-            <TextArea fx:id="FXMLtextArea" prefHeight="53.0" prefWidth="767.0" />
+            <TextArea fx:id="FXMLtextArea" prefHeight="60.0" prefWidth="767.0" prefRowCount="2"/>
          </children>
       </VBox>
    </content>

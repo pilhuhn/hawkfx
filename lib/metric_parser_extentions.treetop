@@ -1,0 +1,44 @@
+grammar Mex
+
+  rule expression
+    '('? ( integer / metric / body / sumup ) ')'?  <ExpressionNode>
+  end
+
+  rule body
+     arithmetic / metric  / integer  <BodyNode>
+  end
+
+  rule arithmetic
+     ( '+' / '-' / '*' / '/' ) space oper1:expression space oper2:expression <ArithmeticNode>
+  end
+
+  rule metric # TODO externalize aggregates min, avg, median, max, sum, samples
+     'metric(' space? metric_id:string space? ',' space? aggregate:string space? ')'  <MetricNode>
+  end
+
+  rule sumup  # TODO limit to array types?
+    'sumup(' space? operand:body ')' <SumUpNode>
+  end
+
+  rule integer
+    ( '+' / '-')? [0-9]+ <IntegerLiteral>
+  end
+
+  rule string
+    '"' ([^"\\] / "\\" . )* '"'
+    {
+      def value
+        elements[1].text_value
+      end
+    }
+  end
+
+  rule float
+    ('+' / '-')? [0-9]+ (('.' [0-9]+) / ('e' [0-9]+))  <FloatLiteral>
+   end
+
+   rule space
+     [\s\n]+
+   end
+
+end

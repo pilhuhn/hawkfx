@@ -102,6 +102,19 @@
     end
   end
 
+  module ToANode
+    def value
+      val = operand.value
+      ret = []
+      120.times do |i|
+        dp = { start: 12340000 + i, avg: val } # TODO timestamps
+        ret << dp
+      end
+      ret
+
+    end
+  end
+
   module MetricNode
     def value
       mid = metric_id.value

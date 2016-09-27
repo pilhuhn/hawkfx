@@ -22,6 +22,13 @@ describe 'Basic Parsing' do
     expect(MetricExpressionParser.parse('(+ 1.2 2)')).to be 3.2
   end
 
+  it 'Should create numbers array' do
+    res = MetricExpressionParser.parse('(toa( 33))')
+    expect(res.size).to be 120
+    expect(res[0][:avg]).to eq 33
+    expect(res[119][:avg]).to eq 33
+  end
+
   it 'should parse simple metric' do
     res = MetricExpressionParser.parse('metric("bla", "avg")')
     expect(res.size).to be 120
@@ -65,9 +72,12 @@ describe 'Basic Parsing' do
   end
 
   it 'should sum up' do
-    text = 'sumup(metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , "max"))'
+    text = '(sumup(metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , "max")))'
     res = MetricExpressionParser.parse(text)
     expect(res).to be 42*120
+
+    res = MetricExpressionParser.parse('(sumup( toa( 33)))')
+    expect(res).to be 33*120
   end
 
 end

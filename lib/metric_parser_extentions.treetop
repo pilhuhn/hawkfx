@@ -1,7 +1,7 @@
 grammar Mex
 
   rule expression
-    '('? ( integer / metric / body / sumup ) ')'?  <ExpressionNode>
+    '('? ( integer / metric / body / sumup / toa ) ')'?  <ExpressionNode>
   end
 
   rule body
@@ -17,7 +17,11 @@ grammar Mex
   end
 
   rule sumup  # TODO limit to array types?
-    'sumup(' space? operand:body ')' <SumUpNode>
+    'sumup(' space? operand:expression ')' <SumUpNode>
+  end
+
+  rule toa
+    'toa(' space? operand:integer ')'  <ToANode>
   end
 
   rule integer

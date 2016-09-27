@@ -9,7 +9,7 @@
 
   module FloatLiteral
     def value
-      elements[1].text_value.to_f
+      elements[1].text_value.to_f + elements[2].text_value.to_f
     end
   end
 

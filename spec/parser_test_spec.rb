@@ -5,7 +5,7 @@ require 'metric_expression_parser'
 describe 'Basic Parsing' do
 
   it 'should parse basic' do
-    expect(MetricExpressionParser.parse('42')).to be 42
+    expect(MetricExpressionParser.parse('42')).to eq 42
     expect(MetricExpressionParser.parse('(42)')).to be 42
     expect(MetricExpressionParser.parse('(+ 1 2)')).to be 3
     expect(MetricExpressionParser.parse('(+
@@ -16,10 +16,11 @@ describe 'Basic Parsing' do
     expect(MetricExpressionParser.parse('(- 10 6')).to be 4
   end
 
-  it 'Should parse float',:skip => true  do
-    expect(MetricExpressionParser.parse('(+ 1.2 2.3)')).to be 3.6
-    expect(MetricExpressionParser.parse('(+ 1 2.3)')).to be 3.3
-    expect(MetricExpressionParser.parse('(+ 1.2 2)')).to be 3.2
+  it 'Should parse float'  do
+    expect(MetricExpressionParser.parse('1.2')).to eq 1.2
+    expect(MetricExpressionParser.parse('(+ 1.2 2.3)')).to eq 3.5
+    expect(MetricExpressionParser.parse('(+ 1 2.3)')).to eq 3.3
+    expect(MetricExpressionParser.parse('(+ 1.2 2)')).to eq 3.2
   end
 
   it 'Should create numbers array' do

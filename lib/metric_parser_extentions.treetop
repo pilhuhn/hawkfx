@@ -1,7 +1,7 @@
 grammar Mex
 
   rule expression
-    '('? ( integer / metric / body / sumup / toa ) ')'?  <ExpressionNode>
+    '('? ( integer / float / metric / body / sumup / toa ) ')'?  <ExpressionNode>
   end
 
   rule body
@@ -25,7 +25,7 @@ grammar Mex
   end
 
   rule integer
-    ( '+' / '-')? [0-9]+ <IntegerLiteral>
+    ( '+' / '-')? [0-9]+ !'.' <IntegerLiteral>
   end
 
   rule string

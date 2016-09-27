@@ -1,5 +1,5 @@
   module IntegerLiteral
-    def value
+    def value(_env)
       elements[1].text_value.to_i
     end
   end
@@ -8,33 +8,29 @@
   end
 
   module FloatLiteral
-    def value
+    def value(_env)
       elements[1].text_value.to_f + elements[2].text_value.to_f
     end
   end
 
   module ExpressionNode
-    def value
-      elements[1].value
+    def value(env={})
+      elements[1].value env
     end
   end
 
   module BodyNode
-    def value
-      # elements.each do |exp|
-      #   ret = exp.value
-      # end
-      # ret
-      elements[2].value
+    def value(env={})
+      elements[2].value env
     end
   end
 
 
   module ArithmeticNode
-    def value
+    def value(env)
       operator = elements[0].text_value
-      op1 = oper1.value
-      op2 = oper2.value
+      op1 = oper1.value env
+      op2 = oper2.value env
 
       if op1.is_a? Array
         if op2.is_a? Array
@@ -94,20 +90,21 @@
   end
 
   module SumUpNode
-    def value
+    def value(env)
       sum = 0
-      value = operand.value
+      value = operand.value env
       value.each {|dp| sum += dp[:avg]}
       sum
     end
   end
 
   module ToANode
-    def value
-      val = operand.value
+    def value(env={})
+      val = operand.value(env)
       ret = []
+      diff = (env[:end]-env[:start]) / 120
       120.times do |i|
-        dp = { start: 12340000 + i, avg: val } # TODO timestamps
+        dp = { start: env[:start] + i*diff, avg: val }
         ret << dp
       end
       ret
@@ -116,11 +113,11 @@
   end
 
   module MetricNode
-    def value
+    def value(env={})
       mid = metric_id.value
       aggr = aggregate.value
 
-      get_metric_data(mid, aggr)
+      get_metric_data(mid, aggr, env[:start], env[:end])
     end
 
 

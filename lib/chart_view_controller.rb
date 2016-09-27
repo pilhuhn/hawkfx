@@ -54,7 +54,7 @@ class ChartViewController < Java::javafx::scene::layout::VBox
       if metric.type == 'SYNTHETIC'
         # metric is a hawkular inventory Metric object
 
-        data = compute metric
+        data = compute metric, starts, ends
 
       else
 
@@ -91,9 +91,12 @@ class ChartViewController < Java::javafx::scene::layout::VBox
   end
 
 
-  def compute(inventory_metric)
+  def compute(inventory_metric, starts, ends)
 
-    MetricExpressionParser.parse(inventory_metric.id)
+    env = {}
+    env[:start] = starts
+    env[:end] = ends
+    MetricExpressionParser.parse(inventory_metric.id, env)
 
   end
 
@@ -101,8 +104,8 @@ end
 
 # Helper called from the parser
 module MetricNode
-  def get_metric_data(mid, aggr)
-    data = Hawk.metrics.gauges.get_data mid, buckets: 120
+  def get_metric_data(mid, aggr, starttime, endtime)
+    data = Hawk.metrics.gauges.get_data mid, buckets: 120, starts: starttime, ends: endtime
 
     # Map the requested aggregate onto avg, as this is what is used later to graph
     data.each {|dp| dp['avg'] = dp[aggr]}

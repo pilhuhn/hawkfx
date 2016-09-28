@@ -39,7 +39,8 @@
                   <AnchorPane fx:id="FXMLChartAnchor" />
                </items>
             </SplitPane>
-            <TextArea fx:id="FXMLtextArea" prefHeight="60.0" prefWidth="767.0" prefRowCount="2"/>
+            <TextField fx:id="FXMLidField" prefHeight="30.0" prefWidth="767.0" promptText="ID of the metric"/>
+            <TextArea fx:id="FXMLtextArea" prefHeight="60.0" prefWidth="767.0" prefRowCount="2" promptText="Path in Inventory"/>
          </children>
       </VBox>
    </content>

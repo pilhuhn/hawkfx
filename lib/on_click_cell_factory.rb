@@ -54,8 +54,9 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
         add_child_resources(children, resources, the_tree_item) unless resources.empty?
       when :metric
         # Write path in lower text field
-        text = the_tree_item.raw_item.path + '\nID: -- ' + the_tree_item.raw_item.id # TODO add newline?
+        text = the_tree_item.raw_item.path
         set_result_text(tree_view, text)
+        set_id_text(tree_view,  the_tree_item.raw_item.id)
 
         # Add the metric to the charting component
         if the_tree_item.raw_item.type == 'AVAILABILITY'
@@ -84,11 +85,16 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
         set_result_text(tree_view, text)
       end
     end
-1  end
+  end
 
   def set_result_text(tree_view, text)
     lower_text_area = tree_view.scene.lookup('#FXMLtextArea')
-    lower_text_area.pref_row_count = 2 # TODO move to FXML?
+    lower_text_area.pref_row_count = 2
+    lower_text_area.text = text
+  end
+
+  def set_id_text(tree_view, text)
+    lower_text_area = tree_view.scene.lookup('#FXMLidField')
     lower_text_area.text = text
   end
 

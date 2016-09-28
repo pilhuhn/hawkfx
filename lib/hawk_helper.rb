@@ -34,7 +34,7 @@ class HawkHelper
     popup_stage = ::Java::JavafxStage::Stage.new
     raw_display = ::AvailabilityDisplayController.load_into popup_stage
     raw_display.show_availability(id)
-    popup_stage.init_modality = :application
+    popup_stage.init_modality = :none
     popup_stage.init_owner parent_stage
     popup_stage.show
   end
@@ -102,7 +102,7 @@ class HawkHelper
   def self.run_synth_metric_popup(parent_stage)
     popup_stage = ::Java::JavafxStage::Stage.new
     control = ::AddSynthMetricController.load_into popup_stage
-    popup_stage.init_modality = :none
+    popup_stage.init_modality = :application
     popup_stage.init_owner parent_stage
     popup_stage.show
     control.parent = parent_stage

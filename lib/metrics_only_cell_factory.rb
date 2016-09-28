@@ -30,10 +30,13 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
       puts "Selected #{the_tree_item.value} -> #{the_tree_item.kind}"
       break unless the_tree_item.kind == :metric
 
-      # Write path in lower text field
+      # Write path (=ID in metrics only mode) in lower text field
       metric_def = the_tree_item.raw_item
       text = metric_def.id
       tree_view.scene.lookup('#FXMLtextArea').text = text
+
+      # Also write this in the ID field
+      tree_view.scene.lookup('#FXMLidField').text = text
 
       # Add to items to be charted
       chart_control = tree_view.scene.lookup('#myChartView')

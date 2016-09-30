@@ -66,19 +66,6 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
         else
           chart_control = tree_view.scene.lookup('#myChartView')
           chart_control.add_remove_item the_tree_item.raw_item
-
-          # s_m_hash = {
-          #     'id' => '(+ metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , "max")
-          #          metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~NonHeap Used", "max"))',
-          #     'name' => 'Computed metric',
-          #     'type' => {
-          #         'type' => 'SYNTHETIC'
-          #     }
-          #
-          # }
-          # s_m = ::Hawkular::Inventory::Metric.new s_m_hash
-          # chart_control.add_remove_item s_m
-
         end
       when :operation
         text = the_tree_item.value

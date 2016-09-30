@@ -1,5 +1,22 @@
 grammar Mex
 
+  rule program
+    v:vars? e:expression? <ProgramNode>
+#    expression <ProgramNode>
+  end
+
+  rule vars
+    var (space? vars)? space? <VarsDefinition>
+  end
+
+  rule var
+    'var ' varRef space? '=' space? id:string <VarDefinition>
+  end
+
+  rule varRef
+    '$' name:chars <VarRef>
+  end
+
   rule expression
     '('? ( integer / float / metric / body / sumup / toa ) ')'?  <ExpressionNode>
   end
@@ -13,7 +30,7 @@ grammar Mex
   end
 
   rule metric # TODO externalize aggregates min, avg, median, max, sum, samples
-     'metric(' space? metric_id:string space? ',' space? aggregate:string space? ')'  <MetricNode>
+     'metric(' space? metric_id:(string / varRef )  space? ',' space? aggregate:string space? ')'  <MetricNode>
   end
 
   rule sumup  # TODO limit to array types?
@@ -42,7 +59,16 @@ grammar Mex
    end
 
    rule space
-     [\s\n]+
+     [\s\n\t]+
    end
+
+  rule chars
+     [a-zA-Z]+
+    {
+      def value
+        elements[0].text_value
+      end
+    }
+  end
 
 end

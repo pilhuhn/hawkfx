@@ -27,7 +27,8 @@ class MetricExpressionParser
     if env.empty?
       ends = Time.now.to_i * 1000 # Hawkular wants ms
       starts = ends - 1000 * 8 * 60 * 60 # 8h
-      env = { start: starts, end: ends }
+      env[:start] =starts
+      env[:end] = ends
     end
 
     return tree.value env

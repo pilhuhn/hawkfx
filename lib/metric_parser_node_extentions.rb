@@ -13,6 +13,13 @@
     end
   end
 
+  module ProgramNode
+    def value(env)
+      v.value env unless v.text_value.empty?
+      e.value env unless e.text_value.empty?
+    end
+  end
+
   module ExpressionNode
     def value(env={})
       elements[1].value env
@@ -114,11 +121,38 @@
 
   module MetricNode
     def value(env={})
-      mid = metric_id.value
+      m_val = metric_id.text_value
+      mid = m_val.start_with?('$') ? metric_id.value(env) : metric_id.value
       aggr = aggregate.value
 
       get_metric_data(mid, aggr, env[:start], env[:end])
     end
 
+  end
 
+  module VarRef
+    def value(env={})
+      name = '$'+elements[1].text_value
+      raise "Variable #{name} not found" if env.empty? || !env.key?(:vars) || !env[:vars].key?(name)
+      env[:vars][name]
+    end
+  end
+
+
+  module VarDefinition
+    def value(env={})
+      name = elements[1].text_value
+      val = elements[5].value # TODO pass env once we allow more than string
+      env[:vars] ||= {}
+      env[:vars][name] = val
+    end
+  end
+
+  module VarsDefinition
+    def value(env={})
+      elements[0].value env
+      # elements.each do |e|
+      #   e.value env unless e.empty?
+      # end
+    end
   end

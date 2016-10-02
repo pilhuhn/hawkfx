@@ -19,7 +19,7 @@ class MetricExpressionParser
     # If the AST is nil then there was an error during parsing
     # we need to report a simple error message to help the user
     if(tree.nil?)
-      puts "Input : #{data}"
+      puts "Input : >>|#{data}|<<"
       puts @@parser.terminal_failures.join("\n")
       raise Exception, "Parse error: #{@@parser.failure_reason}"
     end

@@ -115,7 +115,29 @@ describe 'Basic Parsing' do
     expect(env.size).to eq 3
   end
 
-  it 'should parse varRef' do
+  it 'should parse metric varDef' do
+    env = {start: 200, end: 100}
+    MetricExpressionParser.parse('var $a = metric("blabla","max");', env)
+    expect(env).not_to be nil
+    expect(env.size).to eq 3
+    expect(env.key? :vars).to be_truthy
+    expect(env[:vars].key? 'a').to be true
+    expect(env[:vars]['a'].size).to eq 120
+  end
+
+  it 'should parse metric varDef2' do
+    env = {start: 200, end: 100}
+    res = MetricExpressionParser.parse('var $a = metric("blabla","max");
+(sumup($a))', env)
+    expect(env).not_to be nil
+    expect(env.size).to eq 3
+    expect(env.key? :vars).to be_truthy
+    expect(env[:vars].key? 'a').to be true
+    expect(env[:vars]['a'].size).to eq 120
+    expect(res).to eq 120*42
+  end
+
+  it 'should parse string varRef' do
     text = 'var $a = "bla";
             metric($a, "max")'
     res = MetricExpressionParser.parse(text)

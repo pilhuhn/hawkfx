@@ -4,9 +4,6 @@
     end
   end
 
-  module StringLiteral
-  end
-
   module FloatLiteral
     def value(_env)
       elements[1].text_value.to_f + elements[2].text_value.to_f
@@ -142,7 +139,7 @@
   module VarDefinition
     def value(env={})
       name = elements[1].text_value
-      val = elements[5].value # TODO pass env once we allow more than string
+      val = elements[5].value env
       env[:vars] ||= {}
       env[:vars][name] = val
     end
@@ -151,9 +148,6 @@
   module VarsDefinition
     def value(env={})
       elements.each do |e|
-        # puts "|#{e.text_value}|, terminal? #{e.terminal?}"
-        # puts e.inspect
-
         unless e.empty? || e.elements.first.text_value.strip.empty?
           if e.elements.first.terminal?
             e.value env

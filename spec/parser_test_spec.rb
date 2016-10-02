@@ -83,31 +83,40 @@ describe 'Basic Parsing' do
 
   it 'should parse var'  do
     env = {}
-    MetricExpressionParser.parse('var $a = "bla"', env)
+    MetricExpressionParser.parse('var $a = "bla";', env)
     expect(env).not_to be nil
     expect(env.size).to eq 3
     expect(env.key? :vars).to be_truthy
-    expect(env[:vars].key? '$a').to be true
-    expect(env[:vars]['$a']).to eq 'bla'
+    expect(env[:vars].key? 'a').to be true
+    expect(env[:vars]['a']).to eq 'bla'
   end
 
-  it 'should parse two vars', :skip => true  do
+  it 'should parse two vars', :skip => false  do
     env = {}
     MetricExpressionParser.parse(
-        'var $a = "bla"
-         var $b = "foo"
-', env)
+        'var $a = "bla";
+         var $b = "foo";', env)
     expect(env).not_to be nil
     expect(env.size).to eq 3
     expect(env.key? :vars).to be_truthy
-    expect(env[:vars].key? '$a').to be true
-    expect(env[:vars]['$a']).to eq 'bla'
-    expect(env[:vars].key? '$b').to be true
-    expect(env[:vars]['$b']).to eq 'foo'
+    expect(env[:vars].key? 'a').to be true
+    expect(env[:vars]['a']).to eq 'bla'
+    expect(env[:vars].key? 'b').to be true
+    expect(env[:vars]['b']).to eq 'foo'
+  end
+
+  it 'should parse three vars' do
+    env = {}
+    MetricExpressionParser.parse(
+        'var $a = "bla";
+         var $c = "42";
+         var $b = "foo";', env)
+    expect(env).not_to be nil
+    expect(env.size).to eq 3
   end
 
   it 'should parse varRef' do
-    text = 'var $a = "bla"
+    text = 'var $a = "bla";
             metric($a, "max")'
     res = MetricExpressionParser.parse(text)
     expect(res.size).to be 120

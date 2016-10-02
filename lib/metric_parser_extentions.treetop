@@ -2,15 +2,14 @@ grammar Mex
 
   rule program
     v:vars? e:expression? <ProgramNode>
-#    expression <ProgramNode>
   end
 
   rule vars
-    var (space? vars)? space? <VarsDefinition>
+    var ( space+ var )* space? <VarsDefinition>
   end
 
   rule var
-    'var ' varRef space? '=' space? id:string <VarDefinition>
+    'var $' name:chars space? '=' space? string ';' <VarDefinition>
   end
 
   rule varRef

@@ -132,7 +132,7 @@
 
   module VarRef
     def value(env={})
-      name = '$'+elements[1].text_value
+      name = elements[1].text_value
       raise "Variable #{name} not found" if env.empty? || !env.key?(:vars) || !env[:vars].key?(name)
       env[:vars][name]
     end
@@ -150,9 +150,17 @@
 
   module VarsDefinition
     def value(env={})
-      elements[0].value env
-      # elements.each do |e|
-      #   e.value env unless e.empty?
-      # end
+      elements.each do |e|
+        # puts "|#{e.text_value}|, terminal? #{e.terminal?}"
+        # puts e.inspect
+
+        unless e.empty? || e.elements.first.text_value.strip.empty?
+          if e.elements.first.terminal?
+            e.value env
+          else
+            e.elements.first.elements.last.value env
+          end
+        end
+      end
     end
   end

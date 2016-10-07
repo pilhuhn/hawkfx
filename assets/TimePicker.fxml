@@ -18,19 +18,16 @@
       </Label>
       <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#select_time" prefHeight="27.0" prefWidth="50.0" text="30min" textOverrun="CLIP">
          <toggleGroup>
-            <ToggleGroup fx:id="pickerGroup1" />
+            <ToggleGroup fx:id="pickerGroup" />
          </toggleGroup>
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
       </ToggleButton>
-      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#select_time" prefHeight="27.0" prefWidth="50.0" text="1h" textOverrun="CLIP">
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#select_time" prefHeight="27.0" prefWidth="50.0" text="1h" textOverrun="CLIP"  toggleGroup="$pickerGroup">
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
-         <toggleGroup>
-            <ToggleGroup fx:id="pickerGroup" />
-         </toggleGroup>
       </ToggleButton>
       <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#select_time" prefHeight="27.0" prefWidth="50.0" text="8h" textOverrun="CLIP" toggleGroup="$pickerGroup">
          <HBox.margin>

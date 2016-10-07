@@ -23,13 +23,6 @@
     end
   end
 
-  module BodyNode
-    def value(env={})
-      elements[2].value env
-    end
-  end
-
-
   module ArithmeticNode
     def value(env)
       operator = elements[0].text_value

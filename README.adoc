@@ -31,7 +31,7 @@ The explorer requires JRuby in version 9+ and Java8
 
 If you are using `rvm` you can select it via
 
-`rvm use jruby-9.1.2.0`
+`rvm use jruby-9.1.5.0`
 
 install and use `bundler` to install the required gems
 
@@ -41,4 +41,4 @@ install and use `bundler` to install the required gems
 
 then run
 
-`bundle exec jruby hawkfx.rb`
+`jruby -S -G hawkfx.rb`

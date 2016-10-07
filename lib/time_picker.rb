@@ -26,6 +26,8 @@ class TimePicker < Java::javafx::scene::layout::HBox
       offset = 1
     when '1h'
       offset = 2
+    when '4h'
+      offset = 8
     when '8h'
       offset = 16
     when '12h'

@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root fx:id="FXMLTimePicker" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="447.0" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="FXMLTimePicker" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="500.0" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label text="Show last">
          <HBox.margin>
@@ -25,6 +25,11 @@
          </HBox.margin>
       </ToggleButton>
       <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#select_time" prefHeight="27.0" prefWidth="50.0" text="1h" textOverrun="CLIP"  toggleGroup="$pickerGroup">
+         <HBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </HBox.margin>
+      </ToggleButton>
+      <ToggleButton minWidth="-Infinity" mnemonicParsing="false" onAction="#select_time" prefHeight="27.0" prefWidth="50.0" text="4h" textOverrun="CLIP"  toggleGroup="$pickerGroup">
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>

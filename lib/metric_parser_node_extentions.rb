@@ -95,6 +95,21 @@
     end
   end
 
+  module RateNode
+    def value(env)
+      previous = 0
+      normalize = norm.text_value == 'true'
+      value = operand.value env
+      value.each do |dp|
+        diff = dp[:avg] - previous
+        previous = dp[:avg]
+        t = normalize ? (dp[:end] - dp[:start])/1000 : 1
+        dp[:avg] = diff / t
+      end
+      value
+    end
+  end
+
   module ToANode
     def value(env={})
       val = operand.value(env)

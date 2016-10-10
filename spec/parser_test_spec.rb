@@ -81,6 +81,19 @@ describe 'Basic Parsing' do
     expect(res).to be 33*120
   end
 
+  it 'should rate' do
+    text = 'var $m = metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , "max");
+(rate($m, true))'
+    res = MetricExpressionParser.parse(text)
+    expect(res.size).to eq 120
+    expect(res[0][:avg]).to eq 0
+
+    text = '(rate(metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , "max"), false))'
+    res = MetricExpressionParser.parse(text)
+    expect(res.size).to eq 120
+
+  end
+
   it 'should parse var'  do
     env = {}
     MetricExpressionParser.parse('var $a = "bla";', env)

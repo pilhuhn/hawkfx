@@ -17,7 +17,7 @@ grammar Mex
   end
 
   rule expression
-    '('? ( integer / float / sumup / toa / varRef / arithmetic / metric ) ')'?  <ExpressionNode>
+    '('? ( integer / float / sumup / rate / toa / varRef / arithmetic / metric ) ')'?  <ExpressionNode>
   end
 
   rule arithmetic
@@ -30,6 +30,10 @@ grammar Mex
 
   rule sumup  # TODO limit to array types?
     'sumup(' space? operand:expression ')' <SumUpNode>
+  end
+
+  rule rate  # TODO limit to array types?
+    'rate(' space? operand:expression space? ',' space? norm:( 'true' / 'false' ) ')' <RateNode>
   end
 
   rule toa

@@ -7,7 +7,9 @@ module MetricNode
   diff = (ends-starts) / 120
 
   120.times do |i|
-    dp = { start: starts + i*diff, avg: aggr == 'min' ? 7 : 42}
+    dp = { start: starts + i*diff,
+           end: starts + (i+1)*diff,
+           avg: aggr == 'min' ? 7 : 42}
     ret << dp
   end
   ret

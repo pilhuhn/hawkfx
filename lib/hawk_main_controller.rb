@@ -43,9 +43,10 @@ class HawkMainController
   def show_initial_tree_with_feeds
     tree_root = build(::HTreeItem)
     tree_root.kind = :none
-    tree_root.value = 'Feeds'
 
     feeds = Hawk.inventory.list_feeds
+    tree_root.value = "Feeds (#{feeds.size})"
+
     feeds.each do |feed|
       iv = ::HawkHelper.create_icon 'F'
 

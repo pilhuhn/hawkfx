@@ -73,17 +73,36 @@ class ChartViewController < Java::javafx::scene::layout::VBox
         puts "Metric [#{id}] tags: #{h_metric_def.tags}"
       end
 
+      # if our data has holes, check if it is only the first one
+      # and if so copy its value from the 2nd
+      if data[0]['empty'] && !data[1]['empty']
+        previous_value = data[1]['max']
+      else
+        previous_value = 0
+      end
+
+
       data.each do |item|
-        next if item.nil? || item['empty']
+        next if item.nil?
+
+        # If the item is empty, just use the previous value
+        # This can happen when there are more buckets than
+        # raw data items for a time span (e.g. bucket is 30s long)
+        # but we collect only every minute
+        # Or when 7 days of data is requested and only 1 is recorded
+        if item['empty']
+          item['max'] = previous_value
+        else
+          previous_value = item['max']
+        end
+
 
         ts = item['start'] / 1000 # buckets -> start || timestamp for raw
         time = Time.at(ts).to_s
-        val = item['avg'] # buckets -> avg(?) || value for raw
+        val = item['max'] # buckets -> avg(?) || value for raw
         series.data.add xy_chart_data time, val
       end
 
-      # the_chart.data.remove series # TODO don't re-add existing - rather replace
-      # the_chart.data.add series # TODO don't re-add existing - rather replace
       series_array << series
     end
 

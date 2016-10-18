@@ -26,6 +26,10 @@
                                         text="Insert Metrics"/>
                               <MenuItem mnemonicParsing="false" onAction="#insert_synthetic"
                                         text="Insert synthetic Metric Def"/>
+                              <MenuItem mnemonicParsing="false" onAction="#insert_alert_trigger"
+                                        text="Insert Alert trigger"/>
+                              <MenuItem mnemonicParsing="false" onAction="#list_alert_triggers"
+                                        text="List Alert triggers"/>
                               <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
                            </items>
                         </Menu>

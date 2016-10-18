@@ -1,5 +1,6 @@
 require 'jrubyfx'
 require_relative 'add_synth_metric_controller'
+require_relative 'add_trigger_controller'
 require_relative 'availability_display_controller'
 require_relative 'hawk'
 require_relative 'key_value_editor'
@@ -99,9 +100,14 @@ class HawkHelper
     ops_control
   end
 
-  def self.run_synth_metric_popup(parent_stage)
+  def self.run_synth_metric_popup(parent_stage, mode)
     popup_stage = ::Java::JavafxStage::Stage.new
-    control = ::AddSynthMetricController.load_into popup_stage
+    case mode
+      when :METRIC
+        control = ::AddSynthMetricController.load_into popup_stage
+    when :TRIGGER
+      control = ::AddTriggerController.load_into popup_stage
+    end
     popup_stage.init_modality = :application
     popup_stage.init_owner parent_stage
     popup_stage.show

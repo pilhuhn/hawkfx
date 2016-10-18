@@ -1,0 +1,107 @@
+#define trigger "name"
+#  enabled
+#  id "id"
+#  conditions
+#     ( type THRES, ... 
+#       data_id  <metric_id>
+#       operator
+#       threshold
+#     ),
+#    ( ... )
+#   actions
+#    ( plugin "email" ),
+#    ( ... )
+#
+
+grammar TriggerDefinition
+   
+   rule define
+     'define trigger ' space? name:string space?
+     enabled:enabled? space? id:id? space? cond:condition space? act:action?
+     ae:auto_enable? space? ad:auto_disable? space?
+     <DefineNode>
+   end
+   
+   rule enabled
+     'enabled'
+   end
+
+   rule auto_disable
+     'auto-disable'
+   end
+
+   rule auto_enable
+     'auto-enable'
+   end
+
+   rule id
+     'id' space? id:string space+
+     {
+       def value(_env)
+         id.value _env
+       end
+     }
+   end
+
+   rule condition
+     '(' space? mode:( threshold / availability ) space? ')' <ConditionNode>
+   end
+
+   rule threshold
+     'threshold ' space* metric:string space? comp:( '>' / '=' / '<' / '<=' / '>=' / '<>' ) space? ref:number
+     <ThresholdNode>
+   end
+
+   rule availability
+     'availability ' space* metric:string space+ 'is' space+ ref:( 'UP' / 'DOWN' / 'NOT_UP' ) space?
+     <AvailabilityNode>
+   end
+
+
+   rule action
+     "(" string ")"  # TODO
+   end
+
+
+  rule number
+    ( float / integer)
+  end
+
+
+
+   rule string
+     '"' ([^"\\] / "\\" . )* '"'
+     {
+       def value(_env=nil)
+         elements[1].text_value
+       end
+     }
+   end
+
+   rule boolean
+    value:( 'true' / 'false' )
+   end
+
+   rule space
+     [\s\n\t]+
+   end
+
+  rule chars
+     [a-zA-Z]+
+    {
+      def value
+        elements[0].text_value
+      end
+    }
+  end
+
+  rule float
+    ('+' / '-')? [0-9]+ (('.' [0-9]+) / ('e' [0-9]+))  <FloatLiteral>
+  end
+
+  rule integer
+    ( '+' / '-')? [0-9]+ !'.' <IntegerLiteral>
+  end
+
+
+end

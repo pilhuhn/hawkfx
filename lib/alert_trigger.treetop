@@ -44,17 +44,23 @@ grammar TriggerDefinition
    end
 
    rule condition
-     '(' space? mode:( threshold / availability ) space? ')' <ConditionNode>
+     '(' space? mode:( threshold / availability / stringcond ) space? ')' <ConditionNode>
    end
 
    rule threshold
-     'threshold ' space* metric:string space? comp:( '>' / '=' / '<' / '<=' / '>=' / '<>' ) space? ref:number
+     'threshold ' space? mt:type? space? metric:string space? comp:( '>' / '=' / '<' / '<=' / '>=' / '<>' ) space? ref:number
      <ThresholdNode>
    end
 
    rule availability
      'availability ' space* metric:string space+ 'is' space+ ref:( 'UP' / 'DOWN' / 'NOT_UP' ) space?
      <AvailabilityNode>
+   end
+
+
+   rule stringcond
+     'string ' space* metric:string space+ comp:('EQ' / 'NE' / 'SW' / 'EW' / 'CO' / 'MA') space+ ref:string
+     <StringConditionNode>
    end
 
 
@@ -67,6 +73,9 @@ grammar TriggerDefinition
     ( float / integer)
   end
 
+  rule type
+     ( 'gauge' / 'counter' / 'crate' / 'grate') <MetricTypeNode>
+   end
 
 
    rule string

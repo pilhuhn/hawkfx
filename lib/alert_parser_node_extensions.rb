@@ -36,7 +36,8 @@ module ThresholdNode
   def value(env = {}, cond)
     puts 'TH'
     cond.type = :THRESHOLD
-    cond.data_id = metric.value env
+    prefix = mt.empty? ? 'hm_g' : (mt.value env)
+    cond.data_id = "#{prefix}_#{metric.value env}"
     cond.operator =
         case comp.text_value
         when '<'
@@ -60,10 +61,58 @@ module AvailabilityNode
   def value(env = {}, cond)
     puts 'AV'
     cond.type = :AVAILABILITY
-    cond.data_id = metric.value env
+    cond.data_id = "hm_a_#{metric.value env}"
     cond.operator = ref.text_value
   end
+end
 
+module StringConditionNode
+  def value(env = {}, cond)
+    cond.type = :STRING
+    cond.data_id = "hm_s_#{metric.value env}"
+    cond.operator = case comp.text_value
+                    when 'EQ'
+                      :EQUAL
+                    when 'NE'
+                      :NOT_EQUAL
+                    when 'SW'
+                      :STARTS_WITH
+                    when 'EW'
+                      :ENDS_WITH
+                    when 'CO'
+                      :CONTAINS
+                    when 'MA'
+                      :MATCH
+                    end
+    cond.threshold = ref.value env # TODO what is the correct field?
+  end
+end
+
+module MetricTypeNode
+  # The prefixes are:
+  #
+  # hm_a: availability
+  # hm_c: counter
+  # hm_cr: counter rate
+  # hm_g: gauge
+  # hm_gr: gauge rate
+  # hm_s: string
+  def value(env = {})
+    case text_value
+    when 'gauge'
+      'hm_g'
+    when 'counter'
+      'hm_c'
+    when 'grate'
+      'hm_gr'
+    when 'crate'
+      'hm_cr'
+    when 'string'
+      'hm_s'
+    when 'avail'
+      'hm_a'
+    end
+  end
 end
 
 module IntegerLiteral

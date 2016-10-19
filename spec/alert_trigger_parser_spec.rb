@@ -43,13 +43,13 @@ define trigger "MyTrigger"
     t = AlertDefinitionParser.parse text
     expect(t[:trigger].enabled).to be_truthy
     expect(t[:trigger].auto_disable).to be_truthy
-    expect(t[:trigger].id).to be_nil
+    expect(t[:trigger].id).not_to be_nil
   end
 
 end
 
 describe 'Condition Parsing' do
-  it 'should parse threshold' do
+  it 'should parse threshold default gauge' do
     text = <<-EOT
 define trigger "MyTrigger"
 ( threshold "myvalue" > 3 )
@@ -61,7 +61,41 @@ define trigger "MyTrigger"
     expect(c).not_to be_nil
     expect(c.trigger_mode).to be :FIRING
     expect(c.type).to be :THRESHOLD
-    expect(c.data_id).to eq 'myvalue'
+    expect(c.data_id).to eq 'hm_g_myvalue'
+    expect(c.threshold).to eq 3
+    expect(c.operator).to be :GT
+  end
+
+  it 'should parse threshold explicit gauge' do
+    text = <<-EOT
+define trigger "MyTrigger"
+( threshold gauge "myvalue" > 3 )
+    EOT
+    t = AlertDefinitionParser.parse text
+    expect(t[:trigger].name).to eq 'MyTrigger'
+    expect(t[:conditions].length).to eq 1
+    c = t[:conditions].first
+    expect(c).not_to be_nil
+    expect(c.trigger_mode).to be :FIRING
+    expect(c.type).to be :THRESHOLD
+    expect(c.data_id).to eq 'hm_g_myvalue'
+    expect(c.threshold).to eq 3
+    expect(c.operator).to be :GT
+  end
+
+  it 'should parse threshold explicit counter' do
+    text = <<-EOT
+define trigger "MyTrigger"
+( threshold counter "myvalue" > 3 )
+    EOT
+    t = AlertDefinitionParser.parse text
+    expect(t[:trigger].name).to eq 'MyTrigger'
+    expect(t[:conditions].length).to eq 1
+    c = t[:conditions].first
+    expect(c).not_to be_nil
+    expect(c.trigger_mode).to be :FIRING
+    expect(c.type).to be :THRESHOLD
+    expect(c.data_id).to eq 'hm_c_myvalue'
     expect(c.threshold).to eq 3
     expect(c.operator).to be :GT
   end
@@ -79,8 +113,26 @@ define trigger "MyTrigger"
     expect(c).not_to be_nil
     expect(c.trigger_mode).to be :FIRING
     expect(c.type).to be :AVAILABILITY
-    expect(c.data_id).to eq 'mymetric'
+    expect(c.data_id).to eq 'hm_a_mymetric'
     expect(c.operator).to eq 'DOWN'
+  end
+
+  it 'should parse string' do
+    text = <<-EOT
+define trigger "MyTrigger"
+  enabled
+  ( string "mymetric" CO "ERROR" )
+    EOT
+    t = AlertDefinitionParser.parse text
+    expect(t[:trigger].name).to eq 'MyTrigger'
+    expect(t[:conditions].length).to eq 1
+    c = t[:conditions].first
+    expect(c).not_to be_nil
+    expect(c.trigger_mode).to be :FIRING
+    expect(c.type).to be :STRING
+    expect(c.data_id).to eq 'hm_s_mymetric'
+    expect(c.operator).to eq :CONTAINS
+    expect(c.threshold).to eq 'ERROR' # TODO
   end
 
 end

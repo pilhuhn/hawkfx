@@ -25,7 +25,11 @@ class AddTriggerController
     end
 
     begin
-      Hawk.alerts.create_trigger env[:trigger], env[:conditions], nil
+      env[:actionDefs].each do |acdef|
+        Hawk.alerts.create_action acdef[:plugin], acdef[:id], 'to' => acdef[:to]
+      end
+
+      Hawk.alerts.create_trigger env[:trigger], env[:conditions], nil, env[:actions]
       puts 'Trigger created'
     rescue Exception => e
       puts 'Trigger creation failed : ' + e.to_s

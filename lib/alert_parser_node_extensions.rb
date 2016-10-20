@@ -10,14 +10,46 @@ module DefineNode
     t.id = id.value env unless id.empty?
     t.auto_disable = true unless ad.empty?
     t.auto_enable = true unless ae.empty?
+    t.severity = sev.empty? ? 'MEDIUM' : (sev.value env)
 
     env[:trigger] = t
     env[:conditions] = []
+    env[:actions] = []
+    env[:actionDefs] = []
+    env[:tid] = t.id
 
     # Evaluate conditions
     cond.value env
 
+    # And actions
+    act.value env unless act.empty?
 
+
+  end
+end
+
+module ConditionsNode
+  def value(env = {})
+    puts 'Conditions'
+    conds.value env
+  end
+end
+
+module  AndConditionNode
+  def value(env = {})
+    puts "And"
+    elements[2].value env
+    elements[4].value env
+    env[:trigger].firing_match = :ALL
+  end
+end
+
+module  OrConditionNode
+  def value(env = {})
+    puts 'OrNode'
+    elements[2].value env
+    elements[4].value env
+    env[:trigger].firing_match = :ANY
   end
 end
 
@@ -112,6 +144,32 @@ module MetricTypeNode
     when 'avail'
       'hm_a'
     end
+  end
+end
+
+module ActionNode
+  def value(env = {} )
+    a = Hawkular::Alerts::Trigger::Action.new({})
+
+    act.value env, a
+
+    env[:actions] << a
+  end
+
+end
+
+module EmailNode
+  def value(env={}, action)
+
+    env[:actionDefs] <<
+      {
+        :plugin => :email,
+        :to => rec.value(env),
+        :id => "action-email-#{env[:tid]}"
+
+      }
+    action.action_plugin = :email
+    action.action_id = "action-email-#{env[:tid]}"
   end
 end
 

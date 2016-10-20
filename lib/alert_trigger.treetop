@@ -1,23 +1,11 @@
-#define trigger "name"
-#  enabled
-#  id "id"
-#  conditions
-#     ( type THRES, ... 
-#       data_id  <metric_id>
-#       operator
-#       threshold
-#     ),
-#    ( ... )
-#   actions
-#    ( plugin "email" ),
-#    ( ... )
-#
 
 grammar TriggerDefinition
    
    rule define
      'define trigger ' space? name:string space?
-     enabled:enabled? space? id:id? space? cond:condition space? act:action?
+     enabled:enabled? space?
+     sev:severity? space?
+     id:id? space? cond:conditions space? act:action?
      ae:auto_enable? space? ad:auto_disable? space?
      <DefineNode>
    end
@@ -34,6 +22,16 @@ grammar TriggerDefinition
      'auto-enable'
    end
 
+   rule severity
+     'severity ' space? sev:( 'LOW' / 'HIGH' / 'MEDIUM')
+      {
+        def value(_env)
+          sev.text_value
+        end
+      }
+   end
+
+
    rule id
      'id' space? id:string space+
      {
@@ -42,6 +40,18 @@ grammar TriggerDefinition
        end
      }
    end
+
+  rule conditions
+    conds:(and_cond / or_cond / condition)  <ConditionsNode>
+end
+
+  rule and_cond
+    'AND(' space? condition space condition space? ')' <AndConditionNode>
+  end
+
+  rule or_cond
+    'OR(' space? condition space condition space? ')' <OrConditionNode>
+  end
 
    rule condition
      '(' space? mode:( threshold / availability / stringcond ) space? ')' <ConditionNode>
@@ -65,9 +75,12 @@ grammar TriggerDefinition
 
 
    rule action
-     "(" string ")"  # TODO
+     act:( email ) <ActionNode>
    end
 
+   rule email
+     'send email to ' space? rec:string <EmailNode>
+   end
 
   rule number
     ( float / integer)

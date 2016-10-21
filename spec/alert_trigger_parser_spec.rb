@@ -11,6 +11,7 @@ define trigger "MyTrigger"
     EOT
     t = AlertDefinitionParser.parse text
     expect(t[:trigger].name).to eq 'MyTrigger'
+    expect(t[:trigger].enabled).to be_truthy
   end
 
   it 'should parse basic with id' do
@@ -26,19 +27,18 @@ define trigger "MyTrigger"
   it 'should parse basic enabled' do
     text = <<-EOT
 define trigger "MyTrigger"
- enabled
+ disabled
  severity HIGH
  ( availability "myvalue" is DOWN )
     EOT
     t = AlertDefinitionParser.parse text
-    expect(t[:trigger].enabled).to be_truthy
+    expect(t[:trigger].enabled).to be_falsey
     expect(t[:trigger].severity).to eq 'HIGH'
   end
 
   it 'should parse basic enabled, auto-disable' do
     text = <<-EOT
 define trigger "MyTrigger"
- enabled
  ( threshold "myvalue" > 3 )
  auto-disable
     EOT
@@ -106,7 +106,6 @@ define trigger "MyTrigger"
   it 'should parse availability' do
     text = <<-EOT
 define trigger "MyTrigger"
-  enabled
   ( availability "mymetric" is DOWN )
     EOT
     t = AlertDefinitionParser.parse text
@@ -123,7 +122,6 @@ define trigger "MyTrigger"
   it 'should parse string' do
     text = <<-EOT
 define trigger "MyTrigger"
-  enabled
   ( string "mymetric" CO "ERROR" )
     EOT
     t = AlertDefinitionParser.parse text
@@ -141,7 +139,6 @@ define trigger "MyTrigger"
   it 'should parse threshold and string' do
     text = <<-EOT
 define trigger "MyTrigger"
-  enabled
   AND(
     ( threshold counter "mycount" < 5 )
     ( string "mymetric" CO "ERROR" )
@@ -162,7 +159,6 @@ define trigger "MyTrigger"
   it 'should parse threshold or availability' do
     text = <<-EOT
 define trigger "MyTrigger"
-  enabled
   OR(
     ( threshold counter "mycount" < 5 )
     ( availability "mymetric" is NOT_UP )
@@ -187,7 +183,6 @@ define trigger "MyTrigger"
   it 'should parse threshold or availability or string' , :skip => true do
     text = <<-EOT
 define trigger "MyTrigger"
-  enabled
   OR(
     ( threshold counter "mycount" < 5 )
     ( availability "mymetric" is NOT_UP )
@@ -205,7 +200,6 @@ describe 'Action Parsing' do
   it 'should parse email' do
     text = <<-EOT
 define trigger "MyTrigger"
-enabled
 ( threshold "myvalue" > 3 )
 send email to "hwr@bsd.de"
     EOT

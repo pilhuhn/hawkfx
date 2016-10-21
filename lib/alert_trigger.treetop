@@ -3,15 +3,15 @@ grammar TriggerDefinition
    
    rule define
      'define trigger ' space? name:string space?
-     enabled:enabled? space?
+     disabled:disabled? space?
      sev:severity? space?
      id:id? space? cond:conditions space? act:action?
      ae:auto_enable? space? ad:auto_disable? space?
      <DefineNode>
    end
    
-   rule enabled
-     'enabled'
+   rule disabled
+     'disabled'
    end
 
    rule auto_disable

@@ -6,7 +6,7 @@ module DefineNode
     t = Hawkular::Alerts::Trigger.new({})
     t.name = name.value env
     t.id = t.id = "trigger_#{Time.now.to_i}"
-    t.enabled = !enabled.empty?
+    t.enabled = true if disabled.empty?
     t.id = id.value env unless id.empty?
     t.auto_disable = true unless ad.empty?
     t.auto_enable = true unless ae.empty?

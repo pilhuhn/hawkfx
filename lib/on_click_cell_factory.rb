@@ -175,6 +175,8 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
         menu_item.disable = kind != :operation
       elsif item_name.include? 'Delete'
         menu_item.disable = kind != :feed
+      elsif item_name.include? 'New trigger'
+        menu_item.disable = ([:resource, :feed, :operation].include?(kind))
       end
     end
   end
@@ -190,6 +192,10 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
 
     # Context menu to add tags on metrics
     cmi = create_metric_tag_menu_item
+    cm.items.add cmi
+
+    # Context menu to add alert triggers
+    cmi = create_metric_alert_item
     cm.items.add cmi
 
     # Context menu to show tags on metrics
@@ -232,6 +238,25 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       item = tree_view.selectionModel.selectedItem
       stage = tree_view.scene.window
       ::HawkHelper.run_ops_popup stage, item.raw_item, item.parent.raw_item.path
+    end
+    cmi
+  end
+
+  def create_metric_alert_item
+    cmi = Java::javafx::scene::control::MenuItem.new 'New trigger...'
+    cmi.on_action do
+      item = tree_view.selectionModel.selectedItem
+      stage = tree_view.scene.window
+
+      type = item.raw_item.type.downcase
+      id = item.raw_item.hawkular_metric_id
+      if type != 'availability'
+        text = "define trigger \"trigger-#{id}\"\n (threshold #{type} \"#{id}\" > XXX )"
+      else
+        text = "define trigger \"trigger-#{id}\"\n (availability  \"#{id}\" is XXX )"
+      end
+
+      ::HawkHelper.run_synth_metric_popup stage, :TRIGGER, text
     end
     cmi
   end

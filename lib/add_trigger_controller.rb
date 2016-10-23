@@ -13,8 +13,12 @@ class AddTriggerController
     @my_parent = parent
   end
 
-  def submit
+  def text= (msg)
+    return if msg.nil? || msg.empty?
+    @formula.text = msg
+  end
 
+  def submit
 
     env = AlertDefinitionParser.parse(@formula.text)
 

@@ -6,12 +6,12 @@ source 'https://rubygems.org'
 
 gem 'jrubyfx', :require => true
 
-# gem 'hawkular-client', :require => true, path: '/h/ruby-client-heiko'
+gem 'hawkular-client', :require => true, path: '/h/ruby-client-heiko'
 # gem 'hawkular-client',
 #     :require => true,
 #     :git => 'https://github.com/pilhuhn/hawkular-client-ruby.git',
 #     :branch => 'string_metrics'
-gem 'hawkular-client', '~> 2.8.0', :require => true
+# gem 'hawkular-client', '~> 2.8.0', :require => true
 gem 'addressable'
 
 gem 'rest-client'

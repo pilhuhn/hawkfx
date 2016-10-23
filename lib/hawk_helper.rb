@@ -100,7 +100,7 @@ class HawkHelper
     ops_control
   end
 
-  def self.run_synth_metric_popup(parent_stage, mode)
+  def self.run_synth_metric_popup(parent_stage, mode, canned_text)
     popup_stage = ::Java::JavafxStage::Stage.new
     case mode
       when :METRIC
@@ -112,8 +112,7 @@ class HawkHelper
     popup_stage.init_owner parent_stage
     popup_stage.show
     control.parent = parent_stage
-
-    control
+    control.text= canned_text
   end
 
 

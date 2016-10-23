@@ -14,6 +14,11 @@ class AddSynthMetricController
     @my_parent = parent
   end
 
+  def text= (msg)
+    return if msg.nil? || msg.empty?
+    @formula.text = msg
+  end
+
   def submit
 
     name = @name.text

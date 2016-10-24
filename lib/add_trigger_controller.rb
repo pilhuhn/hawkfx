@@ -25,7 +25,7 @@ class AddTriggerController
     env = AlertDefinitionParser.parse(@formula.text)
 
     begin
-      @alerts_client.delete_trigger t.id
+      Hawk.alerts.delete_trigger t.id
     rescue
       puts 'Trigger did not yet exist'
     end

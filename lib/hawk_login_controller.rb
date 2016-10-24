@@ -38,6 +38,11 @@ class HawkLoginController
                             hash[:credentials],
                             hash[:options])
         Hawk.metrics = mc
+
+        ac = ::Hawkular::Alerts::AlertsClient.new("#{hash[:entrypoint]}/hawkular/alerts",
+                                                      hash[:credentials],
+                                                      hash[:options])
+        Hawk.alerts = ac
       end
 
       # @tenant = $inventory_client.get_tenant

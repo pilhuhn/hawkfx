@@ -14,8 +14,12 @@ module Hawk
       @client.inventory
     end
 
+    def alerts=(alerts_client)
+      @alerts = alerts_client
+    end
+
     def alerts
-      @client.alerts
+      @mode == :hawkular ? @client.alerts : @alerts
     end
 
     def operations

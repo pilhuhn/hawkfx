@@ -1,7 +1,9 @@
 require 'json'
+require_relative 'create_trigger_menu_mixin'
 
 class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
   include JRubyFX::DSL
+  include CreateTriggerMenuMixin
 
   def initialize
     super
@@ -18,6 +20,11 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
       ::HawkHelper.show_raw_popup stage, text
     end
     cm.items.add cmi
+
+    # Context menu to add alert triggers
+    cmi = create_metric_alert_item
+    cm.items.add cmi
+
     set_context_menu cm
 
     # Left-click action

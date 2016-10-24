@@ -7,6 +7,8 @@ class AddTriggerController
   fxml 'synthetic_metric.fxml'
 
   def initialize
+    @name.disable = true
+    @title.text = 'Add a trigger definition'
   end
 
   def parent= (parent)

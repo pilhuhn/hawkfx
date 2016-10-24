@@ -251,9 +251,9 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       type = item.raw_item.type.downcase
       id = item.raw_item.hawkular_metric_id
       if type != 'availability'
-        text = "define trigger \"trigger-#{id}\"\n (threshold #{type} \"#{id}\" > XXX )"
+        text = "define trigger \"trigger-#{id}\"\n (threshold #{type} \"#{id}\" \n > XXX )"
       else
-        text = "define trigger \"trigger-#{id}\"\n (availability  \"#{id}\" is XXX )"
+        text = "define trigger \"trigger-#{id}\"\n (availability  \"#{id}\" \n is XXX )"
       end
 
       ::HawkHelper.run_synth_metric_popup stage, :TRIGGER, text

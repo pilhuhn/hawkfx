@@ -72,7 +72,8 @@ define trigger "MyTrigger"
   it 'should parse threshold explicit gauge' do
     text = <<-EOT
 define trigger "MyTrigger"
-( threshold gauge "myvalue" > 3 )
+( threshold gauge "myvalue"
+  > 3 )
     EOT
     t = AlertDefinitionParser.parse text
     expect(t[:trigger].name).to eq 'MyTrigger'

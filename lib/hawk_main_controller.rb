@@ -129,7 +129,19 @@ class HawkMainController
   end
 
   def insert_synthetic
-    HawkHelper.run_synth_metric_popup @FXMLtreeView.scene.window
+    HawkHelper.run_synth_metric_popup @FXMLtreeView.scene.window, :METRIC
+  end
+
+  def insert_alert_trigger
+    HawkHelper.run_synth_metric_popup @FXMLtreeView.scene.window, :TRIGGER
+  end
+
+  def list_alert_triggers
+    ret = Hawk.alerts.list_triggers
+    ret.each do |t|
+      puts t.to_h
+      t.conditions.each{|c| puts "   > #{c.to_h}"}
+    end
   end
 
   def quit

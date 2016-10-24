@@ -38,19 +38,36 @@ class AlertController
     display_items
   end
 
-  private
+  def delete_item
+    puts "Delete"
+  end
 
-  def display_items
-    return if @start_offset.nil?
-
+  def delete_all
+    puts "Delete all"
+    # TODO there is a small race, as the list on screen
+    # may be old and we thus delete items that the user
+    # did not yet see.
+    # we need to store 'last fetched' and set end time accordingly
     start = Time.now.to_i * 1000 - @start_offset
     alerts_selected = @FXMLAlertEventSelector.selected
 
     if alerts_selected
       alerts = Hawk.alerts.list_alerts 'startTime' => start
+      Hawk.alerts.delete_alerts alerts.map {|a| a.id}
     else
-      alerts = Hawk.alerts.list_events 'startTime' => start
+      events = Hawk.alerts.list_events 'startTime' => start
+      Hawk.alerts.delete_events events.map {|e| e.id}
     end
+
+    @FXMLalertList.items.clear
+  end
+
+  private
+
+  def display_items
+    return if @start_offset.nil?
+
+    alerts = retrieve_events_alerts
 
     the_list = observable_array_list []
     alerts.each do |alert|
@@ -60,4 +77,17 @@ class AlertController
     end
     @FXMLalertList.items = the_list
   end
+
+  def retrieve_events_alerts
+    start = Time.now.to_i * 1000 - @start_offset
+    alerts_selected = @FXMLAlertEventSelector.selected
+
+    if alerts_selected
+      alerts = Hawk.alerts.list_alerts 'startTime' => start
+    else
+      alerts = Hawk.alerts.list_events 'startTime' => start
+    end
+    alerts
+  end
+
 end

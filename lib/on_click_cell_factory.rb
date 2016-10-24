@@ -1,8 +1,10 @@
 require 'json'
 require_relative 'hawk'
+require_relative 'create_trigger_menu_mixin'
 
 class OnClickCellFactory < Java::javafx::scene::control::TreeCell
   include JRubyFX::DSL
+  include CreateTriggerMenuMixin
 
   def initialize
     super
@@ -175,6 +177,8 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
         menu_item.disable = kind != :operation
       elsif item_name.include? 'Delete'
         menu_item.disable = kind != :feed
+      elsif item_name.include? 'New trigger'
+        menu_item.disable = ([:resource, :feed, :operation].include?(kind))
       end
     end
   end
@@ -190,6 +194,10 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
 
     # Context menu to add tags on metrics
     cmi = create_metric_tag_menu_item
+    cm.items.add cmi
+
+    # Context menu to add alert triggers
+    cmi = create_metric_alert_item
     cm.items.add cmi
 
     # Context menu to show tags on metrics

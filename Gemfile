@@ -10,8 +10,8 @@ gem 'jrubyfx', :require => true
 gem 'hawkular-client',
     :require => true,
     :git => 'https://github.com/pilhuhn/hawkular-client-ruby.git',
-    :branch => 'string_metrics'
-# gem 'hawkular-client', '~> 2.7.0', :require => true
+    :branch => 'more_alerts'
+# gem 'hawkular-client', '~> 2.8.0', :require => true
 gem 'addressable'
 
 gem 'rest-client'

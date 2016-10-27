@@ -69,7 +69,7 @@ end
 
 
    rule stringcond
-     'string ' space* metric:string space+ comp:('EQ' / 'NE' / 'SW' / 'EW' / 'CO' / 'MA') space+ ref:string
+     'string ' space* metric:string space+ comp:('equals' / 'notEquals' / 'startsWith' / 'endsWith' / 'contains' / 'matches') space+ ref:string
      <StringConditionNode>
    end
 
@@ -87,7 +87,7 @@ end
   end
 
   rule type
-     ( 'gauge' / 'counter' / 'crate' / 'grate') <MetricTypeNode>
+     ( 'gauge rate' / 'gauge' / 'counter rate' / 'counter' ) <MetricTypeNode>
    end
 
 

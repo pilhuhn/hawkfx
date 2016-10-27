@@ -104,6 +104,40 @@ define trigger "MyTrigger"
     expect(c.operator).to be :GT
   end
 
+  it 'should parse threshold counter rate' do
+    text = <<-EOT
+define trigger "MyTrigger"
+( threshold counter rate "myvalue" > 3 )
+    EOT
+    t = AlertDefinitionParser.parse text
+    expect(t[:trigger].name).to eq 'MyTrigger'
+    expect(t[:conditions].length).to eq 1
+    c = t[:conditions].first
+    expect(c).not_to be_nil
+    expect(c.trigger_mode).to be :FIRING
+    expect(c.type).to be :THRESHOLD
+    expect(c.data_id).to eq 'hm_cr_myvalue'
+    expect(c.threshold).to eq 3
+    expect(c.operator).to be :GT
+  end
+
+  it 'should parse threshold gauge rate' do
+    text = <<-EOT
+define trigger "MyTrigger"
+( threshold gauge rate "myvalue" > 3 )
+    EOT
+    t = AlertDefinitionParser.parse text
+    expect(t[:trigger].name).to eq 'MyTrigger'
+    expect(t[:conditions].length).to eq 1
+    c = t[:conditions].first
+    expect(c).not_to be_nil
+    expect(c.trigger_mode).to be :FIRING
+    expect(c.type).to be :THRESHOLD
+    expect(c.data_id).to eq 'hm_gr_myvalue'
+    expect(c.threshold).to eq 3
+    expect(c.operator).to be :GT
+  end
+
   it 'should parse availability' do
     text = <<-EOT
 define trigger "MyTrigger"
@@ -123,7 +157,7 @@ define trigger "MyTrigger"
   it 'should parse string' do
     text = <<-EOT
 define trigger "MyTrigger"
-  ( string "mymetric" CO "ERROR" )
+  ( string "mymetric" contains "ERROR" )
     EOT
     t = AlertDefinitionParser.parse text
     expect(t[:trigger].name).to eq 'MyTrigger'
@@ -142,7 +176,7 @@ define trigger "MyTrigger"
 define trigger "MyTrigger"
   AND(
     ( threshold counter "mycount" < 5 )
-    ( string "mymetric" CO "ERROR" )
+    ( string "mymetric" contains "ERROR" )
   )
     EOT
     t = AlertDefinitionParser.parse text

@@ -103,17 +103,17 @@ module StringConditionNode
     cond.type = :STRING
     cond.data_id = "hm_s_#{metric.value env}"
     cond.operator = case comp.text_value
-                    when 'EQ'
+                    when 'equals'
                       :EQUAL
-                    when 'NE'
+                    when 'notEquals'
                       :NOT_EQUAL
-                    when 'SW'
+                    when 'startsWith'
                       :STARTS_WITH
-                    when 'EW'
+                    when 'endsWith'
                       :ENDS_WITH
-                    when 'CO'
+                    when 'contains'
                       :CONTAINS
-                    when 'MA'
+                    when 'matches'
                       :MATCH
                     end
     cond.threshold = ref.value env # TODO what is the correct field?
@@ -135,9 +135,9 @@ module MetricTypeNode
       'hm_g'
     when 'counter'
       'hm_c'
-    when 'grate'
+    when 'gauge rate'
       'hm_gr'
-    when 'crate'
+    when 'counter rate'
       'hm_cr'
     when 'string'
       'hm_s'

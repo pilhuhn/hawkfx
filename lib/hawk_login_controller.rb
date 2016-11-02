@@ -9,9 +9,28 @@ class HawkLoginController
   include JRubyFX::Controller
   fxml 'fxlogin.fxml'
 
+  def initialize
+    values = observable_array_list %w(Hawkular Metrics OpenShift)
+    @FXMLModeBox.items = values
+    @FXMLModeBox.value = 'Hawkular'
+
+    modeOpenshift = @FXMLModeBox.value_property.isEqualTo 'OpenShift'
+    @UserLabel.text_property.bind Java::javafx.beans.binding.When.new(modeOpenshift)
+      .then('Token')
+      .otherwise('Username')
+    @FXMLPasswordField.disable_property.bind modeOpenshift
+
+  end
+
   def login # callback from the login button
-    creds = { :username => @FXMLLoginField.text,
-              :password => @FXMLPasswordField.text }
+    creds = case @FXMLModeBox.value
+    when 'OpenShift'
+       { :token => @FXMLLoginField.text}
+    else
+      { :username => @FXMLLoginField.text,
+        :password => @FXMLPasswordField.text }
+      end
+
 
     enable_logging
 
@@ -29,7 +48,7 @@ class HawkLoginController
     hash[:options] = { :tenant => @FXMLTenantField.text }
 
     begin
-      if @FXMLModeButton.selected
+      if @FXMLModeBox.value == 'Hawkular'
         Hawk.client = ::Hawkular::Client.new(hash)
         Hawk.mode = :hawkular
       else # Metrics only mode

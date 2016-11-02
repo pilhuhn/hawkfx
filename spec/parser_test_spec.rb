@@ -31,49 +31,49 @@ describe 'Basic Parsing' do
   end
 
   it 'should parse simple metric' do
-    res = MetricExpressionParser.parse('metric("bla", "avg")')
+    res = MetricExpressionParser.parse('metric("bla", avg)')
     expect(res.size).to be 120
     expect(res[0][:avg]).to be 42
   end
 
   it 'should parse list_scalar arithmetic' do
-    res = MetricExpressionParser.parse('(- 1000 metric("bla", "avg"))')
+    res = MetricExpressionParser.parse('(- 1000 metric("bla", max))')
     expect(res.size).to be 120
     expect(res[0][:avg]).to eq 958
 
-    res = MetricExpressionParser.parse('(+ metric("bla", "avg") 2000)')
+    res = MetricExpressionParser.parse('(+ metric("bla", avg) 2000)')
     expect(res.size).to be 120
     expect(res[0][:avg]).to eq 2042
 
-    res = MetricExpressionParser.parse('(/ 420 metric("bla", "avg"))')
+    res = MetricExpressionParser.parse('(/ 420 metric("bla", avg))')
     expect(res.size).to be 120
     expect(res[0][:avg]).to be 10
   end
 
   it 'should parse list_list arithmetic' do
-    res = MetricExpressionParser.parse('(+ metric("bla","max") metric("bla", "min"))')
+    res = MetricExpressionParser.parse('(+ metric("bla",max) metric("bla", min))')
     expect(res.size).to be 120
     expect(res[0][:avg]).to be 49
   end
 
   it 'should parse with newlines' do
-    text = '(+ metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , "max")
-                   metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~NonHeap Used", "max"))'
+    text = '(+ metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , max)
+                   metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~NonHeap Used", max))'
 
     MetricExpressionParser.parse(text)
   end
 
   it 'should parse with newlines2', :skip=>true do
     text = '(+
-  metric( "metric1" , "max")
-  metric( "metric2", "max")
+  metric( "metric1" , max)
+  metric( "metric2", max)
 )'
 
     MetricExpressionParser.parse(text)
   end
 
   it 'should sum up' do
-    text = '(sumup(metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , "max")))'
+    text = '(sumup(metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , max)))'
     res = MetricExpressionParser.parse(text)
     expect(res).to be 42*120
 
@@ -82,13 +82,13 @@ describe 'Basic Parsing' do
   end
 
   it 'should rate' do
-    text = 'var $m = metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , "max");
+    text = 'var $m = metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , max);
 (rate($m, true))'
     res = MetricExpressionParser.parse(text)
     expect(res.size).to eq 120
     expect(res[0][:avg]).to eq 0
 
-    text = '(rate(metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , "max"), false))'
+    text = '(rate(metric( "MI~R~[516ecc12-cbb6-40c9-baeb-a2c97474e77b/Local~~]~MT~WildFly Memory Metrics~Heap Used" , max), false))'
     res = MetricExpressionParser.parse(text)
     expect(res.size).to eq 120
 
@@ -130,7 +130,7 @@ describe 'Basic Parsing' do
 
   it 'should parse metric varDef' do
     env = {start: 200, end: 100}
-    MetricExpressionParser.parse('var $a = metric("blabla","max");', env)
+    MetricExpressionParser.parse('var $a = metric("blabla",max);', env)
     expect(env).not_to be nil
     expect(env.size).to eq 3
     expect(env.key? :vars).to be_truthy
@@ -140,7 +140,7 @@ describe 'Basic Parsing' do
 
   it 'should parse metric varDef2' do
     env = {start: 200, end: 100}
-    res = MetricExpressionParser.parse('var $a = metric("blabla","max");
+    res = MetricExpressionParser.parse('var $a = metric("blabla",max);
 (sumup($a))', env)
     expect(env).not_to be nil
     expect(env.size).to eq 3
@@ -152,7 +152,7 @@ describe 'Basic Parsing' do
 
   it 'should parse string varRef' do
     text = 'var $a = "bla";
-            metric($a, "max")'
+            metric($a, max)'
     res = MetricExpressionParser.parse(text)
     expect(res.size).to be 120
   end

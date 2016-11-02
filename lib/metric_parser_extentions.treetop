@@ -24,8 +24,12 @@ grammar Mex
      ( '+' / '-' / '*' / '/' ) space oper1:expression space oper2:expression <ArithmeticNode>
   end
 
-  rule metric # TODO externalize aggregates min, avg, median, max, sum, samples
-     'metric(' space? metric_id:(string / varRef )  space? ',' space? aggregate:string space? ')'  <MetricNode>
+  rule metric
+     'metric(' space? metric_id:(string / varRef )  space? ',' space? aggregate:aggregate space? ')'  <MetricNode>
+  end
+
+  rule aggregate # TODO percentiles
+     'min' / 'avg' / 'median' / 'max' / 'sum' / 'samples'
   end
 
   rule sumup  # TODO limit to array types?

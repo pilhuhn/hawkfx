@@ -128,7 +128,7 @@
     def value(env={})
       m_val = metric_id.text_value
       mid = m_val.start_with?('$') ? metric_id.value(env) : metric_id.value
-      aggr = aggregate.value
+      aggr = aggregate.text_value
 
       get_metric_data(mid, aggr, env[:start], env[:end])
     end

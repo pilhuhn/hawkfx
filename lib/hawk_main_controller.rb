@@ -130,11 +130,11 @@ class HawkMainController
   end
 
   def insert_synthetic
-    HawkHelper.run_synth_metric_popup @FXMLtreeView.scene.window, :METRIC
+    HawkHelper.run_synth_metric_popup @FXMLtreeView.scene.window, :METRIC, '(+ 1000 metric("metric-id", avg))'
   end
 
   def insert_alert_trigger
-    HawkHelper.run_synth_metric_popup @FXMLtreeView.scene.window, :TRIGGER
+    HawkHelper.run_synth_metric_popup @FXMLtreeView.scene.window, :TRIGGER, 'define trigger "my trigger" ...'
   end
 
   def list_alert_triggers

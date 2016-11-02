@@ -88,18 +88,15 @@ class HawkLoginController
   def show_main_pane
     dir = File.dirname(__FILE__).sub('/lib', '/assets/')
 
-    # FXMLLoginPane is the root, so get the stage from it
-    stage = @FXMLLoginField.scene.window
-
     # Create a Main controller, which will load fxml
     # into the passed stage
-    main_controller = ::HawkMainController.load_into stage, :width => 1000,
+    main_controller = ::HawkMainController.load_into @stage, :width => 1000,
                                                             :height => 850,
                                                             :root_dir => dir
 
-    stage.min_width = 1000
-    stage.min_height = 800
-    stage.size_to_scene
+    @stage.min_width = 1000
+    @stage.min_height = 800
+    @stage.size_to_scene
 
     main_controller.show_initial_tree Hawk.mode
   end

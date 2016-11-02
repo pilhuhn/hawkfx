@@ -9,6 +9,7 @@ require_relative 'alert_controller'
 require_relative 'event_insert_controller'
 require_relative 'insert_metrics_controller'
 require_relative 'on_click_cell_factory'
+require_relative 'hawk_login_controller'
 require_relative 'metrics_only_cell_factory'
 require_relative 'time_picker'
 require_relative 'chart_view_controller'
@@ -144,8 +145,15 @@ class HawkMainController
     end
   end
 
+  # We don't really exit, but go back to the login screen.
   def quit
-    Platform.exit
+    ::HawkLoginController.load_into @stage, :width => 517,
+        :height => 374
+
+    @stage.min_width = 500
+    @stage.min_height = 300
+
+    @stage.size_to_scene
   end
 
   def reload_feeds

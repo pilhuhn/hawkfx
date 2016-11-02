@@ -115,5 +115,4 @@ class HawkHelper
     control.text= canned_text
   end
 
-
 end

@@ -1,9 +1,11 @@
 require 'json'
 require_relative 'create_trigger_menu_mixin'
+require_relative 'metric_tag_mixin'
 
 class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
   include JRubyFX::DSL
   include CreateTriggerMenuMixin
+  include MetricTagMixin
 
   def initialize
     super
@@ -23,6 +25,14 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
 
     # Context menu to add alert triggers
     cmi = create_metric_alert_item
+    cm.items.add cmi
+
+    # Context menu to add tags on metrics
+    cmi = create_metric_tag_menu_item
+    cm.items.add cmi
+
+    # Context menu to show tags on metrics
+    cmi = show_metric_tag_menu_item
     cm.items.add cmi
 
     set_context_menu cm

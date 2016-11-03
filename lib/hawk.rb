@@ -1,6 +1,6 @@
 module Hawk
   class << self
-    attr_accessor :client, :mode
+    attr_accessor :client, :mode, :remote_info
 
     def metrics=(metrics_client)
       @metrics = metrics_client

@@ -12,7 +12,9 @@ class HawkLoginController
   def initialize
     values = observable_array_list %w(Hawkular Metrics OpenShift)
     @FXMLModeBox.items = values
-    @FXMLModeBox.value = 'Hawkular'
+
+    ri = Hawk.remote_info
+    @FXMLModeBox.value = ri[:mode]
 
     modeOpenshift = @FXMLModeBox.value_property.isEqualTo 'OpenShift'
     @UserLabel.text_property.bind Java::javafx.beans.binding.When.new(modeOpenshift)
@@ -20,16 +22,31 @@ class HawkLoginController
       .otherwise('Username')
     @FXMLPasswordField.disable_property.bind modeOpenshift
 
+
+    @FXMLUrlField.text = ri[:url] if @FXMLUrlField.text.empty?
+    @FXMLLoginField.text = ri[:user] if @FXMLLoginField.text.empty?
+    @FXMLPasswordField.text = ri[:password] if @FXMLPasswordField.text.empty?
+    @FXMLTenantField.text = ri[:tenant] if @FXMLTenantField.text.empty?
+
   end
 
   def login # callback from the login button
     creds = case @FXMLModeBox.value
-    when 'OpenShift'
-       { :token => @FXMLLoginField.text}
-    else
-      { :username => @FXMLLoginField.text,
-        :password => @FXMLPasswordField.text }
-      end
+            when 'OpenShift'
+              { :token => @FXMLLoginField.text}
+            else
+              { :username => @FXMLLoginField.text,
+                :password => @FXMLPasswordField.text
+              }
+            end
+
+    ri = Hawk.remote_info
+    ri[:url]=@FXMLUrlField.text
+    ri[:user]=@FXMLLoginField.text
+    ri[:password]=@FXMLPasswordField.text
+    ri[:tenant]=@FXMLTenantField.text
+    ri[:mode]=@FXMLModeBox.value
+
 
 
     enable_logging

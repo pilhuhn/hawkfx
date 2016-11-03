@@ -31,7 +31,7 @@
             <RowConstraints maxHeight="53.0" minHeight="25.0" prefHeight="49.0" />
         </rowConstraints>
          <children>
-            <TextField fx:id="FXMLUrlField" promptText="HawkularBaseUrl" text="http://localhost:8080" GridPane.columnIndex="1">
+            <TextField fx:id="FXMLUrlField" promptText="HawkularBaseUrl"  GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -39,7 +39,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </TextField>
-            <TextField fx:id="FXMLLoginField" promptText="User" text="jdoe" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="FXMLLoginField" promptText="User" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -47,7 +47,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </TextField>
-            <PasswordField fx:id="FXMLPasswordField" promptText="password" text="password" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <PasswordField fx:id="FXMLPasswordField" promptText="password"  GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -111,7 +111,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </Label>
-            <TextField fx:id="FXMLTenantField" promptText="hawkular" text="hawkular" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextField fx:id="FXMLTenantField" promptText="hawkular" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>

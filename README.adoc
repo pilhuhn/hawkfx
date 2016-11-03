@@ -42,3 +42,8 @@ install and use `bundler` to install the required gems
 then run
 
 `jruby -S -G hawkfx.rb`
+
+=== Using SSL
+
+There is a blog post on the Hawkular
+blog http://www.hawkular.org/blog/2016/09/14/consuming-hawkular-api-over-ssl.html[that describes how to use SSL] in Hawkular and HawkFX.

@@ -1,5 +1,5 @@
 require "#{File.dirname(__FILE__)}/spec_helper"
-require 'alert_definition_parser'
+require 'parsers/alert_definition_parser'
 
 
 describe 'Basic Parsing' do

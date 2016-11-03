@@ -1,5 +1,5 @@
 require "#{File.dirname(__FILE__)}/spec_helper"
-require 'metric_expression_parser'
+require 'parsers/metric_expression_parser'
 
 
 describe 'Basic Parsing' do

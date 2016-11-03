@@ -1,7 +1,7 @@
 require 'json'
 require_relative 'hawk'
 require_relative 'chart_view_controller'
-require_relative 'metric_expression_parser'
+require_relative 'parsers/metric_expression_parser'
 
 class AddSynthMetricController
   include JRubyFX::Controller

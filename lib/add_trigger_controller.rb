@@ -1,6 +1,6 @@
 require 'json'
 require_relative 'hawk'
-require_relative 'alert_definition_parser'
+require_relative 'parsers/alert_definition_parser'
 
 class AddTriggerController
   include JRubyFX::Controller

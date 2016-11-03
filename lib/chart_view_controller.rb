@@ -1,6 +1,6 @@
 require 'jrubyfx'
 require 'set'
-require_relative 'metric_expression_parser'
+require_relative 'parsers/metric_expression_parser'
 
 class ChartViewController < Java::javafx::scene::layout::VBox
   include JRubyFX::Controller

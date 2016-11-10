@@ -231,7 +231,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
         text = "- unknown kind #{item.kind}, value = #{item.value}"
       end
       stage = tree_view.scene.window
-      ::HawkHelper.show_raw_popup stage, text
+      ::HawkHelper.show_raw_popup stage, 'Raw data', text
     end
     cmi
   end
@@ -274,7 +274,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       end
 
       stage = tree_view.scene.window
-      ::HawkHelper.show_raw_popup stage, text
+      ::HawkHelper.show_raw_popup stage, 'Properties',  text
     end
     cmi
   end

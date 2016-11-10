@@ -13,7 +13,7 @@ module MetricTagMixin
         text = JSON.pretty_generate(m_metric.tags.to_h)
         puts text
 
-        ::HawkHelper.show_raw_popup stage, text
+        ::HawkHelper.show_raw_popup stage, 'Tags', text
       end
     end
     cmi

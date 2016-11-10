@@ -19,7 +19,7 @@ class MetricsOnlyCellFactory < Java::javafx::scene::control::TreeCell
       text = JSON.pretty_generate(item.raw_item.to_h)
 
       stage = tree_view.scene.window
-      ::HawkHelper.show_raw_popup stage, text
+      ::HawkHelper.show_raw_popup stage, 'Raw Metric', text
     end
     cm.items.add cmi
 

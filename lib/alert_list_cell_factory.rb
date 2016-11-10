@@ -15,7 +15,7 @@ class AlertListCellFactory < Java::javafx::scene::control::ListCell
       alert = item.alert
 
       stage = list_view.scene.window
-      ::HawkHelper.show_raw_popup stage, JSON.pretty_generate(alert.to_h)
+      ::HawkHelper.show_raw_popup stage, 'Raw Alert', JSON.pretty_generate(alert.to_h)
     end
 
     cm.items.add cmi

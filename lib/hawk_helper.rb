@@ -22,10 +22,11 @@ class HawkHelper
     iv
   end
 
-  def self.show_raw_popup(parent_stage, text) # TODO: allow to set title
+  def self.show_raw_popup(parent_stage, title_text, text)
     popup_stage = ::Java::JavafxStage::Stage.new
     raw_display = ::RawDisplayController.load_into popup_stage
     raw_display.show_text(text)
+    raw_display.show_title(title_text)
     popup_stage.init_modality = :application
     popup_stage.init_owner parent_stage
     popup_stage.show

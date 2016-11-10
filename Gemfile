@@ -27,3 +27,4 @@ gem 'vcr'
 gem 'rubocop', '= 0.41.2'
 
 gem 'treetop'
+gem 'jruby-openssl'

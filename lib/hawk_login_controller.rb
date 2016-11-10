@@ -1,6 +1,7 @@
 require 'jrubyfx'
 require 'jrubyfx-fxmlloader'
 require 'uri'
+require 'openssl'
 require_relative 'hawk'
 
 require_relative 'hawk_helper'
@@ -63,6 +64,8 @@ class HawkLoginController
     hash[:entrypoint] = URI(@FXMLUrlField.text).to_s # TODO: see https://github.com/hawkular/hawkular-client-ruby/issues/116
     hash[:credentials] = creds
     hash[:options] = { :tenant => @FXMLTenantField.text }
+
+    hash[:options].store(:verify_ssl, OpenSSL::SSL::VERIFY_NONE)  if @Disable_SSL.selected
 
     begin
       if @FXMLModeBox.value == 'Hawkular'

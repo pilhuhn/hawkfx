@@ -19,7 +19,7 @@ module DefineNode
     env[:tid] = t.id
 
     # Evaluate conditions
-    cond.value env
+    conditions.value env
 
     # And actions
     act.value env unless act.empty?
@@ -38,8 +38,8 @@ end
 module  AndConditionNode
   def value(env = {})
     puts "And"
-    elements[2].value env
-    elements[4].value env
+    first.value env
+    more.elements.each {|elem| elem.condition.value env}
     env[:trigger].firing_match = :ALL
   end
 end
@@ -47,8 +47,8 @@ end
 module  OrConditionNode
   def value(env = {})
     puts 'OrNode'
-    elements[2].value env
-    elements[4].value env
+    first.value env
+    more.elements.each {|elem| elem.condition.value env}
     env[:trigger].firing_match = :ANY
   end
 end

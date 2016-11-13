@@ -215,13 +215,28 @@ define trigger "MyTrigger"
     expect(c.type).to be :AVAILABILITY
   end
 
-  it 'should parse threshold or availability or string' , :skip => true do
+  it 'should parse threshold or availability or string' do
     text = <<-EOT
 define trigger "MyTrigger"
   OR(
     ( threshold counter "mycount" < 5 )
     ( availability "mymetric" is NOT_UP )
-    ( string "mystring" CO "HelloWorld" )
+    ( string "mystring" matches "HelloWorld" )
+  )
+    EOT
+    t = AlertDefinitionParser.parse text
+    expect(t[:trigger].name).to eq 'MyTrigger'
+    expect(t[:conditions].length).to eq 3
+  end
+
+  it 'should parse threshold and availability and string' do
+    text = <<-EOT
+define trigger "MyTrigger"
+  disabled
+  AND(
+    ( threshold counter "mycount" < 5 )
+    ( availability "mymetric" is NOT_UP )
+    ( string "mystring" contains "HelloWorld" )
   )
     EOT
     t = AlertDefinitionParser.parse text

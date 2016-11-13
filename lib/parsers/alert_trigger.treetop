@@ -5,7 +5,7 @@ grammar TriggerDefinition
      'define trigger ' space? name:string space?
      disabled:disabled? space?
      sev:severity? space?
-     id:id? space? cond:conditions space? act:action?
+     id:id? space? conditions space? act:action?
      ae:auto_enable? space? ad:auto_disable? space?
      <DefineNode>
    end
@@ -46,11 +46,11 @@ grammar TriggerDefinition
 end
 
   rule and_cond
-    'AND(' space? condition space condition space? ')' <AndConditionNode>
+    'AND(' space? first:condition more:( space condition )* space? ')' <AndConditionNode>
   end
 
   rule or_cond
-    'OR(' space? condition space condition space? ')' <OrConditionNode>
+    'OR(' space? first:condition more:( space condition )* space? ')' <OrConditionNode>
   end
 
    rule condition
@@ -105,7 +105,7 @@ end
    end
 
    rule space
-     [\s\n\t]+
+     [\s\n\t\r]+
    end
 
   rule chars

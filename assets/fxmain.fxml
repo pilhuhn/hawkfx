@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.layout.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<TitledPane fx:id="FXMLMainPane" collapsible="false" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="447.0" prefWidth="989.0" text="Browse Inventory" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<TitledPane fx:id="FXMLMainPane" collapsible="false" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="447.0" prefWidth="989.0" text="Browse Inventory" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <VBox prefHeight="200.0" prefWidth="200.0">
          <children>
@@ -16,20 +22,13 @@
                      <menus>
                         <Menu mnemonicParsing="false" text="File">
                            <items>
-                              <MenuItem mnemonicParsing="false" onAction="#show_alerts"
-                                        text="Events/Alerts" fx:id="FXMLalertMenu" />
-                              <MenuItem mnemonicParsing="false" onAction="#reload_feeds"
-                                        text="Reload feeds" fx:id="FXMLreloadFeeds"/>
-                              <MenuItem mnemonicParsing="false" onAction="#list_metrics"
-                                        text="List Metrics"/>
-                              <MenuItem mnemonicParsing="false" onAction="#show_insert_metrics"
-                                        text="Insert Metrics"/>
-                              <MenuItem mnemonicParsing="false" onAction="#insert_synthetic"
-                                        text="Insert synthetic Metric Def"/>
-                              <MenuItem mnemonicParsing="false" onAction="#insert_alert_trigger"
-                                        text="Insert Alert trigger"/>
-                              <MenuItem mnemonicParsing="false" onAction="#list_alert_triggers"
-                                        text="List Alert triggers"/>
+                              <MenuItem fx:id="FXMLalertMenu" mnemonicParsing="false" onAction="#show_alerts" text="Events/Alerts" />
+                              <MenuItem fx:id="FXMLreloadFeeds" mnemonicParsing="false" onAction="#reload_feeds" text="Reload feeds" />
+                              <MenuItem mnemonicParsing="false" onAction="#list_metrics" text="List Metrics" />
+                              <MenuItem mnemonicParsing="false" onAction="#show_insert_metrics" text="Insert Metrics" />
+                              <MenuItem mnemonicParsing="false" onAction="#insert_synthetic" text="Insert synthetic Metric Def" />
+                              <MenuItem mnemonicParsing="false" onAction="#insert_alert_trigger" text="Insert Alert trigger" />
+                              <MenuItem mnemonicParsing="false" onAction="#list_alert_triggers" text="List Alert triggers" />
                               <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
                            </items>
                         </Menu>
@@ -39,12 +38,12 @@
             </HBox>
             <SplitPane dividerPositions="0.3" prefHeight="650.0" prefWidth="578.0">
                <items>
-                  <TreeView fx:id="FXMLtreeView" prefHeight="800.0" prefWidth="230.0" />
-                  <AnchorPane fx:id="FXMLChartAnchor" />
+                  <TreeView fx:id="FXMLtreeView" maxWidth="2000" minWidth="100.0" prefHeight="800.0" prefWidth="230.0" />
+                  <AnchorPane fx:id="FXMLChartAnchor" minWidth="100.0" />
                </items>
             </SplitPane>
-            <TextField fx:id="FXMLidField" prefHeight="30.0" prefWidth="767.0" promptText="ID of the metric"/>
-            <TextArea fx:id="FXMLtextArea" prefHeight="60.0" prefWidth="767.0" prefRowCount="2" promptText="Path in Inventory"/>
+            <TextField fx:id="FXMLidField" prefHeight="30.0" prefWidth="767.0" promptText="ID of the metric" />
+            <TextArea fx:id="FXMLtextArea" prefHeight="60.0" prefRowCount="2" prefWidth="767.0" promptText="Path in Inventory" />
          </children>
       </VBox>
    </content>

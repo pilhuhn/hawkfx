@@ -89,6 +89,32 @@ module ThresholdNode
   end
 end
 
+module CompareNode
+  def value(env = {}, cond)
+    puts 'CO'
+    cond.type = :COMPARE
+    prefix = mt.empty? ? 'hm_g' : (mt.value env)
+    cond.data_id = "#{prefix}_#{metric.value env}"
+    cond.operator =
+        case comp.text_value
+          when '<'
+            :LT
+          when '>'
+            :GT
+          when '='
+            :EQ
+          when '<>'
+            :NE
+          when '<='
+            :LE
+          when '=>'
+            :GE
+        end
+    cond.data2_multiplier = ref.value(env) / 100.0
+    cond.data2_id = "#{prefix}_#{metric2.value env}"
+  end
+end
+
 module AvailabilityNode
   def value(env = {}, cond)
     puts 'AV'

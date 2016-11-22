@@ -54,12 +54,17 @@ end
   end
 
    rule condition
-     '(' space? mode:( threshold / availability / stringcond ) space? ')' <ConditionNode>
+     '(' space? mode:( threshold / compare / availability / stringcond ) space? ')' <ConditionNode>
    end
 
    rule threshold
      'threshold ' space? mt:type? space? metric:string space? comp:( '>' / '=' / '<' / '<=' / '>=' / '<>' ) space? ref:number
      <ThresholdNode>
+   end
+
+   rule compare
+     'compare ' space? mt:type? space? metric:string space? comp:( '>' / '=' / '<' / '<=' / '>=' / '<>' ) space? ref:number space? '%' space? mt2:type? space? metric2:string
+     <CompareNode>
    end
 
    rule availability

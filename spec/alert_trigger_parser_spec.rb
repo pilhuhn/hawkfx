@@ -24,13 +24,13 @@ define trigger "MyTrigger"
     expect(t[:trigger].id).to eq 'bla'
   end
 
-  it 'should parse basic enabled' do
+  it 'should parse basic disabled' do
     text = <<-EOT
 define trigger "MyTrigger"
  disabled
  severity HIGH
  ( availability "myvalue" is DOWN )
-    EOT
+EOT
     t = AlertDefinitionParser.parse text
     expect(t[:trigger].enabled).to be_falsey
     expect(t[:trigger].severity).to eq 'HIGH'
@@ -66,6 +66,24 @@ define trigger "MyTrigger"
     expect(c.type).to be :THRESHOLD
     expect(c.data_id).to eq 'hm_g_myvalue'
     expect(c.threshold).to eq 3
+    expect(c.operator).to be :GT
+  end
+
+  it 'should parse compare default gauge' do
+    text = <<-EOT
+define trigger "MyTrigger"
+( compare "myvalue" > 100% "myvalue2" )
+    EOT
+    t = AlertDefinitionParser.parse text
+    expect(t[:trigger].name).to eq 'MyTrigger'
+    expect(t[:conditions].length).to eq 1
+    c = t[:conditions].first
+    expect(c).not_to be_nil
+    expect(c.trigger_mode).to be :FIRING
+    expect(c.type).to be :COMPARE
+    expect(c.data_id).to eq 'hm_g_myvalue'
+    expect(c.data2_id).to eq 'hm_g_myvalue2'
+    expect(c.data2_multiplier).to eq 1.0
     expect(c.operator).to be :GT
   end
 

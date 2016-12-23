@@ -31,11 +31,13 @@ class AddTriggerController
     end
 
     begin
+      trigger_actions = []
       env[:actionDefs].each do |acdef|
-        Hawk.alerts.create_action acdef[:plugin], acdef[:id], 'to' => acdef[:to]
+        trigger_actions << Hawk.alerts.create_action(acdef[:plugin], acdef[:id], 'to' => acdef[:to])
       end
+      env[:trigger].actions = trigger_actions unless trigger_actions.empty?
 
-      Hawk.alerts.create_trigger env[:trigger], env[:conditions], nil, env[:actions]
+      Hawk.alerts.create_trigger env[:trigger], env[:conditions], nil
       puts 'Trigger created'
     rescue Exception => e
       puts 'Trigger creation failed : ' + e.to_s

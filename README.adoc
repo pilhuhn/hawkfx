@@ -41,7 +41,7 @@ install and use `bundler` to install the required gems
 
 then run
 
-`jruby -S -G hawkfx.rb`
+`jruby -G -S hawkfx.rb # faster than bundle exec jruby hawkfx.rb`
 
 === Using SSL
 

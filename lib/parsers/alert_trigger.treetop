@@ -54,12 +54,16 @@ end
   end
 
    rule condition
-     '(' space? mode:( threshold / compare / availability / stringcond ) space? ')' <ConditionNode>
+     '(' space? mode:( range /threshold / compare / availability / stringcond ) space? ')' <ConditionNode>
    end
 
    rule threshold
-     'threshold ' space? mt:type? space? metric:string space? comp:( '>' / '=' / '<' / '<=' / '>=' / '<>' ) space? ref:number
-     <ThresholdNode>
+     'threshold ' space? mt:type? space? metric:string space? comp:( '>' / '=' / '<' / '<=' / '>=' / '<>' ) space? ref:number <ThresholdNode>
+   end
+
+   rule range
+     'threshold ' space mt:type? space metric:string space op:('inside'/'outside')  space ref:number space 'and' space number
+     <ThresholdRangeNode>
    end
 
    rule compare
@@ -68,7 +72,7 @@ end
    end
 
    rule availability
-     'availability ' space* metric:string space+ 'is' space+ ref:( 'UP' / 'DOWN' / 'NOT_UP' ) space?
+     'availability ' space* metric:string space+ 'is' space+ ref:( 'UP' / 'DOWN' / 'NOT_UP' )
      <AvailabilityNode>
    end
 
@@ -78,6 +82,9 @@ end
      <StringConditionNode>
    end
 
+   rule nothing
+     'nothing on ' space? mt:type? space? metric:string space 'for' space number space ('min' / 'sec') <NothingForNode>
+   end
 
    rule action
      act:( email ) <ActionNode>

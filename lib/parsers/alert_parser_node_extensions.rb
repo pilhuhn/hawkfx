@@ -146,6 +146,19 @@ module StringConditionNode
   end
 end
 
+module NothingForNode
+  def value(env = {}, cond)
+    cond.type = :NOTHING
+    prefix = mt.empty? ? 'hm_g' : (mt.value env)
+    cond.data_id = "#{prefix}_#{metric.value env}"
+
+  end
+end
+
+module ThresholdRangeNode
+
+end
+
 module MetricTypeNode
   # The prefixes are:
   #

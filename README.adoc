@@ -33,6 +33,9 @@ If you are using `rvm` you can select it via
 
 `rvm use jruby-9.1.5.0`
 
+NOTE:: You need a version of Java8 later than 8u45. Also JRuby 9.1.5 is required at the moment (later
+versions have an issue that prevents JRubyFX from running correctly).
+
 install and use `bundler` to install the required gems
 
 `gem install bundler`

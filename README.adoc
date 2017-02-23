@@ -50,3 +50,7 @@ then run
 
 There is a blog post on the Hawkular
 blog http://www.hawkular.org/blog/2016/09/14/consuming-hawkular-api-over-ssl.html[that describes how to use SSL] in Hawkular and HawkFX.
+
+=== Assumptions
+
+Please make sure your JDK version is newer than `8u45`, basically with the latest hostpot JDK from Oracle you should be fine.

@@ -42,7 +42,9 @@ class HawkLoginController
             end
 
     ri = Hawk.remote_info
-    ri[:url]=@FXMLUrlField.text
+    the_url = @FXMLUrlField.text
+    the_url = the_url.chop if the_url.end_with? '/'
+    ri[:url]=the_url
     ri[:user]=@FXMLLoginField.text
     ri[:password]=@FXMLPasswordField.text
     ri[:tenant]=@FXMLTenantField.text
@@ -61,7 +63,7 @@ class HawkLoginController
 
 
     hash = {}
-    hash[:entrypoint] = URI(@FXMLUrlField.text).to_s # TODO: see https://github.com/hawkular/hawkular-client-ruby/issues/116
+    hash[:entrypoint] = URI(the_url).to_s # TODO: see https://github.com/hawkular/hawkular-client-ruby/issues/116
     hash[:credentials] = creds
     hash[:options] = { :tenant => @FXMLTenantField.text }
 

@@ -1,6 +1,4 @@
-
-fail 'This needs JRuby to run' unless RUBY_PLATFORM == 'java'
-fail 'This needs JRuby version 9.1' unless JRUBY_VERSION >= '9.1.2'
+ruby '2.3.1', engine: 'jruby', engine_version: '9.1.5.0'
 
 source 'https://rubygems.org'
 

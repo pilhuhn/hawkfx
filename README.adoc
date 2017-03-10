@@ -1,5 +1,9 @@
 = Explorer for Hawkular
 
+NOTE:: You need a version of Java8 later than 8u45, and as of now JRuby 9.1.5
+is required, as later versions have a https://github.com/jruby/jruby/issues/4274[problem] that prevents JRubyFX from
+working correctly.
+
 http://hawkular.org/[Hawkular] is a set of components for Monitoring.
 This explorer connects to a Hawkular server and allows to browse trough
 inventory and view entities, graph metrics.
@@ -33,24 +37,23 @@ If you are using `rvm` you can select it via
 
 `rvm use jruby-9.1.5.0`
 
-NOTE:: You need a version of Java8 later than 8u45. Also JRuby 9.1.5 is required at the moment (later
-versions have an issue that prevents JRubyFX from running correctly).
-
 install and use `bundler` to install the required gems
 
 `gem install bundler`
 
 `bundle install`
 
-then run
+then run:
 
-`jruby -G -S hawkfx.rb # faster than bundle exec jruby hawkfx.rb`
+`jruby -G -S hawkfx.rb`
+
+Some ruby version managers (such as `rbenv`) do not provide a `jruby` binary
+directly, if the previous command do not work you can try running the
+application using bundler, like this:
+
+`bundle exec ruby hawkfx.rb`
 
 === Using SSL
 
 There is a blog post on the Hawkular
 blog http://www.hawkular.org/blog/2016/09/14/consuming-hawkular-api-over-ssl.html[that describes how to use SSL] in Hawkular and HawkFX.
-
-=== Assumptions
-
-Please make sure your JDK version is newer than `8u45`, basically with the latest hostpot JDK from Oracle you should be fine.

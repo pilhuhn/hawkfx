@@ -17,7 +17,7 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     event_emitter (0.2.5)
     hashdiff (0.3.2)
-    hawkular-client (2.8.0)
+    hawkular-client (3.0.1)
       addressable
       rest-client (~> 2.0.0)
       websocket-client-simple (~> 0.3.0)
@@ -95,7 +95,7 @@ PLATFORMS
 
 DEPENDENCIES
   addressable
-  hawkular-client (~> 2.8.0)
+  hawkular-client (~> 3.0.1)
   jruby-openssl
   jrubyfx
   rake (< 11)

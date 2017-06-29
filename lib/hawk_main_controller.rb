@@ -109,7 +109,8 @@ class HawkMainController
         'type' => { 'type' => metric_def.json['type'].upcase },
         # :unit => metric_def.unit
       }
-      m = ::Hawkular::Inventory::Metric.new m_hash
+      mt = create_metric_type_from_metric_def(metric_def)
+      m = ::Hawkular::Inventory::Metric.new m_hash, mt
 
       new_metric.raw_item = m
 
@@ -118,6 +119,14 @@ class HawkMainController
     # bind to the view from fxml
     @FXMLtreeView.setRoot(tree_root)
     tree_root.expanded = true
+  end
+
+  def create_metric_type_from_metric_def(metric_def)
+    type_hash = {
+        'type' => metric_def.json['type'].upcase,
+        'unit' => 'none'
+    }
+    mt = ::Hawkular::Inventory::MetricType.new type_hash
   end
 
   def show_insert_metrics

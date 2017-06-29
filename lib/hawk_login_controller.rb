@@ -75,15 +75,9 @@ class HawkLoginController
         Hawk.mode = :hawkular
       else # Metrics only mode
         Hawk.mode = :metrics
-        mc = ::Hawkular::Metrics::Client.new("#{hash[:entrypoint]}/hawkular/metrics",
-                            hash[:credentials],
-                            hash[:options])
-        Hawk.metrics = mc
-
-        ac = ::Hawkular::Alerts::AlertsClient.new("#{hash[:entrypoint]}/hawkular/alerts",
-                                                      hash[:credentials],
-                                                      hash[:options])
-        Hawk.alerts = ac
+        Hawk.client = ::Hawkular::Client.new(hash)
+        Hawk.metrics = Hawk.client.metrics
+        Hawk.alerts = Hawk.client.alerts
       end
 
       # @tenant = $inventory_client.get_tenant

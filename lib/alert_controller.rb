@@ -87,7 +87,7 @@ class AlertController
     else
       alerts = Hawk.alerts.list_events 'startTime' => start
     end
-    alerts
+    alerts.sort_by { |a| a.ctime }.reverse!
   end
 
 end

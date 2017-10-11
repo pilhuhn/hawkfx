@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/hawkular/hawkular-client-ruby.git
+  revision: 66fc215a88e6f99d397af06b727561423a12a239
+  branch: hawkular-1259
+  specs:
+    hawkular-client (4.1.0)
+      addressable
+      rest-client (~> 2.0.0)
+      websocket-client-simple (~> 0.3.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -17,10 +27,6 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     event_emitter (0.2.5)
     hashdiff (0.3.2)
-    hawkular-client (3.0.1)
-      addressable
-      rest-client (~> 2.0.0)
-      websocket-client-simple (~> 0.3.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.8.1)
@@ -95,7 +101,7 @@ PLATFORMS
 
 DEPENDENCIES
   addressable
-  hawkular-client (~> 3.0.1)
+  hawkular-client!
   jruby-openssl
   jrubyfx
   rake (< 11)

@@ -45,16 +45,25 @@ class HawkMainController
     tree_root = build(::HTreeItem)
     tree_root.kind = :none
 
-    feeds = Hawk.inventory.list_feeds
+    root_resources = Hawk.inventory_v4.root_resources
+    feeds = {}
+    root_resources.each do |resource|
+      feed_name = resource.feed || :unknown
+      feeds[feed_name] = [] unless feeds.key?(feed_name)
+      puts "Id of resource: #{resource.id}"
+      feeds[feed_name] << resource
+    end
+
     tree_root.value = "Feeds (#{feeds.size})"
 
-    feeds.each do |feed|
+    feeds.each do |feedId, resources|
       iv = ::HawkHelper.create_icon 'F'
 
       new_feed = build(::HTreeItem)
       new_feed.kind = :feed
-      new_feed.value = feed
+      new_feed.value = feedId
       new_feed.graphic = iv
+      new_feed.resources = resources
 
       tree_root.children.add new_feed
       puts new_feed.to_s

@@ -5,12 +5,12 @@ source 'https://rubygems.org'
 gem 'jrubyfx'#, :require => true
 
 #gem 'hawkular-client', :require => true, path: '/h/ruby-client-heiko'
-# gem 'hawkular-client', :require => true, path: '/h/hawkular-client-ruby'
-#gem 'hawkular-client',
-#    :require => true,
-#    :git => 'https://github.com/pilhuhn/hawkular-client-ruby.git',
-#    :branch => 'more_alerts'
-gem 'hawkular-client', '~> 3.0.1', :require => true
+#gem 'hawkular-client', :require => true, path: '/home/josejulio/Documentos/redhat/hawkular/hawkular-client-ruby'
+gem 'hawkular-client',
+    :require => true,
+    :git => 'https://github.com/hawkular/hawkular-client-ruby.git',
+    :branch => 'hawkular-1259'
+# gem 'hawkular-client', '~> 3.0.1', :require => true
 gem 'addressable'
 
 gem 'rest-client'

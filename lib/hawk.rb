@@ -14,6 +14,10 @@ module Hawk
       @client.inventory
     end
 
+    def inventory_v4
+      @client.inventory_v4
+    end
+
     def alerts=(alerts_client)
       @alerts = alerts_client
     end

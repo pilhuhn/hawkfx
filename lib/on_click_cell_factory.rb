@@ -36,20 +36,22 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
       end
 
       case the_tree_item.kind
-      when :feed, :resource
+      when :feed
+        set_result_text(tree_view, the_tree_item.value)
+        break if the_tree_item.is_done
+        the_tree_item.is_done = true
+        resources = the_tree_item.resources
+        add_child_resources(children, resources, the_tree_item) unless resources.empty?
+        the_tree_item.resources = nil
+      when :resource
 
         # Show info in the bottom text field
-        text = the_tree_item.kind != :feed ? the_tree_item.raw_item.path : the_tree_item.value
-        set_result_text(tree_view, text)
+        set_result_text(tree_view, the_tree_item.id)
 
         break if the_tree_item.is_done
         the_tree_item.is_done = true
 
-        if the_tree_item.kind == :feed
-          resources = Hawk.inventory.list_resources_for_feed source.item
-        else
-          resources = Hawk.inventory.list_child_resources the_tree_item.raw_item.path
-        end
+        resources = Hawk.inventory_v4.children_resources the_tree_item.raw_item.id
 
         if the_tree_item.kind == :resource
           the_tree_item.is_done = true
@@ -95,14 +97,12 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
     ascend_sort = ->(r1, r2) { r1.name <=> r2.name }
     resources.sort(&ascend_sort).each do |res|
       new_item = build(::HTreeItem)
-      new_item.path = res.path
+      new_item.id = res.id
       new_item.kind = :resource
       new_item.raw_item = res
       # (res
       # .name) ## works on the source item
-      name = res.name.dup
-      name = name.start_with?(res.feed) ? name.sub(res.feed, '') : name
-      new_item.value = name
+      new_item.value = res.name
 
       iv = ::HawkHelper.create_icon 'R'
       new_item.graphic = iv
@@ -140,7 +140,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
   end
 
   def add_metrics(children, the_tree_item)
-    metrics = Hawk.inventory.list_metrics_for_resource the_tree_item.raw_item.path
+    metrics = the_tree_item.raw_item.metrics
     metrics.each do |m|
       new_metric = build(::HTreeItem)
       new_metric.kind = :metric
@@ -156,11 +156,11 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
   end
 
   def add_operations(children, the_tree_item)
-    operations = Hawk.inventory.list_operation_definitions_for_resource the_tree_item.raw_item.path
-    operations.each do |name, op|
+    operations = the_tree_item.raw_item.type.operations
+    operations.each do |op|
       new_operation = build(::HTreeItem)
       new_operation.kind = :operation
-      new_operation.value = name
+      new_operation.value = op.name
       new_operation.raw_item = op
       iv = ::HawkHelper.create_icon 'O'
       new_operation.graphic = iv
@@ -249,7 +249,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
     cmi.on_action do
       item = tree_view.selectionModel.selectedItem
       stage = tree_view.scene.window
-      ::HawkHelper.run_ops_popup stage, item.raw_item, item.parent.raw_item.path
+      ::HawkHelper.run_ops_popup stage, item.raw_item, item.parent.raw_item.id
     end
     cmi
   end
@@ -275,7 +275,7 @@ class OnClickCellFactory < Java::javafx::scene::control::TreeCell
     cmi.on_action do
       item = tree_view.selectionModel.selectedItem
       if item.kind == :resource
-        response = Hawk.inventory.get_config_data_for_resource item.raw_item.path
+        response = item.raw_item.properties
         text = JSON.pretty_generate(response.to_h) unless response.nil?
       else
         text = "- unknown kind #{item.kind}, value = #{item.value}"

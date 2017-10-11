@@ -74,7 +74,7 @@ class HawkHelper
     when 'STRING'
       'M_S'
     else
-      puts 'Unknown metric type ' + m.type
+      puts 'Unknown metric type ' + metric_type
       'M'
     end
   end

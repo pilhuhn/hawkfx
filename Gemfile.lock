@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/hawkular/hawkular-client-ruby.git
-  revision: 66fc215a88e6f99d397af06b727561423a12a239
+  revision: 7f4f71fed8e58ba343377e2376f67b79f2cfb507
   branch: hawkular-1259
   specs:
     hawkular-client (4.1.0)
